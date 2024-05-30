@@ -1,4 +1,7 @@
 # Minishell
+
+### Resources
+
 [GNU Bash manual](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/) <br/>
 readline: libreadline-dev 
 
