@@ -1,6 +1,6 @@
 # Minishell
-[GNU Bash manual](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/)
-libreadline-dev 
+[GNU Bash manual](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/) <br/>
+readline: libreadline-dev 
 
 ### Minishell Checklist
 
