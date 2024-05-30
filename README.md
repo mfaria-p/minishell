@@ -1,4 +1,5 @@
 # Minishell
+## Our own little bash
 
 ### Resources
 
