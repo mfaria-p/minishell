@@ -6,7 +6,7 @@ int	main(void)
 
 	while (1)
 	{
-		line = readline("8=D ");
+		line = readline("8==D ");
 		printf("%s\n", line);
 		free(line);
 	}
