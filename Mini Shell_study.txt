@@ -20,12 +20,23 @@ Handle errors
 Handle piping (|), redirection (>, <), etc
 
 
+Topics:
+-parsing, 
+-argument checking, 
+-execution, 
+-redirection,
+-piping,
+-environment variables (ver melhor isto),
+-built-in functions,
+-signal handling.
+
+
 Pseudocode:
 
 1.Initialize the Shell:
 
 Display a prompt.
-Read user input.
+Read user input*
 
 2.Parse Input:
 
@@ -39,12 +50,8 @@ AINDA N PERCEI MT BEM ESTA PARTE; TA NO PROCESSO: ACEITO EXPLICACOES/SUGESTOES
 Implement commands like cd and exit.
 
 
-Topics:
--parsing, 
--argument checking, 
--execution, 
--redirection,
--piping,
--environment variables (ver melhor isto),
--built-in functions,
--signal handling.
+USER INPUT:
+1. check that the input is valid and error-free
+2. break down each individual tokens into an ordered list
+3. check if there are any errors in the syntax
+4. parse them into an execution tree
