@@ -31,27 +31,33 @@ Topics:
 -signal handling.
 
 
-Pseudocode:
-
+Resumidinho:
 1.Initialize the Shell:
-
 Display a prompt.
 Read user input*
 
 2.Parse Input:
-
 Split the input string into command and arguments.
 
 3.Execute Command:
 AINDA N PERCEI MT BEM ESTA PARTE; TA NO PROCESSO: ACEITO EXPLICACOES/SUGESTOES
 
 4.Handle Built-in Commands:
-
 Implement commands like cd and exit.
 
-
-USER INPUT:
+pormenorezinhos
+*USER INPUT:
 1. check that the input is valid and error-free
-2. break down each individual tokens into an ordered list
+2. break down each individual tokens into an ordered list (lexical analyser**)
 3. check if there are any errors in the syntax
-4. parse them into an execution tree
+4. parse them into an execution tree (Abstract Syntax Tree***)
+
+**The Lexical Analyzer
+Breaks the input string from the user to a series of tokens. 
+Tokens could either be a character or a series of characters. Its also groups characters that are inside a single or double quotations.
+
+***Syntax Tree Parser
+Tree-like data structure that holds tokens and operations in order ofthe execution****
+
+****Execution
+After building the syntax tree, it is mbbb easier to traverse through out the tokens in order and make executions if necessary.
