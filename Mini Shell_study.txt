@@ -1,0 +1,50 @@
+Mini Shell_study
+
+1.Shell Basics:
+
+Shell reads user input.
+Shell interprets and executes the command.
+Shell displays output.
+
+2.Basic Structure of a Shell:
+
+Initialize a loop to continuously read user input.
+Parse the input to separate the command and its arguments.
+Execute the command using system calls.
+Handle built-in commands (e.g., cd, exit).
+
+3.Error Handling:
+Handle errors
+
+4.Implement Advanced Features:
+Handle piping (|), redirection (>, <), etc
+
+
+Pseudocode:
+
+1.Initialize the Shell:
+
+Display a prompt.
+Read user input.
+
+2.Parse Input:
+
+Split the input string into command and arguments.
+
+3.Execute Command:
+AINDA N PERCEI MT BEM ESTA PARTE; TA NO PROCESSO: ACEITO EXPLICACOES/SUGESTOES
+
+4.Handle Built-in Commands:
+
+Implement commands like cd and exit.
+
+
+Topics:
+-parsing, 
+-argument checking, 
+-execution, 
+-redirection,
+-piping,
+-environment variables (ver melhor isto),
+-built-in functions,
+-signal handling.
