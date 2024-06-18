@@ -114,4 +114,12 @@
 // ioctl
 /* ************************************************************************** */
 
+typedef struct	s_node
+{
+	char			*content;
+	int				token;
+	struct s_node	*prev;
+	struct s_node	*next;
+}
+
 #endif
