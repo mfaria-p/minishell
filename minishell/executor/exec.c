@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 22:59:10 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/21 12:57:03 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/06/21 13:39:27 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,18 +134,47 @@ char *get_cmd(char **paths, char *cmd)
     return (NULL);
 }
 
+char    *find_the_command(char **envp, t_node *tree)
+{
+    char    *paths;
+    char    **cmd_paths;
+    char*   command;
+    int i;
+    
+    i = 0;
+    paths = find_path(envp);
+    cmd_paths = ft_split(paths, ':');
+    command = get_cmd(cmd_paths, tree->content);
+    while (cmd_paths[i])
+    {
+        free(cmd_paths[i]);
+        i++;
+    }
+    free(cmd_paths);
+    return (command);
+}
 void ft_execute(t_node *tree, char **envp)
 {
     char*   command;
-    char    *paths;
-    char    **cmd_paths;
+    int param_count;
+    char **argv;
+    int i;
     
-    paths = find_path(envp);
-    cmd_paths = ft_split(paths, ':');
-    command=get_cmd(cmd_paths, tree->content);
-    printf(command, "%s\n");
-    //aqui ta algo sus:
-    execve(command, tree->params, envp);
+    i = 0;
+    param_count = 0;
+    command=find_the_command(envp, tree);
+    while (tree->params[param_count] != NULL) 
+        param_count++;
+    argv = (char **)malloc((param_count + 2) * sizeof(char *));
+    argv[0] = command; // First argument is the command itself
+    while (i < param_count)
+    {
+        argv[i + 1] = tree->params[i];
+        i++;
+    }
+    argv[param_count + 1] = NULL;
+    execve(command, argv, envp);
+    free(command);
 }
 
 int ft_isbuiltin(t_node *cmd)
