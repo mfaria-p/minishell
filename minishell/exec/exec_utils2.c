@@ -6,11 +6,11 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 13:50:00 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/20 13:51:52 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/06/22 19:11:37 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
+#include "execution.h"
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
@@ -52,3 +52,4 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	str[i + j] = '\0';
 	return (str);
 }
+
