@@ -6,11 +6,14 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/22 19:13:59 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/06/26 00:26:57 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+//NO LOOP DO MINISHELL, antes de chamarmos a execucao temos qeu prepara la, aka voltar a por o stdin e o stdout normais
+//falta error handling no here doc (mb tenho q cleanar o temp file dps?)
+//o redirect input e append n ta a dar (da segmentation fault), nem o seu erro handling
 
 // Function to replicate the echo command
 void ft_echo(char **params) 
@@ -28,14 +31,14 @@ void ft_echo(char **params)
     while (params[i] != NULL) 
     {
         if (i > 0) {
-            ft_printf(" ");
+            printf(" ");
         }
-        ft_printf("%s", params[i]);
+        printf("%s", params[i]);
         i++;
     }
     // Print newline if -n flag is not set
     if (newline)
-        ft_printf("\n");
+        printf("\n");
 }
 
 void ft_cd(char **envp, char **params) { /* Implementation for cd */ }
@@ -51,9 +54,13 @@ void  have_child(struct node_pipe *pip , int  rw, int pipefd[2], char **envp)
 	int	pid;
 
 	pid = fork();
+    if (pid < 0) 
+        ft_error(1);
 	if (pid == 0)
 	{
 		dup2(pipefd[rw], rw);
+        if (dup2(pipefd[rw], rw) == -1) 
+            ft_error(2);
 		close(pipefd[0]);
 		close(pipefd[1]);
         if (rw == PIPE_WRITE)
@@ -69,6 +76,8 @@ void  exec_pipe(struct node_pipe *pip, char **envp)
 	int	pid;
 
 	pipe(pipefd);
+    if (pipe(pipefd) == -1)
+        ft_error(2);
 	have_child(pip, PIPE_WRITE, pipefd, envp);
 	have_child(pip, PIPE_READ, pipefd, envp);
 	waitpid(0, NULL, 0);
@@ -77,13 +86,13 @@ void  exec_pipe(struct node_pipe *pip, char **envp)
 void  exec_red(struct node_redirect *red, char **envp)
 {
 	if (red->node_type == R_out)
-		exec_not_heredoc(red, O_CREAT | O_WRONLY | O_TRUNC, STDOUT_FILENO);
+		exec_not_heredoc(red, O_CREAT | O_WRONLY | O_TRUNC, STDOUT_FILENO, envp);
 	else if (red->node_type == R_app)
-		exec_not_heredoc(red, O_CREAT | O_WRONLY, STDOUT_FILENO);
+		exec_not_heredoc(red, O_CREAT | O_WRONLY, STDOUT_FILENO, envp);
 	else if (red->node_type == R_heredoc)
-		exec_heredoc(red);
+		exec_heredoc(red, envp);
 	else
-		exec_not_heredoc(red, O_RDONLY, STDIN_FILENO);
+		exec_not_heredoc(red, O_RDONLY, STDIN_FILENO, envp);
     if (red->next)
     execution((struct node_default *) red->next, envp);
 }
@@ -136,6 +145,7 @@ char *get_cmd(char **paths, char *cmd)
         free(command);
         paths++;
     }
+   cmd_not_found(cmd);
     return (NULL);
 }
 
@@ -183,23 +193,80 @@ void ft_execute(struct node_execution *exec, char **envp)
     free(command);
 }
 
-void exec_not_heredoc(struct node_redirect *red, int flags, int io)
+void exec_not_heredoc(struct node_redirect *red, int flags, int io, char **envp)
 {
 	int	fd;
 	fd = open(red->filename, flags, MODE);
+    if (fd == - 1 && io == STDIN_FILENO)
+        ft_error(4);
+    else if (fd == - 1 && io == STDOUT_FILENO)
+        ft_error(3); 
 	dup2(fd, io);
+    if (dup2(fd, io) == -1)
+    {
+        close(fd);
+       ft_error(3);
+    } 
 	close(fd);
+    //execution((struct node_default *) red->next, envp);
+    exit(0);
 }
 
-void  exec_heredoc(struct node_redirect *red)
-{
-	/* char *line = 0;
-    //mudar isto para ft_strcmp
-	while (ft_strncmp(line, red->delimeter, 0))
-	{
-		line = readline("ʕ•́ᴥ•̀ʔ\n>");
-		// duvidas
-	} */
+// Function to read input for the heredoc and write it to a temporary file
+int create_heredoc(const char *delimiter, const char *file_name) {
+    int fd;
+    char *line;
+
+    fd = open(file_name, O_CREAT | O_RDWR | O_TRUNC, 0644);
+    if (fd < 0) {
+        perror("open");
+        return EXIT_FAILURE;
+    }
+
+    line = readline(HEREDOC_MSG);
+    while (line && ft_strncmp(delimiter, line, ft_strlen(delimiter)) != 0) {
+        write(fd, line, ft_strlen(line));
+        write(fd, "\n", 1);
+        free(line);
+        line = readline(HEREDOC_MSG);
+    }
+    free(line);
+    close(fd);
+    if (line == NULL) 
+        return EXIT_FAILURE;
+    else 
+        return EXIT_SUCCESS;
+}
+
+void have_child_hd(struct node_redirect *red, char **envp, const char *file_name) {
+    int pid;
+    int fd;
+
+    pid = fork();
+    if (pid == 0) {
+        fd = open(file_name, O_RDONLY);
+        if (fd < 0) {
+            perror("open");
+            exit(EXIT_FAILURE);
+        }
+        dup2(fd, STDIN_FILENO);  // Redirect stdin to the temporary file
+        close(fd);
+        execution((struct node_default *)red->next, envp);  // Execute the command
+        exit(0);  // Exit the child process after execution
+    }
+}
+
+void exec_heredoc(struct node_redirect *red, char **envp) {
+    const char *temp_file_name = "/tmp/heredoc_tmp";
+
+    if (create_heredoc(red->delimeter, temp_file_name) == EXIT_SUCCESS) {
+        have_child_hd(red, envp, temp_file_name);
+        waitpid(-1, NULL, 0);  // Wait for the child process to finish
+        exit(EXIT_SUCCESS);
+        //TENHO QUE CLEANAR O TEMP FILE DPS
+    } else {
+        exit(EXIT_FAILURE);
+    }
 }
 
 void  execution(struct node_default *node, char **envp)
@@ -220,6 +287,10 @@ void  execution(struct node_default *node, char **envp)
 struct node_execution *create_execution_node(char *command, char **params, int type) 
 {
     struct node_execution *exec_node = malloc(sizeof(struct node_execution));
+    if (!exec_node) {
+        perror("malloc");
+        exit(EXIT_FAILURE);
+    }
     exec_node->node_type = type;
     exec_node->command = command;
     exec_node->params = params;
@@ -230,6 +301,10 @@ struct node_execution *create_execution_node(char *command, char **params, int t
 struct node_redirect *create_redirect_node(int type, char *filename, char *delimiter, struct node_default *next) 
 {
     struct node_redirect *red_node = malloc(sizeof(struct node_redirect));
+    if (!red_node) {
+        perror("malloc");
+        exit(EXIT_FAILURE);
+    }
     red_node->node_type = type;
     red_node->filename = filename;
     red_node->delimeter = delimiter;
@@ -265,7 +340,7 @@ int main(int argc, char **argv, char **envp)
 {
 	struct node_default *root;
     
-	// Test case: ls | grep ".h"
+/* 	// Test case: ls | grep ".h"
     char *ls_params[] = {NULL};
     struct node_execution *ls_node = create_execution_node("ls", ls_params, E_cmd);
 
@@ -294,16 +369,46 @@ int main(int argc, char **argv, char **envp)
     
     root = (struct node_default *)pipe_node;
     printf("Executing: ls | grep \".h\"\n");
-	execution(root, envp);
+	execution(root, envp); */
     
     // Test case: echo "Hello World" > output.txt
-    char *echo_params[] = {"Hello World", NULL};
+    /* char *echo_params[] = {"Hello World", NULL};
     struct node_execution *echo_node = create_execution_node("echo", echo_params, E_builtin);
 
     struct node_redirect *redirect_node = create_redirect_node(R_out, "output.txt", NULL, (struct node_default *)echo_node);
 
     root = (struct node_default *)redirect_node;
     printf("Executing: echo \"Hello World\" > output.txt\n");
+    execution(root, envp); */
+    
+    // Test case: cat < input.txt
+    /* char *cat_params[] = {NULL};
+    struct node_execution *cat_node = create_execution_node("cat", cat_params, E_cmd);
+
+    struct node_redirect *redirect_node3 = create_redirect_node(R_input, "input.txt", NULL, (struct node_default *)cat_node);
+
+    root = (struct node_default *)redirect_node3;
+    printf("Executing: cat < input.txt\n");
+    execution(root, envp); */
+
+    // Test case: echo cat <<EOF
+    /* char *cat_params[] = {NULL};
+    struct node_execution *cat_node = create_execution_node("cat", cat_params, E_cmd);
+
+    struct node_redirect *redirect_node2 = create_redirect_node(R_heredoc, NULL, "EOF", (struct node_default *)cat_node);
+
+    root = (struct node_default *)redirect_node2;
+    printf("Executing: cat << EOF\n");
+    execution(root, envp); */
+
+    // Test case: echo 'Hello, World!' >> append.txt
+    char *echo_params[] = {"Hello, World!", NULL};
+    struct node_execution *echo_node = create_execution_node("echo", echo_params, E_cmd);
+
+    struct node_redirect *redirect_node = create_redirect_node(R_app, "append.txt", NULL, (struct node_default *)echo_node);
+
+    root = (struct node_default *)redirect_node;
+    printf("Executing: echo 'Hello, World!' >> append.txt\n");
     execution(root, envp);
     
 	return EXIT_SUCCESS;

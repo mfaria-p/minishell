@@ -6,27 +6,27 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/22 19:05:53 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/06/26 00:26:04 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXECUTION_H
 # define EXECUTION_H
 
-#include "ft_printf/ft_printf.h"
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
 # include <stdio.h> 
 # include <sys/wait.h>
 # include <sys/types.h>
-#include <stdarg.h>
+# include <readline/readline.h>
 //#include <string.h>
 //#include <stdio.h>
 
 #define PIPE_READ STDIN_FILENO
 #define PIPE_WRITE STDOUT_FILENO
 #define MODE 0644
+#define HEREDOC_MSG "> "
 
 //Nodes structures
 struct node_default
@@ -78,8 +78,10 @@ void  have_child(struct node_pipe *pip , int  rw, int pipefd[2], char **envp);
 
 //redirect executing functions
 void  exec_red(struct node_redirect *red, char **envp);
-void exec_not_heredoc(struct node_redirect *red, int flags, int io);
-void  exec_heredoc(struct node_redirect *red);
+void exec_not_heredoc(struct node_redirect *red, int flags, int io, char **envp);
+void  exec_heredoc(struct node_redirect *red, char **envp);
+void have_child_hd(struct node_redirect *red, char **envp, const char *file_name);
+int create_heredoc(const char *delimiter, const char *file_name);
 
 //Simple commands executing functions 
 void    exec_exec(struct node_execution *exec, char **envp);
@@ -93,6 +95,7 @@ size_t	ft_strlen(const char *s);
 char	**ft_split(char const *s, char c);
 int	ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strjoin(char const *s1, char const *s2);
+void	*ft_memcpy(void *dest, const void *src, size_t n);
 
 //not done (built ins)
 void ft_echo(char **params);
@@ -103,5 +106,10 @@ void ft_doexport(char **envp, char **params);
 void ft_unset(char **params);
 void ft_printenv(char **envp);
 void ft_exit(char **params);
+
+//Error_handling
+int	ft_error(int error);
+int cmd_not_found(char *str);
+void	ft_putstr_fd(char *s, int fd);
 
 #endif
