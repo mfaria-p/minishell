@@ -6,12 +6,14 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/26 00:26:04 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/06/26 14:19:56 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXECUTION_H
 # define EXECUTION_H
+
+#include "../minishell.h"
 
 #include <stdlib.h>
 #include <unistd.h>
@@ -28,30 +30,31 @@
 #define MODE 0644
 #define HEREDOC_MSG "> "
 
+/*
 //Nodes structures
-struct node_default
+struct s_node_default
 {
-	int	node_type; //PIPE REDIRECT EXEC
+	int	s_node_type; //PIPE REDIRECT EXEC
 };
 
-struct node_pipe
+struct s_node_pipe
 {
-	int	node_type;
-	struct node_default *left_node;
-	struct node_default *right_node;
+	int	s_node_type;
+	struct s_node_default *left_node;
+	struct s_node_default *right_node;
 };
 
-struct node_redirect
+struct s_node_redirect
 {
-	int	node_type;
+	int	s_node_type;
 	char  *filename;
 	char  *delimeter;
-	struct node_default *next;
+	struct s_node_default *next;
 };
 
-struct node_execution
+struct s_node_execution
 {
-	int	node_type;
+	int	s_node_type;
 	char  *command;
 	char  **params;
 };
@@ -67,28 +70,29 @@ enum e_nodetype
 	R_input,
 	P = 0b1<<6
 };
+*/
 
 //EXECUTION
 
-void  execution(struct node_default *node, char **envp);
+void  execution(struct s_node_default *node, char **envp);
 
 // pipe executing functions
-void  exec_pipe(struct node_pipe *pip, char **envp);
-void  have_child(struct node_pipe *pip , int  rw, int pipefd[2], char **envp);
+void  exec_pipe(struct s_node_pipe *pip, char **envp);
+void  have_child(struct s_node_pipe *pip , int  rw, int pipefd[2], char **envp);
 
 //redirect executing functions
-void  exec_red(struct node_redirect *red, char **envp);
-void exec_not_heredoc(struct node_redirect *red, int flags, int io, char **envp);
-void  exec_heredoc(struct node_redirect *red, char **envp);
-void have_child_hd(struct node_redirect *red, char **envp, const char *file_name);
+void  exec_red(struct s_node_redirect *red, char **envp);
+void exec_not_heredoc(struct s_node_redirect *red, int flags, int io, char **envp);
+void  exec_heredoc(struct s_node_redirect *red, char **envp);
+void have_child_hd(struct s_node_redirect *red, char **envp, const char *file_name);
 int create_heredoc(const char *delimiter, const char *file_name);
 
 //Simple commands executing functions 
-void    exec_exec(struct node_execution *exec, char **envp);
+void    exec_exec(struct s_node_execution *exec, char **envp);
 char *find_path(char **envp);
 char *get_cmd(char **paths, char *cmd);
-char    *find_the_command(char **envp, struct node_execution *exec);
-void ft_execute(struct node_execution *exec, char **envp);
+char    *find_the_command(char **envp, struct s_node_execution *exec);
+void ft_execute(struct s_node_execution *exec, char **envp);
 
 //utils for finding commands paths
 size_t	ft_strlen(const char *s);

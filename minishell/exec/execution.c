@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/26 00:26:57 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/06/26 15:25:35 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void ft_unset(char **args) { /* Implementation for unset */ }
 void ft_printenv(char **envp) { /* Implementation for env */ }
 void ft_exit(char **args) { /* Implementation for exit */ }
 
-void  have_child(struct node_pipe *pip , int  rw, int pipefd[2], char **envp)
+void  have_child(struct s_node_pipe *pip , int  rw, int pipefd[2], char **envp)
 {
 	int	pid;
 
@@ -64,13 +64,13 @@ void  have_child(struct node_pipe *pip , int  rw, int pipefd[2], char **envp)
 		close(pipefd[0]);
 		close(pipefd[1]);
         if (rw == PIPE_WRITE)
-            execution((struct node_default *)pip->left_node, envp);
+            execution((struct s_node_default *)pip->left_node, envp);
         else 
-            execution((struct node_default *)pip->right_node, envp);
+            execution((struct s_node_default *)pip->right_node, envp);
 	}
 }
 
-void  exec_pipe(struct node_pipe *pip, char **envp)
+void  exec_pipe(struct s_node_pipe *pip, char **envp)
 {
 	int	pipefd[2];
 	int	pid;
@@ -80,10 +80,10 @@ void  exec_pipe(struct node_pipe *pip, char **envp)
         ft_error(2);
 	have_child(pip, PIPE_WRITE, pipefd, envp);
 	have_child(pip, PIPE_READ, pipefd, envp);
-	waitpid(0, NULL, 0);
+	waitpid(-1, NULL, 0);
 }
 
-void  exec_red(struct node_redirect *red, char **envp)
+void  exec_red(struct s_node_redirect *red, char **envp)
 {
 	if (red->node_type == R_out)
 		exec_not_heredoc(red, O_CREAT | O_WRONLY | O_TRUNC, STDOUT_FILENO, envp);
@@ -94,10 +94,10 @@ void  exec_red(struct node_redirect *red, char **envp)
 	else
 		exec_not_heredoc(red, O_RDONLY, STDIN_FILENO, envp);
     if (red->next)
-    execution((struct node_default *) red->next, envp);
+    execution((struct s_node_default *) red->next, envp);
 }
 
-void    exec_exec(struct node_execution *exec, char **envp)
+void    exec_exec(struct s_node_execution *exec, char **envp)
 {
     if (exec->node_type == E_builtin)
     {
@@ -149,7 +149,7 @@ char *get_cmd(char **paths, char *cmd)
     return (NULL);
 }
 
-char    *find_the_command(char **envp, struct node_execution *exec)
+char    *find_the_command(char **envp, struct s_node_execution *exec)
 {
     char    *paths;
     char    **cmd_paths;
@@ -169,7 +169,7 @@ char    *find_the_command(char **envp, struct node_execution *exec)
     return (command);
 }
 
-void ft_execute(struct node_execution *exec, char **envp)
+void ft_execute(struct s_node_execution *exec, char **envp)
 {
     char*   command;
     int param_count;
@@ -179,7 +179,7 @@ void ft_execute(struct node_execution *exec, char **envp)
     i = 0;
     param_count = 0;
     command=find_the_command(envp, exec);
-    while (exec->params[param_count] != NULL) 
+    while (exec->params && exec->params[param_count] != NULL) 
         param_count++;
     argv = (char **)malloc((param_count + 2) * sizeof(char *));
     argv[0] = command; // First argument is the command itself
@@ -193,7 +193,7 @@ void ft_execute(struct node_execution *exec, char **envp)
     free(command);
 }
 
-void exec_not_heredoc(struct node_redirect *red, int flags, int io, char **envp)
+void exec_not_heredoc(struct s_node_redirect *red, int flags, int io, char **envp)
 {
 	int	fd;
 	fd = open(red->filename, flags, MODE);
@@ -208,7 +208,7 @@ void exec_not_heredoc(struct node_redirect *red, int flags, int io, char **envp)
        ft_error(3);
     } 
 	close(fd);
-    //execution((struct node_default *) red->next, envp);
+    //execution((struct s_node_default *) red->next, envp);
     exit(0);
 }
 
@@ -238,7 +238,7 @@ int create_heredoc(const char *delimiter, const char *file_name) {
         return EXIT_SUCCESS;
 }
 
-void have_child_hd(struct node_redirect *red, char **envp, const char *file_name) {
+void have_child_hd(struct s_node_redirect *red, char **envp, const char *file_name) {
     int pid;
     int fd;
 
@@ -251,42 +251,40 @@ void have_child_hd(struct node_redirect *red, char **envp, const char *file_name
         }
         dup2(fd, STDIN_FILENO);  // Redirect stdin to the temporary file
         close(fd);
-        execution((struct node_default *)red->next, envp);  // Execute the command
+        execution((struct s_node_default *)red->next, envp);  // Execute the command
         exit(0);  // Exit the child process after execution
     }
 }
 
-void exec_heredoc(struct node_redirect *red, char **envp) {
+void exec_heredoc(struct s_node_redirect *red, char **envp) {
     const char *temp_file_name = "/tmp/heredoc_tmp";
 
     if (create_heredoc(red->delimeter, temp_file_name) == EXIT_SUCCESS) {
         have_child_hd(red, envp, temp_file_name);
         waitpid(-1, NULL, 0);  // Wait for the child process to finish
-        exit(EXIT_SUCCESS);
+        //exit(EXIT_SUCCESS);
         //TENHO QUE CLEANAR O TEMP FILE DPS
     } else {
         exit(EXIT_FAILURE);
     }
 }
 
-void  execution(struct node_default *node, char **envp)
+void  execution(struct s_node_default *node, char **envp)
 {
 	if ((node->node_type & E_cmd) || (node->node_type & E_builtin))
-		exec_exec((struct node_execution *) node, envp);
-	else if (node->node_type & R_out 
-        || node->node_type & R_app || node->node_type & R_heredoc 
-        || node->node_type & R_input)
-		exec_red((struct node_redirect *) node, envp);
+		exec_exec((struct s_node_execution *) node, envp);
+	else if (node->node_type & (1 << 5))
+		exec_red((struct s_node_redirect *) node, envp);
 	else
-		exec_pipe((struct node_pipe *) node, envp);
+		exec_pipe((struct s_node_pipe *) node, envp);
 }
 
 //Test
 
-// Function to create a node_execution
-struct node_execution *create_execution_node(char *command, char **params, int type) 
+// Function to create a s_node_execution
+struct s_node_execution *create_execution_node(char *command, char **params, int type) 
 {
-    struct node_execution *exec_node = malloc(sizeof(struct node_execution));
+    struct s_node_execution *exec_node = malloc(sizeof(struct s_node_execution));
     if (!exec_node) {
         perror("malloc");
         exit(EXIT_FAILURE);
@@ -297,10 +295,10 @@ struct node_execution *create_execution_node(char *command, char **params, int t
     return exec_node;
 }
 
-// Function to create a node_redirect
-struct node_redirect *create_redirect_node(int type, char *filename, char *delimiter, struct node_default *next) 
+// Function to create a s_node_redirect
+struct s_node_redirect *create_redirect_node(int type, char *filename, char *delimiter, struct s_node_default *next) 
 {
-    struct node_redirect *red_node = malloc(sizeof(struct node_redirect));
+    struct s_node_redirect *red_node = malloc(sizeof(struct s_node_redirect));
     if (!red_node) {
         perror("malloc");
         exit(EXIT_FAILURE);
@@ -312,10 +310,10 @@ struct node_redirect *create_redirect_node(int type, char *filename, char *delim
     return red_node;
 }
 
-// Function to create a node_pipe
-struct node_pipe *create_pipe_node(struct node_default *left_node, struct node_default *right_node) 
+// Function to create a s_node_pipe
+struct s_node_pipe *create_pipe_node(struct s_node_default *left_node, struct s_node_default *right_node) 
 {
-    struct node_pipe *pipe_node = malloc(sizeof(struct node_pipe));
+    struct s_node_pipe *pipe_node = malloc(sizeof(struct s_node_pipe));
     pipe_node->node_type = P;
     pipe_node->left_node = left_node;
     pipe_node->right_node = right_node;
@@ -335,81 +333,3 @@ void print_node_type(int code) {
     }
     printf("\n");
 }
-
-int main(int argc, char **argv, char **envp)
-{
-	struct node_default *root;
-    
-/* 	// Test case: ls | grep ".h"
-    char *ls_params[] = {NULL};
-    struct node_execution *ls_node = create_execution_node("ls", ls_params, E_cmd);
-
-    printf("Node type: ");
-    print_node_type(ls_node->node_type);
-    printf("Node1 content: %s\n", ls_node->command);
-    printf("Node1 params: ");
-    for (int i = 0; ls_node->params[i] != NULL; i++) {
-        printf("%s ", ls_node->params[i]);
-    }
-    printf("\n");
-
-    char *grep_params[] = {".h", NULL};
-    struct node_execution *grep_node = create_execution_node("grep", grep_params, E_cmd);
-    
-    printf("Node type: ");
-    print_node_type(grep_node->node_type);
-    printf("Node2 content: %s\n", grep_node->command);
-    printf("Node2 params: ");
-    for (int i = 0; grep_node->params[i] != NULL; i++) {
-        printf("%s ", grep_node->params[i]);
-    }
-    printf("\n");
-
-    struct node_pipe *pipe_node = create_pipe_node((struct node_default *)ls_node, (struct node_default *)grep_node);
-    
-    root = (struct node_default *)pipe_node;
-    printf("Executing: ls | grep \".h\"\n");
-	execution(root, envp); */
-    
-    // Test case: echo "Hello World" > output.txt
-    /* char *echo_params[] = {"Hello World", NULL};
-    struct node_execution *echo_node = create_execution_node("echo", echo_params, E_builtin);
-
-    struct node_redirect *redirect_node = create_redirect_node(R_out, "output.txt", NULL, (struct node_default *)echo_node);
-
-    root = (struct node_default *)redirect_node;
-    printf("Executing: echo \"Hello World\" > output.txt\n");
-    execution(root, envp); */
-    
-    // Test case: cat < input.txt
-    /* char *cat_params[] = {NULL};
-    struct node_execution *cat_node = create_execution_node("cat", cat_params, E_cmd);
-
-    struct node_redirect *redirect_node3 = create_redirect_node(R_input, "input.txt", NULL, (struct node_default *)cat_node);
-
-    root = (struct node_default *)redirect_node3;
-    printf("Executing: cat < input.txt\n");
-    execution(root, envp); */
-
-    // Test case: echo cat <<EOF
-    /* char *cat_params[] = {NULL};
-    struct node_execution *cat_node = create_execution_node("cat", cat_params, E_cmd);
-
-    struct node_redirect *redirect_node2 = create_redirect_node(R_heredoc, NULL, "EOF", (struct node_default *)cat_node);
-
-    root = (struct node_default *)redirect_node2;
-    printf("Executing: cat << EOF\n");
-    execution(root, envp); */
-
-    // Test case: echo 'Hello, World!' >> append.txt
-    char *echo_params[] = {"Hello, World!", NULL};
-    struct node_execution *echo_node = create_execution_node("echo", echo_params, E_cmd);
-
-    struct node_redirect *redirect_node = create_redirect_node(R_app, "append.txt", NULL, (struct node_default *)echo_node);
-
-    root = (struct node_default *)redirect_node;
-    printf("Executing: echo 'Hello, World!' >> append.txt\n");
-    execution(root, envp);
-    
-	return EXIT_SUCCESS;
-} 
