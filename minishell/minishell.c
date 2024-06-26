@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
+/*   Updated: 2024/06/26 23:14:25 by mfaria-p         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include <complex.h>
 
@@ -23,6 +35,8 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		line = readline("( ๑ ˃̵ᴗ˂̵)و ");
+		if (*line)
+			add_history(line);
 		if (ft_isexit(line))
 		{
 			free(line);

@@ -6,11 +6,23 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 13:50:00 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/23 23:12:01 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/06/26 23:13:17 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+
+size_t	ft_strlen(const char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		i++;
+	}
+	return (i);
+}
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {

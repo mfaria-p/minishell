@@ -1,3 +1,58 @@
+/* 
+//Test
+
+// Function to create a s_node_execution
+struct s_node_execution *create_execution_node(char *command, char **params, int type) 
+{
+    struct s_node_execution *exec_node = malloc(sizeof(struct s_node_execution));
+    if (!exec_node) {
+        perror("malloc");
+        exit(EXIT_FAILURE);
+    }
+    exec_node->node_type = type;
+    exec_node->command = command;
+    exec_node->params = params;
+    return exec_node;
+}
+
+// Function to create a s_node_redirect
+struct s_node_redirect *create_redirect_node(int type, char *filename, char *delimiter, struct s_node_default *next) 
+{
+    struct s_node_redirect *red_node = malloc(sizeof(struct s_node_redirect));
+    if (!red_node) {
+        perror("malloc");
+        exit(EXIT_FAILURE);
+    }
+    red_node->node_type = type;
+    red_node->filename = filename;
+    red_node->delimeter = delimiter;
+    red_node->next = next;
+    return red_node;
+}
+
+// Function to create a s_node_pipe
+struct s_node_pipe *create_pipe_node(struct s_node_default *left_node, struct s_node_default *right_node) 
+{
+    struct s_node_pipe *pipe_node = malloc(sizeof(struct s_node_pipe));
+    pipe_node->node_type = P;
+    pipe_node->left_node = left_node;
+    pipe_node->right_node = right_node;
+    return pipe_node;
+}
+
+void print_node_type(int code) {
+    switch (code) {
+        case E_cmd: printf("E_cmd "); break;
+        case E_builtin: printf("E_builtin "); break;
+        case R_out: printf("R_out "); break;
+        case R_app: printf("R_app "); break;
+        case R_heredoc: printf("R_heredoc "); break;
+        case R_input: printf("R_input "); break;
+        case P: printf("P "); break;
+        default: printf("Unknown code: %d", code); break;
+    }
+    printf("\n");
+} */
 
 /*int main(int argc, char **argv, char **envp)*/
 /*{*/
