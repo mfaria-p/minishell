@@ -6,16 +6,19 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:12:15 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/06/24 21:58:02 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/06/26 14:16:52 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
 
+#include "../minishell.h"
 # include "libft.h"
+
 # define EOL 0
 
+/*
 typedef struct s_token
 {
 	int		code;
@@ -52,12 +55,6 @@ typedef struct s_node_execution
 	char	**params;
 }	t_node_execution;
 
-typedef struct s_redirect_headtail
-{
-	t_node_redirect	*head;
-	t_node_redirect	*tail;
-}	t_redirect_tailhead;
-
 //Node types
 enum e_nodetype
 {
@@ -69,6 +66,13 @@ enum e_nodetype
 	R_input,
 	P = 0b1<<6
 };
+*/
+
+typedef struct s_redirect_headtail
+{
+	t_node_redirect	*head;
+	t_node_redirect	*tail;
+}	t_redirect_tailhead;
 
 int				ft_isspace(int c);
 char			*skip_space(char *str);

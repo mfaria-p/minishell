@@ -114,12 +114,54 @@
 // ioctl
 /* ************************************************************************** */
 
-typedef struct	s_node
+typedef struct s_token
 {
-	char			*content;
-	int				token;
-	struct s_node	*prev;
-	struct s_node	*next;
-}
+	int		code;
+	char	*content;
+}	t_token;
+
+typedef struct s_node_default
+{
+	int	node_type;
+}	t_node_default;
+
+typedef struct s_node_pipe
+{
+	int					node_type;
+	t_node_default		*left_node;
+	t_node_default		*right_node;
+}	t_node_pipe;
+
+typedef struct s_node_redirect
+{
+	int					node_type;
+	char				*filename;
+	char				*delimeter;
+	t_node_default		*next;
+}	t_node_redirect;
+
+typedef struct s_node_execution
+{
+	int		node_type;
+	char	*command;
+	int		n_params;
+	char	**params;
+}	t_node_execution;
+
+//Node types
+enum e_nodetype
+{
+	E_cmd = 0b1<<4,
+	E_builtin,
+	R_out = 0b1<<5,
+	R_app,
+	R_heredoc,
+	R_input,
+	P = 0b1<<6
+};
+
+t_token			lex(char *str);
+t_node_default	*parse(char	*str);
+void			execution(struct s_node_default *node, char **envp);
 
 #endif
