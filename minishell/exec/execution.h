@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/26 23:49:57 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/06/27 23:18:06 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,51 +73,56 @@ enum						e_nodetype
 
 // EXECUTION
 
-void						execution(struct s_node_default *node, char **envp);
+void						execution(struct s_node_default *node, t_env *env);
 
 // pipe executing functions
-void						exec_pipe(struct s_node_pipe *pip, char **envp);
+void						exec_pipe(struct s_node_pipe *pip, t_env *env);
 void						have_child(struct s_node_pipe *pip, int rw,
-								int pipefd[2], char **envp);
+								int pipefd[2], t_env *env);
 
 // redirect executing functions
-void						exec_red(struct s_node_redirect *red, char **envp);
+void						exec_red(struct s_node_redirect *red, t_env *env);
 void						exec_not_heredoc(struct s_node_redirect *red,
-								int flags, int io, char **envp);
+								int flags, int io, t_env *env);
 void						exec_heredoc(struct s_node_redirect *red,
-								char **envp);
+								t_env *env);
 void						have_child_hd(struct s_node_redirect *red,
-								char **envp, const char *file_name);
+								t_env *env, const char *file_name);
 int							create_heredoc(const char *delimiter,
 								const char *file_name);
 int							file_exist(const char *filename);
 void						have_child_n_hd(struct s_node_redirect *red,
-								char **envp, int flags, int io);
+								t_env *env, int flags, int io);
 
 // Simple commands executing functions
 void						exec_exec(struct s_node_execution *exec,
-								char **envp);
+								t_env *env);
 char						*find_path(char **envp);
 char						*get_cmd(char **paths, char *cmd);
 char						*find_the_command(char **envp,
 								struct s_node_execution *exec);
 void						ft_execute(struct s_node_execution *exec,
-								char **envp);
+								t_env *env);
 
-// utils for finding commands paths
+// utils
 size_t						ft_strlen(const char *s);
 char						**ft_split(char const *s, char c);
 int							ft_strncmp(const char *s1, const char *s2,
 								size_t n);
 char						*ft_strjoin(char const *s1, char const *s2);
 void						*ft_memcpy(void *dest, const void *src, size_t n);
+int							ft_isalnum(int c);
+int							ft_isalpha(int c);
 
 // not done (built ins)
+// METER AQUI AS FUNCOES E CORRIGIR ERRINHOS
+// fzr as duas q faltam do utils
+// dividir o main em dois pk ta mt grande
 void						ft_echo(char **params);
 void						ft_cd(char **envp, char **params);
 void						ft_pwd(char **envp);
-void						ft_printexport(char **envp);
-void						ft_doexport(char **envp, char **params);
+void						ft_printexport(char **export);
+void						ft_doexport(t_env *env, char **params);
 void						ft_unset(char **params);
 void						ft_printenv(char **envp);
 

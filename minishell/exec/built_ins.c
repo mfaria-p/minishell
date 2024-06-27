@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:13:55 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/26 23:05:00 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/06/27 23:08:27 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,7 @@ void	ft_cd(char **envp, char **params)
 {
  /* Implementation for cd */
 }
-void	ft_printexport(char **envp)
-{
- /* Implementation for export */
-}
-void	ft_doexport(char **envp, char **params)
-{
- /* Implementation for export */
-}
+
 void	ft_unset(char **args)
 { /* Implementation for unset */
 }

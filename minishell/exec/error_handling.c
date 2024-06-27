@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 23:47:45 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/26 23:05:15 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/06/27 15:08:32 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,15 @@ int	file_not_found(char *str)
 	ft_putstr_fd(str, STDERR_FILENO);
 	ft_putstr_fd(":  No such file or directory\n", STDERR_FILENO);
 	return (127);
+}
+
+void	error_identifier(char *var, char *value)
+{
+	if (!value)
+		ft_putstr_fd("minishell: export: `%s': not a valid identifier\n", var);
+	else
+	{
+		ft_putstr_fd("minishell: export: `%s", var);
+		ft_putstr_fd("=%s': not a valid identifier\n", value);
+	}
 }
