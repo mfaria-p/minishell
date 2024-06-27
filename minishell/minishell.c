@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/26 23:14:25 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/06/27 23:13:20 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,38 @@ int	ft_isexit(char *str)
 	return (0);
 }
 
+t_env	init_env(char ***export, char **envp)
+{
+	t_env	env;
+	int		count;
+	int		i;
+
+	count = 0;
+	while (envp[count] != NULL)
+		count++;
+	*export = malloc((count + 1) * sizeof(char *));
+	if (*export == NULL)
+		exit(EXIT_FAILURE);
+	while (i < count)
+	{
+		(*export)[i] = ft_strdup(envp[i]);
+		i++;
+	}
+	(*export)[count] = NULL;
+	env.envp = envp;
+	env.export = *export;
+	return (env);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
+	char	**export;
 	char	*line;
 	t_token	tok;
 	pid_t	pid;
+	t_env	env;
 
+	env = init_env(&export, envp);
 	line = NULL;
 	while (1)
 	{
@@ -46,7 +72,7 @@ int	main(int argc, char **argv, char **envp)
 		pid = fork();
 		if (pid == 0)
 		{
-			execution(parse(line), envp);
+			execution(parse(line), &env);
 			exit(EXIT_SUCCESS);
 		}
 		waitpid(-1, NULL, 0);

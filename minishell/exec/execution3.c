@@ -6,18 +6,18 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:09:16 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/26 23:10:29 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/06/27 23:06:40 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
 void	exec_not_heredoc(struct s_node_redirect *red, int flags, int io,
-		char **envp)
+		t_env *env)
 {
 	if (red->node_type == R_input && file_exist(red->filename))
 	{
-		have_child_n_hd(red, envp, flags, io);
+		have_child_n_hd(red, env, flags, io);
 		waitpid(-1, NULL, 0);
 		exit(EXIT_SUCCESS);
 	}
@@ -25,7 +25,7 @@ void	exec_not_heredoc(struct s_node_redirect *red, int flags, int io,
 		file_not_found(red->filename);
 }
 
-void	have_child_n_hd(struct s_node_redirect *red, char **envp, int flags,
+void	have_child_n_hd(struct s_node_redirect *red, t_env *env, int flags,
 		int io)
 {
 	int	pid;
@@ -46,7 +46,7 @@ void	have_child_n_hd(struct s_node_redirect *red, char **envp, int flags,
 			ft_error(3);
 		}
 		close(fd);
-		execution((struct s_node_default *)red->next, envp);
+		execution((struct s_node_default *)red->next, env);
 		exit(0);
 	}
 }
@@ -76,7 +76,7 @@ int	create_heredoc(const char *delimiter, const char *file_name)
 		return (EXIT_SUCCESS);
 }
 
-void	have_child_hd(struct s_node_redirect *red, char **envp,
+void	have_child_hd(struct s_node_redirect *red, t_env *env,
 		const char *file_name)
 {
 	int	pid;
@@ -90,18 +90,18 @@ void	have_child_hd(struct s_node_redirect *red, char **envp,
 			ft_error(5);
 		dup2(fd, STDIN_FILENO);
 		close(fd);
-		execution((struct s_node_default *)red->next, envp);
+		execution((struct s_node_default *)red->next, env);
 		exit(0);
 	}
 }
 
-void	exec_heredoc(struct s_node_redirect *red, char **envp)
+void	exec_heredoc(struct s_node_redirect *red, t_env *env)
 {
 	const char	*temp_file_name = "/tmp/heredoc_tmp";
 
 	if (create_heredoc(red->delimeter, temp_file_name) == EXIT_SUCCESS)
 	{
-		have_child_hd(red, envp, temp_file_name);
+		have_child_hd(red, env, temp_file_name);
 		waitpid(-1, NULL, 0);
 		exit(EXIT_SUCCESS);
 		// TENHO QUE CLEANAR O TEMP FILE DPS

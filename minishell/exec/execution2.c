@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:05:32 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/26 23:12:09 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/06/27 23:07:42 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	*find_the_command(char **envp, struct s_node_execution *exec)
 	return (command);
 }
 
-void	ft_execute(struct s_node_execution *exec, char **envp)
+void	ft_execute(struct s_node_execution *exec, t_env *env)
 {
 	char	*command;
 	int		param_count;
@@ -71,7 +71,7 @@ void	ft_execute(struct s_node_execution *exec, char **envp)
 
 	i = 0;
 	param_count = 0;
-	command = find_the_command(envp, exec);
+	command = find_the_command(env->envp, exec);
 	while (exec->params && exec->params[param_count] != NULL)
 		param_count++;
 	argv = (char **)malloc((param_count + 2) * sizeof(char *));
@@ -82,7 +82,7 @@ void	ft_execute(struct s_node_execution *exec, char **envp)
 		i++;
 	}
 	argv[param_count + 1] = NULL;
-	execve(command, argv, envp);
+	execve(command, argv, env->envp);
 	free(command);
 	free(argv);
 }
