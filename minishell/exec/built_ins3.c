@@ -6,16 +6,11 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 21:18:12 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/27 22:30:53 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/06/28 12:17:55 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
-
-void    init(char **export, char **envp)
-{
-    
-}
 
 void	ft_printexport(char **export)
 {
