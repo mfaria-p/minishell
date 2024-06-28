@@ -52,7 +52,7 @@ void print_node_type(int code) {
         default: printf("Unknown code: %d", code); break;
     }
     printf("\n");
-} */
+} */ 
 
 /*int main(int argc, char **argv, char **envp)*/
 /*{*/
@@ -129,5 +129,5 @@ void print_node_type(int code) {
 /*    printf("Executing: echo 'Hello, World!' >> append.txt\n");*/
 /*    execution(root, envp);*/
 /**/
-/*	return EXIT_SUCCESS;*/
-/*} */
+/*	return EXIT_SUCCESS;
+}*/
