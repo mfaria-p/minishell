@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/27 23:18:06 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/06/28 16:02:36 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,17 +113,34 @@ char						*ft_strjoin(char const *s1, char const *s2);
 void						*ft_memcpy(void *dest, const void *src, size_t n);
 int							ft_isalnum(int c);
 int							ft_isalpha(int c);
+char						*ft_strchr(const char *s, int c);
+char						*ft_strdup(const char *s);
+int							ft_strcmp(char *s1, char *s2);
 
 // not done (built ins)
 // METER AQUI AS FUNCOES E CORRIGIR ERRINHOS
 // fzr as duas q faltam do utils
 // dividir o main em dois pk ta mt grande
 void						ft_echo(char **params);
+
 void						ft_cd(char **envp, char **params);
+
 void						ft_pwd(char **envp);
+char						*find_pwd(char **envp);
+
 void						ft_printexport(char **export);
 void						ft_doexport(t_env *env, char **params);
+char						**resize_and_add(char **envp, char *new_var);
+void						set_env_with_equal(char ***envp, char *var_value);
+void						set_env_without_equal(char ***envp,
+								const char *var);
+void						ft_doexport(t_env *env, char **params);
+int							is_valid_identifier(char *var, char *value);
+void						sort_env(char **envp);
+int							find_var(char **envp, const char *var);
+
 void						ft_unset(char **params);
+
 void						ft_printenv(char **envp);
 
 // Error_handling
