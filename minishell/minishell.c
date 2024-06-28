@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/27 23:13:20 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/06/28 17:38:26 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,27 @@ t_env	init_env(char ***export, char **envp)
 	return (env);
 }
 
-int	main(int argc, char **argv, char **envp)
+// Function to free the export array in the environment structure
+void	free_env_export(t_env *env)
 {
-	char	**export;
+	int	i;
+
+	i = 0;
+	while (env->export[i] != NULL)
+	{
+		free(env->export[i]);
+		i++;
+	}
+	free(env->export);
+}
+
+// Function for the main execution loop
+void	main_loop(t_env *env)
+{
 	char	*line;
 	t_token	tok;
 	pid_t	pid;
-	t_env	env;
 
-	env = init_env(&export, envp);
 	line = NULL;
 	while (1)
 	{
@@ -72,12 +84,26 @@ int	main(int argc, char **argv, char **envp)
 		pid = fork();
 		if (pid == 0)
 		{
-			execution(parse(line), &env);
+			execution(parse(line), env);
 			exit(EXIT_SUCCESS);
 		}
 		waitpid(-1, NULL, 0);
 		free(line);
 	}
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	char	**export;
+	char	*line;
+	t_token	tok;
+	pid_t	pid;
+	t_env	env;
+
+	env = init_env(&export, envp);
+	line = NULL;
+	main_loop(&env);
+	free_env_export(&env);
 	line = NULL;
 	tok = (t_token){0, NULL};
 }

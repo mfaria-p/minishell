@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 23:47:45 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/27 15:08:32 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/06/28 16:17:41 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,17 @@ int	file_not_found(char *str)
 void	error_identifier(char *var, char *value)
 {
 	if (!value)
-		ft_putstr_fd("minishell: export: `%s': not a valid identifier\n", var);
+	{
+		ft_putstr_fd("minishell: export: `", STDERR_FILENO);
+		ft_putstr_fd(var, STDERR_FILENO);
+		ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
+	}
 	else
 	{
-		ft_putstr_fd("minishell: export: `%s", var);
-		ft_putstr_fd("=%s': not a valid identifier\n", value);
+		ft_putstr_fd("minishell: export: `", STDERR_FILENO);
+		ft_putstr_fd(var, STDERR_FILENO);
+		ft_putstr_fd("=", STDERR_FILENO);
+		ft_putstr_fd(value, STDERR_FILENO);
+		ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
 	}
 }

@@ -169,5 +169,6 @@ typedef struct s_env
 t_token				lex(char *str);
 t_node_default		*parse(char *str);
 void				execution(struct s_node_default *node, t_env *env);
+char				*ft_strdup(const char *s);
 
 #endif

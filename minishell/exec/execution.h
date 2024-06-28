@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/28 16:02:36 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/06/28 17:20:40 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ char						*get_cmd(char **paths, char *cmd);
 char						*find_the_command(char **envp,
 								struct s_node_execution *exec);
 void						ft_execute(struct s_node_execution *exec,
-								t_env *env);
+								char **envp);
 
 // utils
 size_t						ft_strlen(const char *s);
@@ -116,10 +116,10 @@ int							ft_isalpha(int c);
 char						*ft_strchr(const char *s, int c);
 char						*ft_strdup(const char *s);
 int							ft_strcmp(char *s1, char *s2);
+int							ft_isdigit(int c);
+size_t						ft_strlcpy(char *dst, const char *src, size_t size);
 
 // not done (built ins)
-// METER AQUI AS FUNCOES E CORRIGIR ERRINHOS
-// fzr as duas q faltam do utils
 // dividir o main em dois pk ta mt grande
 void						ft_echo(char **params);
 
@@ -131,9 +131,8 @@ char						*find_pwd(char **envp);
 void						ft_printexport(char **export);
 void						ft_doexport(t_env *env, char **params);
 char						**resize_and_add(char **envp, char *new_var);
-void						set_env_with_equal(char ***envp, char *var_value);
-void						set_env_without_equal(char ***envp,
-								const char *var);
+void						set_env_with_equal(char **envp, char *var_value);
+void						set_env_without_equal(char **envp, char *var);
 void						ft_doexport(t_env *env, char **params);
 int							is_valid_identifier(char *var, char *value);
 void						sort_env(char **envp);
@@ -148,5 +147,6 @@ int							ft_error(int error);
 int							cmd_not_found(char *str);
 void						ft_putstr_fd(char *s, int fd);
 int							file_not_found(char *str);
+void						error_identifier(char *var, char *value);
 
 #endif

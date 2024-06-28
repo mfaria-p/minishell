@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 12:13:16 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/27 23:10:30 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/06/28 17:43:22 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,41 +41,41 @@ char	**resize_and_add(char **envp, char *new_var)
 }
 
 // Function to set the environment variable WHEN VALUE EXISTS E ELES METEM IGUAL E O VALOR
-void	set_env_with_equal(char ***envp, char *var_value)
+void	set_env_with_equal(char **envp, char *var_value)
 {
 	int	index;
 	int	var_len;
 	int	value_len;
 
-	index = find_var(*envp, var_value);
+	index = find_var(envp, var_value);
 	if (index >= 0)
 	{
-		free((*envp)[index]);
-		(*envp)[index] = var_value;
+		free((envp)[index]);
+		(envp)[index] = var_value;
 	}
 	else
 	{
-		*envp = resize_and_add(*envp, var_value);
-		if (*envp == NULL)
+		envp = resize_and_add(envp, var_value);
+		if (envp == NULL)
 			return ; // Error already handled in resize_and_add
-		sort_env(*envp);
+		sort_env(envp);
 	}
 }
 
 // Function to set the environment variable when there is no value
-void	set_env_without_equal(char ***envp, const char *var)
+void	set_env_without_equal(char **envp, char *var)
 {
-	int		index;
+	int	index;
 
-	index = find_var(*envp, var);
+	index = find_var(envp, var);
 	if (index >= 0)
 		return ; // Variable already exists, do nothing
 	else
 	{
-		*envp = resize_and_add(*envp, var);
-		if (*envp == NULL)
+		envp = resize_and_add(envp, var);
+		if (envp == NULL)
 			return ; // Error already handled in resize_and_add
-		sort_env(*envp);
+		sort_env(envp);
 	}
 }
 
@@ -94,14 +94,16 @@ void	ft_doexport(t_env *env, char **params)
 			if (is_valid_identifier(params[i], equal_sign + 1) == 1)
 			{
 				*equal_sign = '=';
-				set_env_with_equal(env->export, params[i]); //s tiver valor ent vai sermodificada em ambos
-                set_env_with_equal(env->envp, params[i]);
+				set_env_with_equal(env->export, params[i]);
+				// s tiver valor ent vai sermodificada em ambos
+				set_env_with_equal(env->envp, params[i]);
 			}
 		}
 		else
 		{
 			if (is_valid_identifier(params[i], NULL))
-				set_env_without_equal(env->export, params[i]); //se a var n tiver valor ent so é mostrada no export
+				set_env_without_equal(env->export, params[i]);
+			// se a var n tiver valor ent so é mostrada no export
 		}
 		i++;
 	}
