@@ -161,7 +161,7 @@ enum e_nodetype
 };
 
 t_token			lex(char *str);
-t_node_default	*parse(char	*str);
+t_node_default	*parse(void);
 void			execution(struct s_node_default *node, char **envp);
 
 #endif
