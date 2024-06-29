@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 12:16:56 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/06/29 12:17:08 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/06/29 14:45:51 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	ft_isexit(char *str)
 int	main(void)
 {
 	char	*line;
-	t_token	tok;
 
 	line = NULL;
 	while (1)
@@ -39,10 +38,8 @@ int	main(void)
 			free(line);
 			break ;
 		}
-		tok = lex(line);
-		print_tree(parse());
+		lex(line);
+		destroy_tree(print_tree(parse()));
 		free(line);
 	}
-	line = NULL;
-	tok = (t_token){0, NULL};
 }
