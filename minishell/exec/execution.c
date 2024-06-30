@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/28 17:15:25 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/06/30 14:47:44 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	exec_red(struct s_node_redirect *red, t_env *env)
 		exec_not_heredoc(red, O_CREAT | O_WRONLY | O_TRUNC, STDOUT_FILENO,
 			env);
 	else if (red->node_type == R_app)
-		exec_not_heredoc(red, O_CREAT | O_WRONLY, STDOUT_FILENO, env);
+		exec_not_heredoc(red, O_CREAT | O_WRONLY | O_APPEND, STDOUT_FILENO, env);
 	else if (red->node_type == R_heredoc)
 		exec_heredoc(red, env);
 	else
@@ -67,33 +67,31 @@ void	exec_red(struct s_node_redirect *red, t_env *env)
 
 void	exec_exec(struct s_node_execution *exec, t_env *env)
 {
-	if (exec->node_type == E_builtin)
-	{
-		if (!ft_strncmp(exec->command, "echo", 5))
-			ft_echo(exec->params);
-		else if (!ft_strncmp(exec->command, "cd", 3))
-			ft_cd(env->envp, exec->params);
-		else if (!ft_strncmp(exec->command, "pwd", 4))
-			ft_pwd(env->envp);
-		else if (!ft_strncmp(exec->command, "export", 7) && !exec->params)
-			ft_printexport(env->export);
-		else if (!ft_strncmp(exec->command, "export", 7) && exec->params[0])
-			ft_doexport(env, exec->params);
-		else if (!ft_strncmp(exec->command, "unset", 6))
-			ft_unset(exec->params);
-		else if (!ft_strncmp(exec->command, "env", 4))
-			ft_printenv(env->envp);
-	}
+	if (!ft_strncmp(exec->command, "echo", 5))
+		ft_echo(exec->params);
+	else if (!ft_strncmp(exec->command, "cd", 3))
+		ft_cd(env->envp, exec->params);
+	else if (!ft_strncmp(exec->command, "pwd", 4))
+		ft_pwd(env->envp);
+	else if (!ft_strncmp(exec->command, "export", 7) && !exec->params)
+		ft_printexport(env->export);
+	else if (!ft_strncmp(exec->command, "export", 7) && exec->params[0])
+		ft_doexport(env, exec->params);
+	else if (!ft_strncmp(exec->command, "unset", 6))
+		ft_unset(exec->params);
+	else if (!ft_strncmp(exec->command, "env", 4))
+		ft_printenv(env->envp);
 	else
 		ft_execute(exec, env->envp);
 }
 
-void	execution(struct s_node_default *node, t_env *env)
+t_node_default	*execution(struct s_node_default *node, t_env *env)
 {
-	if ((node->node_type & E_cmd) || (node->node_type & E_builtin))
+	if ((node->node_type & E_cmd))
 		exec_exec((struct s_node_execution *)node, env);
 	else if (node->node_type & (1 << 5))
 		exec_red((struct s_node_redirect *)node, env);
 	else
 		exec_pipe((struct s_node_pipe *)node, env);
+	return (node);
 }

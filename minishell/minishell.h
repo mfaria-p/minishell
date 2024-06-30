@@ -151,30 +151,25 @@ typedef struct s_node_execution
 // Node types
 enum				e_nodetype
 {
-	E_cmd = 0b1 << 4,
-	E_builtin,
-	R_out = 0b1 << 5,
+	E_cmd = 1 << 4,
+	R_out = 1 << 5,
 	R_app,
 	R_heredoc,
 	R_input,
-	P = 0b1<<6
+	P = 1 << 6
 };
 
-<<<<<<< HEAD
 typedef struct s_env
 {
 	char			**envp;
 	char			**export;
-}					t_env;
+}	t_env;
 
-t_token				lex(char *str);
-t_node_default		*parse(char *str);
-void				execution(struct s_node_default *node, t_env *env);
+t_node_default		*execution(struct s_node_default *node, t_env *env);
 char				*ft_strdup(const char *s);
-=======
+
 t_token			lex(char *str);
 t_node_default	*parse(void);
-void			execution(struct s_node_default *node, char **envp);
->>>>>>> origin/Corona040
+void			destroy_tree(t_node_default *node);
 
 #endif

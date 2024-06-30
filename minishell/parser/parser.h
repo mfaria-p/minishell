@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:12:15 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/06/29 14:07:19 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/06/30 13:33:18 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,4 @@ t_token			parse_e(t_node_default **branch, t_node_default **root);
 
 t_node_default	*print_tree(t_node_default *root);
 
-void			destroy_tree(t_node_default *node);
 #endif

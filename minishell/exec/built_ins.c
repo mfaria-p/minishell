@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:13:55 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/27 23:08:27 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/06/30 14:03:01 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,15 @@ void	ft_echo(char **params)
 
 	i = 0;
 	newline = 1;
-	if (params[0] != NULL && ft_strncmp(params[0], "-n", 3) == 0)
+	if (params != NULL && ft_strncmp(params[0], "-n", 3) == 0)
 	{
 		newline = 0;
 		i = 1;
 	}
-	while (params[i] != NULL)
+	while (params && params[i] != NULL)
 	{
 		if (i > 0)
-		{
 			printf(" ");
-		}
 		printf("%s", params[i]);
 		i++;
 	}

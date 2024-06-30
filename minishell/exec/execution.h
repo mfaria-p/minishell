@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/28 17:20:40 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/06/30 14:44:06 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 
 # define PIPE_READ STDIN_FILENO
 # define PIPE_WRITE STDOUT_FILENO
-# define MODE 0644
+# define MODE 00644
 # define HEREDOC_MSG "> "
 
 /*
@@ -73,7 +73,7 @@ enum						e_nodetype
 
 // EXECUTION
 
-void						execution(struct s_node_default *node, t_env *env);
+t_node_default				*execution(struct s_node_default *node, t_env *env);
 
 // pipe executing functions
 void						exec_pipe(struct s_node_pipe *pip, t_env *env);
