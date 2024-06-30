@@ -157,9 +157,10 @@ enum				e_nodetype
 	R_app,
 	R_heredoc,
 	R_input,
-	P = 0b1 << 6
+	P = 0b1<<6
 };
 
+<<<<<<< HEAD
 typedef struct s_env
 {
 	char			**envp;
@@ -170,5 +171,10 @@ t_token				lex(char *str);
 t_node_default		*parse(char *str);
 void				execution(struct s_node_default *node, t_env *env);
 char				*ft_strdup(const char *s);
+=======
+t_token			lex(char *str);
+t_node_default	*parse(void);
+void			execution(struct s_node_default *node, char **envp);
+>>>>>>> origin/Corona040
 
 #endif

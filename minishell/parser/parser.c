@@ -5,131 +5,120 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/24 19:47:10 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/06/24 22:32:49 by ecorona-         ###   ########.fr       */
+/*   Created: 2024/06/28 21:53:16 by ecorona-          #+#    #+#             */
+/*   Updated: 2024/06/29 14:46:01 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-#include "libft.h"
 
-t_node_default	*parse(char	*str)
+t_node_default	*parse(void)
 {
-	t_token						token;
-	static t_node_pipe			*node_pipe;
-	static t_redirect_tailhead	node_redirect;
-	static t_node_execution		*node_execution;
-	static int					tonew;
+	t_node_default	*root;
 
-	tonew = 0b111;
-	token = lex(str);
-	while (token.code != EOL)
+	root = NULL;
+	parse_p(&root);
+	return (root);
+}
+
+void	parse_p(t_node_default **root)
+{
+	static t_node_pipe	*tail;
+	t_node_pipe			*new_node;
+	t_node_default		*branch;
+	t_token				token;
+
+	branch = NULL;
+	token = parse_e(&branch, root);
+	if (token.code & 1 << 6)
 	{
-		if (token.code & 0b1 << 4)
+		new_node = ft_calloc(1, sizeof(t_node_pipe));
+		new_node->node_type = token.code;
+		new_node->left_node = (t_node_default *)branch;
+		if (tail)
+			tail->right_node = (t_node_default *)new_node;
+		tail = new_node;
+		if (*root == NULL || !((*root)->node_type & 1 << 6))
+			*root = (t_node_default *)new_node;
+		parse_p(root);
+	}
+	else if (tail && token.code == EOL)
+		tail->right_node = (t_node_default *)branch;
+}
+
+t_token	parse_e(t_node_default **branch, t_node_default **root)
+{
+	static t_node_execution	*exec;
+	char					**new_params;
+	t_token					token;
+	int						i;
+
+	token = parse_r(branch, root, exec);
+	while (token.code & 1 << 4)
+	{
+		if (exec == NULL)
 		{
-			parse_e(token, &node_execution, &tonew);
-			if (!(tonew & 0b010))
-				node_redirect.tail->next = (t_node_default *)node_execution;
-			if (node_pipe && !node_pipe->right_node)
-				node_pipe->right_node = (t_node_default *)node_execution;
+			exec = ft_calloc(1, sizeof(t_node_execution));
+			exec->node_type = token.code; // WILL ALWAYS BE E_CMD AND NEVER E_BUILDIN
+			exec->n_params = 0;
+			exec->command = token.content;
+			if (*branch == NULL)
+				*branch = (t_node_default *)exec;
 		}
-		else if (token.code & 0b1 << 5)
+		else
 		{
-			parse_r(token, &node_redirect, &tonew);
-			if (node_pipe)
-				node_pipe->right_node = (t_node_default *)node_redirect.head;
-			if (!(tonew & 0b001))
-				node_redirect.tail->next = (t_node_default *)node_execution;
+			new_params = ft_calloc(exec->n_params + 2, sizeof(char *));
+			exec->n_params++;
+			i = 0;
+			while (exec->params && exec->params[i])
+			{
+				new_params[i] = exec->params[i];
+				i++;
+			}
+			new_params[i++] = token.content;
+			new_params[i] = NULL;
+			if (exec->params)
+				free(exec->params);
+			exec->params = new_params;
 		}
-		else if (token.code & 0b1 << 6)
+		if (*root == NULL)
+			*root = (t_node_default *)exec;
+		token = parse_r(branch, root, exec);
+	}
+	exec = NULL;
+	return (token);
+}
+
+t_token	parse_r(t_node_default **branch, t_node_default **root, t_node_execution *node_exec)
+{
+	static t_node_redirect	*tail;
+	t_node_redirect			*new_node;
+	t_token					token;
+
+	token = lex(NULL);
+	while (token.code & 1 << 5)
+	{
+		new_node = ft_calloc(1, sizeof(t_node_redirect));
+		new_node->node_type = token.code;
+		new_node->filename = token.content;
+		new_node->delimeter = token.content;
+		if (*branch == NULL || (*branch)->node_type & 1 << 4)
 		{
-			parse_p(token, &node_pipe, &tonew);
-			if (!node_pipe->left_node && node_redirect.head)
-				node_pipe->left_node = (t_node_default *)node_redirect.head;
-			else if (!node_pipe->left_node)
-				node_pipe->left_node = (t_node_default *)node_execution;
+			*branch = (t_node_default *)new_node;
+			tail = NULL;
 		}
+		if (*root == NULL || (*root)->node_type & 1 << 4)
+			*root = (t_node_default *)new_node;
+		if (tail)
+		{
+			new_node->next = tail->next;
+			tail->next = (t_node_default *)new_node;
+			tail = new_node;
+		}
+		else
+			tail = new_node;
+		tail->next = (t_node_default *)node_exec;
 		token = lex(NULL);
 	}
-	if (node_pipe)
-		return ((t_node_default *)node_pipe);
-	else if (node_redirect.head)
-		return ((t_node_default *)node_redirect.head);
-	else if (node_execution)
-		return ((t_node_default *)node_execution);
-	else
-		return (NULL);
-}
-
-void	parse_e(t_token token, t_node_execution **node_execution, int *flags)
-{
-	t_node_execution	*new_node;
-	char				**new_params;
-	int					i;
-
-	new_node = *node_execution;
-	if (*flags & 0b001)
-	{
-		new_node = ft_calloc(1, sizeof(t_node_execution));
-		*node_execution = new_node;
-		new_node->node_type = token.code; // WILL ALWAYS BE E_CMD AND NEVER E_BUILDIN
-		new_node->n_params = 0;
-	}
-	*flags &= 0b110;
-	if (!new_node->command)
-		new_node->command = token.content;
-	else
-	{
-		new_params = ft_calloc(new_node->n_params + 2, sizeof(char *));
-		new_node->n_params++;
-		i = 0;
-		while (new_node->params && new_node->params[i])
-		{
-			new_params[i] = new_node->params[i];
-			i++;
-		}
-		new_params[i++] = token.content;
-		new_params[i] = NULL;
-		if (new_node->params)
-			free(new_node->params);
-		new_node->params = new_params;
-	}
-}
-
-void	parse_r(t_token token, t_redirect_tailhead *node_redirect, int *flags)
-{
-	t_node_redirect			*new_node;
-
-	if (*flags & 0b010)
-	{
-		new_node = ft_calloc(1, sizeof(t_node_redirect));
-		node_redirect->head = new_node;
-		node_redirect->tail = new_node;
-		new_node->node_type = token.code;
-		new_node->filename = token.content;
-		new_node->delimeter = token.content;
-	}
-	else
-	{
-		new_node = ft_calloc(1, sizeof(t_node_redirect));
-		new_node->next = node_redirect->tail->next;
-		node_redirect->tail->next = (t_node_default *)new_node;
-		node_redirect->tail = new_node;
-		new_node->node_type = token.code;
-		new_node->filename = token.content;
-		new_node->delimeter = token.content;
-	}
-	*flags &= 0b101;
-}
-
-void	parse_p(t_token token, t_node_pipe **node_pipe, int *flags)
-{
-	t_node_pipe	*new_node;
-
-	new_node = ft_calloc(1, sizeof(t_node_pipe));
-	new_node->left_node = (t_node_default *)*node_pipe;
-	*node_pipe = new_node;
-	new_node->node_type = token.code;
-	*flags |= 0b011;
-	*flags &= 0b011;
+	return (token);
 }

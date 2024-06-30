@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:12:15 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/06/26 14:16:52 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/06/29 14:07:19 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,17 @@ char			*expand(char *str);
 char			*next_token(char *str);
 t_token			lex(char *str);
 
-void			parse_e(t_token token, t_node_execution **node_execution, int *flags);
-void			parse_r(t_token token, t_redirect_tailhead *node_redirect, int *flags);
-void			parse_p(t_token token, t_node_pipe **node_pipe, int *flags);
-t_node_default	*parse(char	*str);
+// void			parse_e(t_token token, t_node_execution **node_execution, int *flags);
+// void			parse_r(t_token token, t_redirect_tailhead *node_redirect, int *flags);
+// void			parse_p(t_token token, t_node_pipe **node_pipe, int *flags);
+// t_node_default	*parse(char	*str);
 
-void			print_tree(t_node_default *root);
+void			parse_p(t_node_default **root);
+t_token			parse_r(t_node_default **branch, t_node_default **root, t_node_execution *node_exec);
+t_token			parse_e(t_node_default **branch, t_node_default **root);
+// t_node_default	*parse(void);
+
+t_node_default	*print_tree(t_node_default *root);
+
+void			destroy_tree(t_node_default *node);
 #endif
