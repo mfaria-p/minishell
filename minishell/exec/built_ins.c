@@ -6,11 +6,27 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:13:55 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/30 14:03:01 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/06/30 18:25:29 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+
+int	ft_countchar(const char *str, char c)
+{
+	int	count;
+
+	count = 0;
+	if (!str)
+		return (0);
+	while (*str)
+	{
+		if (*str == c)
+			count++;
+		str++;
+	}
+	return (count);
+}
 
 // Function to replicate the echo command
 void	ft_echo(char **params)
@@ -20,10 +36,11 @@ void	ft_echo(char **params)
 
 	i = 0;
 	newline = 1;
-	if (params != NULL && ft_strncmp(params[0], "-n", 3) == 0)
+	while (params && params[i] && strncmp(params[i], "-n", 2) == 0 && \
+		ft_countchar(params[i] + 1, 'n') == (int)(strlen(params[i] + 1)))
 	{
 		newline = 0;
-		i = 1;
+		i++;
 	}
 	while (params && params[i] != NULL)
 	{
@@ -68,9 +85,10 @@ void	ft_printenv(char **envp)
 
 void	ft_cd(char **envp, char **params)
 {
- /* Implementation for cd */
+	/* Implementation for cd */
 }
 
 void	ft_unset(char **args)
-{ /* Implementation for unset */
+{
+ /* Implementation for unset */
 }
