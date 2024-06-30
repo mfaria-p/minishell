@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:46:47 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/06/24 19:59:29 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/06/29 14:51:02 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,10 @@ t_token	lex(char *str)
 	char		*content;
 
 	if (str)
+	{
 		cpos = str;
+		return ((t_token){});
+	}
 	cpos = skip_space(cpos);
 	if (*cpos == '\n' || *cpos == '\0')
 		return ((t_token){EOL, NULL});
