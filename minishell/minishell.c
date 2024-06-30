@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/28 17:38:26 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/06/30 14:35:00 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ t_env	init_env(char ***export, char **envp)
 	*export = malloc((count + 1) * sizeof(char *));
 	if (*export == NULL)
 		exit(EXIT_FAILURE);
+	i = 0;
 	while (i < count)
 	{
 		(*export)[i] = ft_strdup(envp[i]);
@@ -66,25 +67,25 @@ void	free_env_export(t_env *env)
 void	main_loop(t_env *env)
 {
 	char	*line;
-	t_token	tok;
 	pid_t	pid;
 
 	line = NULL;
 	while (1)
 	{
 		line = readline("( ๑ ˃̵ᴗ˂̵)و ");
-		if (*line)
+		if (line)
 			add_history(line);
 		if (ft_isexit(line))
 		{
 			free(line);
 			break ;
 		}
-		tok = lex(line);
+		lex(line);
 		pid = fork();
 		if (pid == 0)
 		{
-			execution(parse(line), env);
+			/*destroy_tree(execution(parse(), env));*/
+			execution(parse(), env);
 			exit(EXIT_SUCCESS);
 		}
 		waitpid(-1, NULL, 0);
@@ -95,15 +96,9 @@ void	main_loop(t_env *env)
 int	main(int argc, char **argv, char **envp)
 {
 	char	**export;
-	char	*line;
-	t_token	tok;
-	pid_t	pid;
 	t_env	env;
 
 	env = init_env(&export, envp);
-	line = NULL;
 	main_loop(&env);
 	free_env_export(&env);
-	line = NULL;
-	tok = (t_token){0, NULL};
 }

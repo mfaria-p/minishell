@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:09:16 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/27 23:06:40 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/06/30 14:39:36 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 void	exec_not_heredoc(struct s_node_redirect *red, int flags, int io,
 		t_env *env)
 {
-	if (red->node_type == R_input && file_exist(red->filename))
+	if ((red->node_type == R_input && file_exist(red->filename)) \
+		|| red->node_type == R_out || red->node_type == R_app)
 	{
 		have_child_n_hd(red, env, flags, io);
 		waitpid(-1, NULL, 0);
