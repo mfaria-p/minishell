@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 12:13:16 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/30 19:18:50 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/06/30 22:48:10 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,13 @@ char	**resize_and_add(char ***envp, char *new_var)
 		return (NULL);
 	}
 	i = 0;
-	while (envp[i] != NULL)
+	while (i < count)
 	{
 		new_envp[i] = (*envp)[i];
 		i++;
 	}
 	new_envp[i] = new_var;
 	new_envp[i + 1] = NULL;
-	free(*envp);
 	*envp = new_envp;
 	return (new_envp);
 }
@@ -58,7 +57,7 @@ void	set_env_with_equal(char ***envp, char *var_value)
 	{
 		if (resize_and_add(envp, var_value) == NULL)
 			return ; // Error already handled in resize_and_add
-		sort_env(*envp);
+		//sort_env(*envp);
 	}
 }
 
@@ -74,7 +73,7 @@ void	set_env_without_equal(char ***envp, char *var)
 	{
 		if (resize_and_add(envp, var) == NULL)
 			return ; // Error already handled in resize_and_add
-		sort_env(*envp);
+		//sort_env(*envp);
 	}
 }
 
