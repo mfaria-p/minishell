@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/30 14:44:06 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/06/30 17:57:36 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ size_t						ft_strlcpy(char *dst, const char *src, size_t size);
 // not done (built ins)
 // dividir o main em dois pk ta mt grande
 void						ft_echo(char **params);
+int	ft_countchar(const char *str, char c);
 
 void						ft_cd(char **envp, char **params);
 
@@ -130,9 +131,9 @@ char						*find_pwd(char **envp);
 
 void						ft_printexport(char **export);
 void						ft_doexport(t_env *env, char **params);
-char						**resize_and_add(char **envp, char *new_var);
-void						set_env_with_equal(char **envp, char *var_value);
-void						set_env_without_equal(char **envp, char *var);
+char						**resize_and_add(char ***envp, char *new_var);
+void						set_env_with_equal(char ***envp, char *var_value);
+void						set_env_without_equal(char ***envp, char *var);
 void						ft_doexport(t_env *env, char **params);
 int							is_valid_identifier(char *var, char *value);
 void						sort_env(char **envp);
