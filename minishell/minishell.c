@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/01 21:27:48 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/01 21:42:14 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	main_loop(t_env *env)
 	fd[1] = dup(STDOUT_FILENO);
 	while (1)
 	{
-		line = readline("( ๑ ˃̵ᴗ˂̵)و ");
+		line = readline("   /\\\n  /☆ \\\n_/☆ ☆ \\_\n( ๑ ˃̵ᴗ˂̵)و━☆ﾟ");
 		if (line)
 			add_history(line);
 		if (ft_isexit(line))
@@ -90,7 +90,6 @@ void	main_loop(t_env *env)
 		dup2(fd[0], STDIN_FILENO);
 		dup2(fd[1], STDOUT_FILENO);
 		free(line);
-		process_sig();
 	}
 }
 

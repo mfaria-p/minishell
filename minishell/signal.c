@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 19:57:26 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/07/01 20:03:03 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/01 21:36:30 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 #include <readline/readline.h>
 #include <unistd.h>
 
-static void	sighandler(int sig);
 extern int	g_sig;
+
+static void	sighandler(int sig);
 
 int	siginit(void)
 {
@@ -45,11 +46,6 @@ void	sighandler(int sig)
 	static int	i;
 
 	g_sig = sig;
-}
-
-void	process_sig(void)
-{
-	printf("%i\n", g_sig);
 	if (g_sig == SIGINT)
 	{
 		write(STDOUT_FILENO, "\n", 1);
