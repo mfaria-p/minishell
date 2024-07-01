@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/01 20:06:05 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/01 21:20:27 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,11 @@ void	free_env_export(t_env *env)
 void	main_loop(t_env *env)
 {
 	char	*line;
-	pid_t	pid;
+	int		fd[2];
 
 	line = NULL;
+	fd[0] = dup(STDIN_FILENO);
+	fd[1] = dup(STDOUT_FILENO);
 	while (1)
 	{
 		line = readline("( ๑ ˃̵ᴗ˂̵)و ");
@@ -83,13 +85,10 @@ void	main_loop(t_env *env)
 			break ;
 		}
 		lex(line);
-		pid = fork();
-		if (pid == 0)
-		{
-			execution(parse(), env);
-			exit(EXIT_SUCCESS);
-		}
+		execution(parse(), env);
 		waitpid(-1, NULL, 0);
+		dup2(fd[0], STDIN_FILENO);
+		dup2(fd[1], STDOUT_FILENO);
 		free(line);
 		process_sig();
 	}
@@ -104,4 +103,5 @@ int	main(int argc, char **argv, char **envp)
 	env = init_env(&export, envp);
 	main_loop(&env);
 	free_env_export(&env);
+	rl_clear_history();
 }
