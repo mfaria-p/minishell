@@ -6,12 +6,14 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/30 14:35:00 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/01 20:06:05 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <complex.h>
+
+int	g_sig = 0;
 
 int	ft_isexit(char *str)
 {
@@ -84,12 +86,12 @@ void	main_loop(t_env *env)
 		pid = fork();
 		if (pid == 0)
 		{
-			/*destroy_tree(execution(parse(), env));*/
 			execution(parse(), env);
 			exit(EXIT_SUCCESS);
 		}
 		waitpid(-1, NULL, 0);
 		free(line);
+		process_sig();
 	}
 }
 
@@ -98,6 +100,7 @@ int	main(int argc, char **argv, char **envp)
 	char	**export;
 	t_env	env;
 
+	siginit();
 	env = init_env(&export, envp);
 	main_loop(&env);
 	free_env_export(&env);

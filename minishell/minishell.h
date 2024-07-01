@@ -161,15 +161,17 @@ enum				e_nodetype
 
 typedef struct s_env
 {
-	char			**envp;
-	char			**export;
+	char	**envp;
+	char	**export;
 }	t_env;
 
-t_node_default		*execution(struct s_node_default *node, t_env *env);
-char				*ft_strdup(const char *s);
+t_node_default	*execution(struct s_node_default *node, t_env *env);
+char			*ft_strdup(const char *s);
 
 t_token			lex(char *str);
 t_node_default	*parse(void);
 void			destroy_tree(t_node_default *node);
+int				siginit(void);
+void			process_sig(void);
 
 #endif
