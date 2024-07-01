@@ -172,6 +172,5 @@ t_token			lex(char *str);
 t_node_default	*parse(void);
 void			destroy_tree(t_node_default *node);
 int				siginit(void);
-void			process_sig(void);
 
 #endif
