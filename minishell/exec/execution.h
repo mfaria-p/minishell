@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/30 17:57:36 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/03 00:52:58 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,13 +86,13 @@ void						exec_not_heredoc(struct s_node_redirect *red,
 								int flags, int io, t_env *env);
 void						exec_heredoc(struct s_node_redirect *red,
 								t_env *env);
-void						have_child_hd(struct s_node_redirect *red,
-								t_env *env, const char *file_name);
+/* void						have_child_hd(struct s_node_redirect *red,
+								t_env *env, const char *file_name); */
 int							create_heredoc(const char *delimiter,
 								const char *file_name);
 int							file_exist(const char *filename);
-void						have_child_n_hd(struct s_node_redirect *red,
-								t_env *env, int flags, int io);
+/* void						have_child_n_hd(struct s_node_redirect *red,
+								t_env *env, int flags, int io); */
 
 // Simple commands executing functions
 void						exec_exec(struct s_node_execution *exec,
@@ -122,9 +122,12 @@ size_t						ft_strlcpy(char *dst, const char *src, size_t size);
 // not done (built ins)
 // dividir o main em dois pk ta mt grande
 void						ft_echo(char **params);
-int	ft_countchar(const char *str, char c);
+int							ft_countchar(const char *str, char c);
 
-void						ft_cd(char **envp, char **params);
+void						ft_cd(char ***envp, char *path);
+char						*find_oldpwd(char **envp);
+char						*create_env_var(const char *var, const char *value);
+void						ft_cd_home(char **envp);
 
 void						ft_pwd(char **envp);
 char						*find_pwd(char **envp);
@@ -136,7 +139,7 @@ void						set_env_with_equal(char ***envp, char *var_value);
 void						set_env_without_equal(char ***envp, char *var);
 void						ft_doexport(t_env *env, char **params);
 int							is_valid_identifier(char *var, char *value);
-void						sort_env(char **envp);
+// void						sort_env(char **envp);
 int							find_var(char **envp, const char *var);
 
 void						ft_unset(char **params);
