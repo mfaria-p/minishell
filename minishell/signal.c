@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 19:57:26 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/07/01 20:03:03 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/05 21:26:34 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,11 @@ void	sighandler(int sig)
 	static int	i;
 
 	g_sig = sig;
-}
-
-void	process_sig(void)
-{
-	printf("%i\n", g_sig);
-	if (g_sig == SIGINT)
+	if (sig == SIGINT)
 	{
-		write(STDOUT_FILENO, "\n", 1);
 		rl_replace_line("", 1);
+		write(STDOUT_FILENO, "\n", 1);
 		rl_on_new_line();
 		rl_redisplay();
 	}
-	if (g_sig == SIGUSR1)
-		exit(EXIT_SUCCESS);
 }

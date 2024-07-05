@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 21:18:12 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/28 12:17:55 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/06/30 21:52:42 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	is_valid_identifier(char *var, char *value)
 	return (1);
 }
 
-void	sort_env(char **envp)
+/* void	sort_env(char **envp)
 {
 	int		i;
 	int		j;
@@ -71,7 +71,7 @@ void	sort_env(char **envp)
 		}
 		i++;
 	}
-}
+} */
 
 // Function to find the variable in the environment
 int	find_var(char **envp, const char *var)
