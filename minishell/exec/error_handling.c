@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 23:47:45 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/28 16:17:41 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/02 21:43:10 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,9 @@ int	ft_error(int error)
 			STDERR_FILENO);
 	else if (error == 7)
 		ft_putstr_fd("Path not found in environment variables.\n",
+			STDERR_FILENO);
+	else if (error == 8)
+		ft_putstr_fd("OLDPWD not found in environment variables.\n",
 			STDERR_FILENO);
 	return (EXIT_FAILURE);
 }

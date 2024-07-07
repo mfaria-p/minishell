@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:13:55 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/30 18:25:29 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/02 23:44:47 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ void	ft_pwd(char **envp)
 		printf("%s\n", pwd);
 	else
 		ft_error(6);
-	exit(EXIT_SUCCESS);
 }
 
 void	ft_printenv(char **envp)
@@ -81,11 +80,6 @@ void	ft_printenv(char **envp)
 		printf("%s\n", *envp);
 		envp++;
 	}
-}
-
-void	ft_cd(char **envp, char **params)
-{
-	/* Implementation for cd */
 }
 
 void	ft_unset(char **args)

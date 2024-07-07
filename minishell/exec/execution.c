@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/01 23:18:41 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/07 10:58:20 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,14 @@ void	exec_exec(struct s_node_execution *exec, t_env *env)
 {
 	if (!ft_strncmp(exec->command, "echo", 5))
 		ft_echo(exec->params);
-	else if (!ft_strncmp(exec->command, "cd", 3))
-		ft_cd(env->envp, exec->params);
+	else if (!ft_strncmp(exec->command, "cd", 3) && !exec->params)
+		ft_cd_home(env->envp);
+	else if (!ft_strncmp(exec->command, "cd", 3) && exec->params[0])
+	{
+		ft_cd(&env->envp, exec->params[0]);
+		if (exec->params[1])
+			printf("minishell: cd: too many arguments\n");
+	}
 	else if (!ft_strncmp(exec->command, "pwd", 4))
 		ft_pwd(env->envp);
 	else if (!ft_strncmp(exec->command, "export", 7) && !exec->params)
