@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/05 21:25:49 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/07 10:58:28 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,25 @@ t_env	init_env(char ***export, char **envp)
 	t_env	env;
 	int		count;
 	int		i;
+	char	**envp2;
 
 	count = 0;
 	while (envp[count] != NULL)
 		count++;
 	*export = malloc((count + 1) * sizeof(char *));
-	if (*export == NULL)
+	envp2 = malloc((count + 1) * sizeof(char *));
+	if (*export == NULL || envp2 == NULL)
 		exit(EXIT_FAILURE);
 	i = 0;
 	while (i < count)
 	{
 		(*export)[i] = ft_strdup(envp[i]);
+		envp2[i] = ft_strdup(envp[i]);
 		i++;
 	}
 	(*export)[count] = NULL;
-	env.envp = envp;
+	envp2[count] = NULL;
+	env.envp = envp2;
 	env.export = *export;
 	return (env);
 }
