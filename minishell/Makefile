@@ -24,7 +24,7 @@ OBJS = $(SRCS:.c=.o)
 CC = cc
 
 # CFLAGS = -Wall -Wextra -Werror -I. #-lreadline
-CFLAGS = -lreadline -I.
+CFLAGS = -lreadline -I. -g
 
 RM = rm -rf
 
@@ -44,6 +44,6 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re build
 
 #valgrind --suppressions=parser/ignore_readline --leak-check=full --show-leak-kinds=all --track-fds=yes ./a.out
