@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/09 20:03:38 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/09 21:18:23 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	main_loop(t_env *env)
 			break ;
 		}
 		lex(line);
-		execution(parse(), env, 1);
+		destroy_tree(execution(parse(), env, 1));
 		waitpid(-1, NULL, 0);
 		free(line);
 		dup2(fd[0], STDIN_FILENO);

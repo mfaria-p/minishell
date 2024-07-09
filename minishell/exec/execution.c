@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/09 19:59:23 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/09 21:20:57 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,12 @@ void	exec_pipe(struct s_node_pipe *pip, t_env *env)
 
 	if (pipe(pipefd) == -1)
 		ft_error(2);
-	have_child(pip, PIPE_WRITE, pipefd, env);
-	have_child(pip, PIPE_READ, pipefd, env);
+	pid[0] = have_child(pip, PIPE_WRITE, pipefd, env);
+	pid[1] = have_child(pip, PIPE_READ, pipefd, env);
 	close(pipefd[0]);
 	close(pipefd[1]);
+	waitpid(pid[0], NULL, 0);
+	waitpid(pid[1], NULL, 0);
 }
 
 void	exec_red(struct s_node_redirect *red, t_env *env, pid_t is_parent)
@@ -69,6 +71,8 @@ void	exec_red(struct s_node_redirect *red, t_env *env, pid_t is_parent)
 
 void	exec_exec(struct s_node_execution *exec, t_env *env, pid_t is_parent)
 {
+	pid_t	pid;
+
 	if (!ft_strncmp(exec->command, "echo", 5))
 		ft_echo(exec->params);
 	else if (!ft_strncmp(exec->command, "cd", 3) && !exec->params)
@@ -93,8 +97,13 @@ void	exec_exec(struct s_node_execution *exec, t_env *env, pid_t is_parent)
 		ft_execute(exec, env->envp);
 	else
 	{
-		if (fork() == 0)
+		pid = fork();
+		if (pid == 0)
+		{
 			ft_execute(exec, env->envp);
+			exit(EXIT_SUCCESS);
+		}
+		waitpid(pid, NULL, 0);
 	}
 }
 
