@@ -165,7 +165,7 @@ typedef struct s_env
 	char	**export;
 }	t_env;
 
-t_node_default	*execution(struct s_node_default *node, t_env *env);
+t_node_default	*execution(struct s_node_default *node, t_env *env, pid_t pid);
 char			*ft_strdup(const char *s);
 
 t_token			lex(char *str);
