@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/09 21:20:57 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/10 21:29:01 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,10 @@ void	exec_exec(struct s_node_execution *exec, t_env *env, pid_t is_parent)
 	if (!ft_strncmp(exec->command, "echo", 5))
 		ft_echo(exec->params);
 	else if (!ft_strncmp(exec->command, "cd", 3) && !exec->params)
-		ft_cd_home(env->envp);
+		ft_cd_home(env);
 	else if (!ft_strncmp(exec->command, "cd", 3) && exec->params[0])
 	{
-		ft_cd(&env->envp, exec->params[0]);
+		ft_cd(env, exec->params[0]);
 		if (exec->params[1])
 			printf("minishell: cd: too many arguments\n");
 	}
@@ -90,7 +90,7 @@ void	exec_exec(struct s_node_execution *exec, t_env *env, pid_t is_parent)
 	else if (!ft_strncmp(exec->command, "export", 7) && exec->params[0])
 		ft_doexport(env, exec->params);
 	else if (!ft_strncmp(exec->command, "unset", 6))
-		ft_unset(exec->params);
+		ft_unset(exec->params, env);
 	else if (!ft_strncmp(exec->command, "env", 4))
 		ft_printenv(env->envp);
 	else if (!is_parent)

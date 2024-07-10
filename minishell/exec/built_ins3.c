@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 21:18:12 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/03 00:35:32 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/10 20:45:38 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,13 +115,12 @@ int	find_var(char **envp, const char *var)
 	return (-1);
 }
 
-char	*find_oldpwd(char **envp)
+char	*find_var2(char	*name)
 {
-	while (*envp && ft_strncmp("OLDPWD=", *envp, 7) != 0)
-		envp++;
-	if (*envp)
-		return (*envp + 7);
-	return (NULL);
+	if (getenv(name))
+		return(getenv(name));
+	else
+		return (NULL);
 }
 
 char	*create_env_var(const char *var, const char *value)
@@ -141,15 +140,15 @@ char	*create_env_var(const char *var, const char *value)
 	return (env_var);
 }
 
-void	ft_cd(char ***envp, char *path)
+void	ft_cd(t_env *env, char *path)
 {
-	char	*current;
+	char	current[200];
 	char	*old_dir;
 	char	*oldpwd_var;
 	char	*pwd_var;
 
-	old_dir = find_oldpwd(*envp);
-	current = find_pwd(*envp);
+	old_dir = find_var2("OLDPWD");
+	getcwd(current, sizeof(current));
 	if (ft_strlen(path) == 1 && path[0] == '-')
 	{
 		printf("%s\n", old_dir);
@@ -160,29 +159,32 @@ void	ft_cd(char ***envp, char *path)
 	if (current)
 	{
 		oldpwd_var = create_env_var("OLDPWD", current);
-		set_env_with_equal(envp, oldpwd_var);
+		set_env_with_equal_envp(&env->envp, oldpwd_var);
+		set_env_with_equal(&env->export, oldpwd_var);
 	}
-	current = find_pwd(*envp);
+	getcwd(current, sizeof(current));
 	if (current)
 	{
 		pwd_var = create_env_var("PWD", current);
-		set_env_with_equal(envp, pwd_var);
+		set_env_with_equal_envp(&env->envp, pwd_var);
+		set_env_with_equal(&env->export, oldpwd_var);
 	}
 }
 
-char	*find_home(char **envp)
-{
-	while (*envp && ft_strncmp("HOME=", *envp, 5) != 0)
-		envp++;
-	if (*envp)
-		return (*envp + 5);
-	return (NULL);
-}
-
-void	ft_cd_home(char **envp)
+void	ft_cd_home(t_env	*env)
 {
 	char	*home;
+	char	*oldpwd_var;
+	char	*home_var;
+	char	current[200];
 
-	home = find_home(envp);
+	getcwd(current, sizeof(current));
+	home = find_var2("HOME");
 	chdir(home);
+	oldpwd_var = create_env_var("OLDPWD", current);
+	home_var = create_env_var("PWD", home);
+	set_env_with_equal_envp(&env->envp, oldpwd_var);
+	set_env_with_equal(&env->export, oldpwd_var);
+	set_env_with_equal_envp(&env->envp, home_var);
+	set_env_with_equal(&env->export, home_var);
 }

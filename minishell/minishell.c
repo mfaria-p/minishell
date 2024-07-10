@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/09 21:18:23 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/10 19:13:40 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,25 +44,21 @@ t_env	init_env(char ***export, char **envp)
 	t_env	env;
 	int		count;
 	int		i;
-	char	**envp2;
 
 	count = 0;
 	while (envp[count] != NULL)
 		count++;
 	*export = malloc((count + 1) * sizeof(char *));
-	envp2 = malloc((count + 1) * sizeof(char *));
-	if (*export == NULL || envp2 == NULL)
+	if (*export == NULL)
 		exit(EXIT_FAILURE);
 	i = 0;
 	while (i < count)
 	{
 		(*export)[i] = ft_strdup(envp[i]);
-		envp2[i] = ft_strdup(envp[i]);
 		i++;
 	}
 	(*export)[count] = NULL;
-	envp2[count] = NULL;
-	env.envp = envp2;
+	env.envp = envp;
 	env.export = *export;
 	return (env);
 }
@@ -104,7 +100,7 @@ void	main_loop(t_env *env)
 			break ;
 		}
 		lex(line);
-		destroy_tree(execution(parse(), env, 1));
+		execution(parse(), env, 1);
 		waitpid(-1, NULL, 0);
 		free(line);
 		dup2(fd[0], STDIN_FILENO);
