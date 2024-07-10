@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/09 19:41:26 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/10 22:08:20 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,13 +124,12 @@ size_t						ft_strlcpy(char *dst, const char *src, size_t size);
 void						ft_echo(char **params);
 int							ft_countchar(const char *str, char c);
 
-void						ft_cd(char ***envp, char *path);
-char						*find_oldpwd(char **envp);
+void	ft_cd(t_env *env, char *path);
+char	*find_var2(char	*name);
 char						*create_env_var(const char *var, const char *value);
-void						ft_cd_home(char **envp);
+void						ft_cd_home(t_env	*env);
 
 void						ft_pwd(char **envp);
-char						*find_pwd(char **envp);
 
 void						ft_printexport(char **export);
 void						ft_doexport(t_env *env, char **params);
@@ -139,10 +138,15 @@ void						set_env_with_equal(char ***envp, char *var_value);
 void						set_env_without_equal(char ***envp, char *var);
 void						ft_doexport(t_env *env, char **params);
 int							is_valid_identifier(char *var, char *value);
+void	set_env_with_equal_envp(char ***envp, char *var_value);
 // void						sort_env(char **envp);
 int							find_var(char **envp, const char *var);
+char	**resize_and_add_envp(char ***envp, char *new_var);
+char	**remove_var(char **envp, char *var);
+char	**remove_var_envp(char **envp, char *var);
+void ft_free(char **envp);
 
-void						ft_unset(char **params);
+void	ft_unset(char **args, t_env *env);
 
 void						ft_printenv(char **envp);
 
