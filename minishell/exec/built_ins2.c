@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 12:13:16 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/10 22:24:04 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/12 22:42:13 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,7 @@ void	ft_doexport(t_env *env, char **params)
 			{
 				*equal_sign = '=';
 				set_env_with_equal(&env->export, params[i]);
+				//a=bº da um enter a mais
 				// s tiver valor ent vai sermodificada em ambos
 				set_env_with_equal_envp(&env->envp, params[i]);
 			}
