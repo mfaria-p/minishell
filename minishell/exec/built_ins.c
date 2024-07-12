@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:13:55 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/10 22:48:33 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/12 22:44:38 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ char	**remove_var(char **envp, char *var)
 	int		i;
 	int		j;
 	char	**new_envp;
-	int	len2;
-	int len1;
+	int		len2;
+	int		len1;
 	char	*equal_sign;
 
 	count = 0;
@@ -114,16 +114,21 @@ char	**remove_var(char **envp, char *var)
 		{
 			*equal_sign = '\0';
 			len1 = ft_strlen(envp[i]);
-			*equal_sign = '=';
 		}
 		else
 			len1 = ft_strlen(envp[i]);
-		printf("%i", i);
-		if (ft_strncmp(envp[i], var, ft_strlen(var)) != 0 || len1 != len2)
+		printf("%i-", len2);
+		printf("%i\t", len1);
+		printf("%s-%s\n", var, envp[i]);
+		if (len1 == len2 && ft_strncmp(envp[i], var, len2 + 1) == 0)
 		{
-			new_envp[j] = envp[i];
-			j++;
+			i++;
+			continue ;
 		}
+		if (equal_sign != NULL)
+			*equal_sign = '=';
+		new_envp[j] = envp[i];
+		j++;
 		i++;
 	}
 	new_envp[j] = NULL;
@@ -178,10 +183,10 @@ void	ft_unset(char **args, t_env *env)
 		return ;
 	while (args[i])
 	{
-		if (find_var2(args[i]))
+		if (find_var(env->envp, args[i]))
 		{
-			env->envp = remove_var_envp(env->envp, args[i]); //n ta a funceminar
-            env->export = remove_var(env->export, args[i]);
+			env->envp = remove_var(env->envp, args[i]); // n ta a funceminar
+			env->export = remove_var(env->export, args[i]);
 		}
 		else if (find_var(env->export, args[i]))
 		{
@@ -192,4 +197,3 @@ void	ft_unset(char **args, t_env *env)
 		i++;
 	}
 }
-
