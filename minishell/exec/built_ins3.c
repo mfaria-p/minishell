@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 21:18:12 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/13 12:37:38 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/13 21:28:51 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,14 +162,14 @@ void	ft_cd(t_env *env, char *path)
 	if (current)
 	{
 		oldpwd_var = create_env_var("OLDPWD", current);
-		set_env_with_equal_envp(&env->envp, oldpwd_var);
+		set_env_with_equal_envp(&env->envp, oldpwd_var, &env->i);
 		set_env_with_equal(&env->export, oldpwd_var);
 	}
 	getcwd(current, sizeof(current));
 	if (current)
 	{
 		pwd_var = create_env_var("PWD", current);
-		set_env_with_equal_envp(&env->envp, pwd_var);
+		set_env_with_equal_envp(&env->envp, pwd_var, &env->i);
 		set_env_with_equal(&env->export, oldpwd_var);
 	}
 }
@@ -186,8 +186,8 @@ void	ft_cd_home(t_env	*env)
 	chdir(home);
 	oldpwd_var = create_env_var("OLDPWD", current);
 	home_var = create_env_var("PWD", home);
-	set_env_with_equal_envp(&env->envp, oldpwd_var);
+	set_env_with_equal_envp(&env->envp, oldpwd_var, &env->i);
 	set_env_with_equal(&env->export, oldpwd_var);
-	set_env_with_equal_envp(&env->envp, home_var);
+	set_env_with_equal_envp(&env->envp, home_var, &env->i);
 	set_env_with_equal(&env->export, home_var);
 }

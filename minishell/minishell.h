@@ -163,6 +163,7 @@ typedef struct s_env
 {
 	char	**envp;
 	char	**export;
+	int	i;
 }	t_env;
 
 t_node_default	*execution(struct s_node_default *node, t_env *env, pid_t pid);

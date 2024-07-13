@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/13 12:31:33 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/13 21:33:30 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,13 +138,13 @@ void						set_env_with_equal(char ***envp, char *var_value);
 void						set_env_without_equal(char ***envp, char *var);
 void						ft_doexport(t_env *env, char **params);
 int							is_valid_identifier(char *var, char *value);
-void	set_env_with_equal_envp(char ***envp, char *var_value);
+void	set_env_with_equal_envp(char ***envp, char *var_value, int *i);
 // void						sort_env(char **envp);
 int							find_var(char **envp, const char *var);
-char	**resize_and_add_envp(char ***envp, char *new_var);
+char	**resize_and_add_envp(char ***envp, char *new_var, int *j);
 char	**remove_var(char **envp, char *var);
-char	**remove_var_envp(char **envp, char *var);
-void ft_free(char **envp);
+char	**remove_var_envp(char **envp, char *var, int k);
+//void ft_free(char **envp);
 
 void	ft_unset(char **args, t_env *env);
 

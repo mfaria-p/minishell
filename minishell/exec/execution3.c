@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:09:16 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/13 12:51:30 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/13 22:12:10 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	create_heredoc(const char *delimiter, const char *file_name)
 		line = readline(HEREDOC_MSG);
 	}
 	free(line);
-	close(fd);
+	close(fd); 
 	/* if (line == NULL)
 		return (EXIT_FAILURE);
 	else
@@ -106,6 +106,7 @@ int	create_heredoc(const char *delimiter, const char *file_name)
 	}
 } */
 
+//DEVO TER Q FZR UM FORK, SO N TOU A VER MT BE CM FAZE LO RESULTAR
 void	exec_heredoc(struct s_node_redirect *red, t_env *env)
 {
 	const char	*temp_file_name = "/tmp/heredoc_tmp";

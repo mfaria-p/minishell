@@ -6,14 +6,14 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 12:13:16 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/12 22:42:13 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/13 21:24:36 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
 // Function to resize the environment array and add a new variable
-char	**resize_and_add_envp(char ***envp, char *new_var)
+char	**resize_and_add_envp(char ***envp, char *new_var, int *j)
 {
 	char	**new_envp;
 	int		count;
@@ -34,6 +34,10 @@ char	**resize_and_add_envp(char ***envp, char *new_var)
 		new_envp[i] = (*envp)[i];
 		i++;
 	}
+	/* if (*j == 1)
+		ft_free(envp);
+	else
+		*j == 1; */
 	new_envp[i] = new_var;
 	new_envp[i + 1] = NULL;
 	*envp = new_envp;
@@ -104,7 +108,7 @@ void	set_env_with_equal(char ***envp, char *var_value)
 	}
 }
 
-void	set_env_with_equal_envp(char ***envp, char *var_value)
+void	set_env_with_equal_envp(char ***envp, char *var_value, int *i)
 {
 	int	index;
 	int	var_len;
@@ -119,7 +123,7 @@ void	set_env_with_equal_envp(char ***envp, char *var_value)
 	}
 	else
 	{
-		if (resize_and_add_envp(envp, var_value) == NULL)
+		if (resize_and_add_envp(envp, var_value, i) == NULL)
 			return ; // Error already handled in resize_and_add
 		//sort_env(*envp);
 	}
@@ -159,7 +163,7 @@ void	ft_doexport(t_env *env, char **params)
 				set_env_with_equal(&env->export, params[i]);
 				//a=bº da um enter a mais
 				// s tiver valor ent vai sermodificada em ambos
-				set_env_with_equal_envp(&env->envp, params[i]);
+				set_env_with_equal_envp(&env->envp, params[i], &env->i);
 			}
 		}
 		else
