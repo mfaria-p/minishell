@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/10 19:13:40 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/13 21:19:58 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ t_env	init_env(char ***export, char **envp)
 	(*export)[count] = NULL;
 	env.envp = envp;
 	env.export = *export;
+	env.i = 0;
 	return (env);
 }
 
