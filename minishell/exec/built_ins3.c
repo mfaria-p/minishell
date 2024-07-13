@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 21:18:12 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/12 22:36:47 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/13 12:37:38 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ int	is_valid_identifier(char *var, char *value)
 	int	i;
 
 	i = 0;
-	if (!(ft_isalpha(var[0]) || var[0] != '_'))
+	if (!(ft_isalpha(var[0]) || var[0] == '_'))
 	{
 		error_identifier(var, value);
 		return (0);
 	}
 	while (var[i])
 	{
-		if (!(ft_isalnum(var[i]) || var[i] != '_'))
+		if (!(ft_isalnum(var[i]) || var[i] == '_'))
 		{
 			error_identifier(var, value);
 			return (0);
@@ -120,7 +120,10 @@ char	*find_var2(char	*name)
 	if (getenv(name))
 		return(getenv(name));
 	else
+	{
+		error_envp(name);
 		return (NULL);
+	}
 }
 
 char	*create_env_var(const char *var, const char *value)
