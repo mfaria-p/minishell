@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:13:55 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/12 22:44:38 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/13 12:33:07 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,6 @@ char	**remove_var(char **envp, char *var)
 		}
 		else
 			len1 = ft_strlen(envp[i]);
-		printf("%i-", len2);
-		printf("%i\t", len1);
-		printf("%s-%s\n", var, envp[i]);
 		if (len1 == len2 && ft_strncmp(envp[i], var, len2 + 1) == 0)
 		{
 			i++;
@@ -141,39 +138,6 @@ char	**remove_var(char **envp, char *var)
 	return (new_envp);
 }
 
-char	**remove_var_envp(char **envp, char *var)
-{
-	int		count;
-	int		i;
-	int		j;
-	char	**new_envp;
-
-	count = 0;
-	i = 0;
-	j = 0;
-	// Count the number of environment variables
-	while (envp[count] != NULL)
-		count++;
-	// Allocate space for the new envp array (count
-	//	- 1 because we remove one variable)
-	new_envp = malloc(count * sizeof(char *));
-	if (new_envp == NULL)
-		return (NULL);
-	// Copy variables to new_envp except the one to be removed
-	while (envp[i] != NULL)
-	{
-		if (ft_strncmp(envp[i], var, ft_strlen(var)) != 0
-			|| envp[i][ft_strlen(var)] != '=')
-		{
-			new_envp[j] = envp[i];
-			j++;
-		}
-		i++;
-	}
-	new_envp[j] = NULL;
-	return (new_envp);
-}
-
 void	ft_unset(char **args, t_env *env)
 {
 	int	i;
@@ -190,9 +154,7 @@ void	ft_unset(char **args, t_env *env)
 		}
 		else if (find_var(env->export, args[i]))
 		{
-			printf("boop");
 			env->export = remove_var(env->export, args[i]);
-			printf("cabou");
 		}
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/10 22:08:20 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/13 12:31:33 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,5 +156,6 @@ int							cmd_not_found(char *str);
 void						ft_putstr_fd(char *s, int fd);
 int							file_not_found(char *str);
 void						error_identifier(char *var, char *value);
+int	error_envp(char *str);
 
 #endif

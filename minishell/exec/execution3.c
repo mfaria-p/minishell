@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:09:16 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/08 20:28:02 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/13 12:51:30 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,10 @@ int	create_heredoc(const char *delimiter, const char *file_name)
 	}
 	free(line);
 	close(fd);
-	if (line == NULL)
+	/* if (line == NULL)
 		return (EXIT_FAILURE);
 	else
-		return (EXIT_SUCCESS);
+		return (EXIT_SUCCESS); */
 }
 
 /* void	have_child_hd(struct s_node_redirect *red, t_env *env,

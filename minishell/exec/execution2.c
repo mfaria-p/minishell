@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:05:32 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/08 20:14:01 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/13 12:53:57 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,11 @@ char	*find_path(char **envp)
 		envp++;
 	if (*envp)
 		return (*envp + 5);
-	return (NULL);
+	else
+	{
+		ft_error(7);
+		return (NULL);
+	}
 }
 
 char	*get_cmd(char **paths, char *cmd)
