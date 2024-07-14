@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 12:13:16 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/13 21:24:36 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/14 20:30:06 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ char	**resize_and_add(char ***envp, char *new_var)
 		i++;
 	}
 	/* ft_free(*envp); */
+	free(*envp);
 	new_envp[i] = new_var;
 	new_envp[i + 1] = NULL;
 	*envp = new_envp;
