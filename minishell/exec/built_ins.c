@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:13:55 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/14 20:12:29 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/14 20:29:26 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,10 @@ char	*find_pwd(char **envp)
 	char	cwd[200];
 
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
-	{
 		return (getcwd(cwd, sizeof(cwd)));
-	}
 	else
 		ft_error(6);
+	return (NULL);
 }
 
 void	ft_printenv(char **envp)
