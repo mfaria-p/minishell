@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/10 21:29:01 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/14 21:09:05 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ pid_t	have_child(struct s_node_pipe *pip, int rw, int pipefd[2], t_env *env)
 		close(pipefd[0]);
 		close(pipefd[1]);
 		if (rw == PIPE_WRITE)
-			execution((struct s_node_default *)pip->left_node, env, pid);
+			execution((struct s_node_default *)pip->left_node, env, pid, NULL);
 		else
-			execution((struct s_node_default *)pip->right_node, env, pid);
+			execution((struct s_node_default *)pip->right_node, env, pid, NULL);
 		exit(EXIT_SUCCESS);
 	}
 	return (pid);
@@ -66,7 +66,7 @@ void	exec_red(struct s_node_redirect *red, t_env *env, pid_t is_parent)
 	else
 		exec_not_heredoc(red, O_RDONLY, STDIN_FILENO, env);
 	if (red->next)
-		execution((struct s_node_default *)red->next, env, is_parent);
+		execution((struct s_node_default *)red->next, env, is_parent, NULL);
 }
 
 void	exec_exec(struct s_node_execution *exec, t_env *env, pid_t is_parent)
@@ -107,12 +107,23 @@ void	exec_exec(struct s_node_execution *exec, t_env *env, pid_t is_parent)
 	}
 }
 
-t_node_default	*execution(struct s_node_default *node, t_env *env, pid_t is_parent)
+t_node_default	*execution(struct s_node_default *node, t_env *env, pid_t is_parent, t_fds *fd)
 {
+	static t_fds fd_buf;
+
+	if (fd)
+	{
+		fd_buf.in = fd->in;
+		fd_buf.out = fd->out;
+	}
 	if ((node->node_type & E_cmd))
 		exec_exec((struct s_node_execution *)node, env, is_parent);
 	else if (node->node_type & (1 << 5))
+	{
+		dup2(fd_buf.in, STDIN_FILENO);
+		dup2(fd_buf.out, STDOUT_FILENO);
 		exec_red((struct s_node_redirect *)node, env, is_parent);
+	}
 	else
 		exec_pipe((struct s_node_pipe *)node, env);
 	return (node);

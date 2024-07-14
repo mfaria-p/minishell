@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/13 21:33:30 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/14 21:07:34 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ enum						e_nodetype
 
 // EXECUTION
 
-t_node_default				*execution(struct s_node_default *node, t_env *env, pid_t pid);
+t_node_default				*execution(struct s_node_default *node, t_env *env, pid_t pid, t_fds *fd);
 
 // pipe executing functions
 void						exec_pipe(struct s_node_pipe *pip, t_env *env);
