@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:13:55 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/13 21:33:24 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/14 20:12:29 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,12 +196,16 @@ void	ft_unset(char **args, t_env *env)
 	{
 		if (find_var(env->envp, args[i]))
 		{
+			printf("bug here 0");
 			env->envp = remove_var_envp(env->envp, args[i], env->i); // n ta a funceminar
+			printf("bug here 1");
 			env->export = remove_var(env->export, args[i]);
+			printf("bug here 2");
 		}
 		else if (find_var(env->export, args[i]))
 		{
 			env->export = remove_var(env->export, args[i]);
+			printf("bug here 3");
 		}
 		i++;
 	}
