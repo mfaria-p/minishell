@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/13 21:19:58 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/14 21:07:28 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,12 @@ void	free_env_export(t_env *env)
 void	main_loop(t_env *env)
 {
 	char	*line;
-	int		fd[2];
+	t_fds	fds;
 	pid_t	pid;
 
 	line = NULL;
-	fd[0] = dup(STDIN_FILENO);
-	fd[1] = dup(STDOUT_FILENO);
+	fds.in = dup(STDIN_FILENO);
+	fds.out = dup(STDOUT_FILENO);
 	while (1)
 	{
 		line = readline("( ๑ ˃̵ᴗ˂̵)و ");
@@ -101,10 +101,10 @@ void	main_loop(t_env *env)
 			break ;
 		}
 		lex(line);
-		execution(parse(), env, 1);
+		execution(parse(), env, 1, &fds);
 		waitpid(-1, NULL, 0);
 		free(line);
-		dup2(fd[0], STDIN_FILENO);
-		dup2(fd[1], STDOUT_FILENO);
+		dup2(fds.in, STDIN_FILENO);
+		dup2(fds.out, STDOUT_FILENO);
 	}
 }

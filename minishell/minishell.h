@@ -166,7 +166,13 @@ typedef struct s_env
 	int	i;
 }	t_env;
 
-t_node_default	*execution(struct s_node_default *node, t_env *env, pid_t pid);
+typedef struct s_fds
+{
+	int in;
+	int out;
+}	t_fds;
+
+t_node_default	*execution(struct s_node_default *node, t_env *env, pid_t pid, t_fds *fd);
 char			*ft_strdup(const char *s);
 
 t_token			lex(char *str);
