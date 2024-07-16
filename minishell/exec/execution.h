@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/14 21:07:34 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/16 18:14:54 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,6 @@ void						exec_heredoc(struct s_node_redirect *red,
 								t_env *env);
 /* void						have_child_hd(struct s_node_redirect *red,
 								t_env *env, const char *file_name); */
-int							create_heredoc(const char *delimiter,
-								const char *file_name);
 int							file_exist(const char *filename);
 /* void						have_child_n_hd(struct s_node_redirect *red,
 								t_env *env, int flags, int io); */
