@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:09:16 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/14 20:57:27 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/16 18:17:30 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	create_heredoc(const char *delimiter, const char *file_name)
 	int		fd;
 	char	*line;
 
-	fd = open(file_name, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	fd = open(file_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
 		ft_error(5);
 	line = readline(HEREDOC_MSG);
@@ -112,7 +112,7 @@ void	exec_heredoc(struct s_node_redirect *red, t_env *env)
 	const char	*temp_file_name = "/tmp/heredoc_tmp";
 	int			fd;
 
-	if (create_heredoc(red->delimeter, temp_file_name) == EXIT_SUCCESS)
+	if (access(temp_file_name, F_OK) == EXIT_SUCCESS)
 	{
 		fd = open(temp_file_name, O_RDONLY);
 		if (fd < 0)
@@ -121,6 +121,6 @@ void	exec_heredoc(struct s_node_redirect *red, t_env *env)
 		close(fd);
 		// TENHO QUE CLEANAR O TEMP FILE DPS
 	}
-	else
-		exit(EXIT_FAILURE);
+	// else
+	// 	exit(EXIT_FAILURE);
 }

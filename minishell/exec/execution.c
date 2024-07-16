@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/14 21:09:05 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/16 18:46:47 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 // falta error handling no here doc (mb tenho q cleanar o temp file dps?)
 // o redirect input e append n ta a dar (da segmentation fault),
-//	nem o seu erro handling
+// nem o seu erro handling
 
 pid_t	have_child(struct s_node_pipe *pip, int rw, int pipefd[2], t_env *env)
 {
@@ -109,21 +109,10 @@ void	exec_exec(struct s_node_execution *exec, t_env *env, pid_t is_parent)
 
 t_node_default	*execution(struct s_node_default *node, t_env *env, pid_t is_parent, t_fds *fd)
 {
-	static t_fds fd_buf;
-
-	if (fd)
-	{
-		fd_buf.in = fd->in;
-		fd_buf.out = fd->out;
-	}
 	if ((node->node_type & E_cmd))
 		exec_exec((struct s_node_execution *)node, env, is_parent);
 	else if (node->node_type & (1 << 5))
-	{
-		dup2(fd_buf.in, STDIN_FILENO);
-		dup2(fd_buf.out, STDOUT_FILENO);
 		exec_red((struct s_node_redirect *)node, env, is_parent);
-	}
 	else
 		exec_pipe((struct s_node_pipe *)node, env);
 	return (node);

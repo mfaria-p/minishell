@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/14 21:07:28 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/16 18:18:31 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,14 @@ int	main(int argc, char **argv, char **envp)
 {
 	char	**export;
 	t_env	env;
+	const char	*temp_file_name = "/tmp/heredoc_tmp";
 
 	siginit();
 	env = init_env(&export, envp);
 	main_loop(&env);
 	free_env_export(&env);
 	rl_clear_history();
+	unlink(temp_file_name);
 }
 
 int	ft_isexit(char *str)
