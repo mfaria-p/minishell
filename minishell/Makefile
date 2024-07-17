@@ -6,9 +6,12 @@ SRCS_PARSER =	destroy_tree.c	\
 				lexer_utils.c	\
 				parser.c
 
-SRCS_EXEC =		built_ins.c			\
-				built_ins2.c		\
+SRCS_EXEC =		ft_echo.c			\
+				ft_pwd.c		\
 				built_ins3.c		\
+				ft_unset.c	\
+				export_env.c \
+				export_env2.c	\
 				error_handling.c	\
 				exec_utils.c		\
 				exec_utils2.c		\

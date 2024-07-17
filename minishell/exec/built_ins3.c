@@ -6,21 +6,18 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 21:18:12 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/17 21:32:28 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/18 00:37:26 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-void	ft_printexport(char **export)
+void	ft_printenv(char **envp)
 {
-	int	i;
-
-	i = 0;
-	while (export[i] != NULL)
+	while (*envp)
 	{
-		printf("declare -x %s\n", export[i]);
-		i++;
+		printf("%s\n", *envp);
+		envp++;
 	}
 }
 

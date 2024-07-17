@@ -1,103 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_ins2.c                                       :+:      :+:    :+:   */
+/*   export_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/27 12:13:16 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/17 21:05:22 by mfaria-p         ###   ########.fr       */
+/*   Created: 2024/07/18 00:09:12 by mfaria-p          #+#    #+#             */
+/*   Updated: 2024/07/18 00:35:40 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-// Function to resize the environment array and add a new variable
-char	**resize_and_add_envp(char ***envp, char *new_var, int *j)
-{
-	char	**new_envp;
-	int		count;
-	int		i;
-
-	count = 0;
-	while ((*envp)[count] != NULL)
-		count++;
-	new_envp = malloc((count + 2) * sizeof(char *)); //+2 for var and NULL
-	if (new_envp == NULL)
-	{
-		free(new_var);
-		return (NULL);
-	}
-	i = 0;
-	while (i < count)
-	{
-		new_envp[i] = ft_strdup((*envp)[i]);
-		i++;
-	}
-	if (*j == 1)
-		ft_free(*envp);
-	else
-		*j == 1;
-	new_envp[i] = ft_strdup(new_var);
-	new_envp[i + 1] = NULL;
-	*envp = new_envp;
-	return (new_envp);
-}
-
-char	**resize_and_add(char ***envp, char *new_var)
-{
-	char	**new_envp;
-	int		count;
-	int		i;
-
-	count = 0;
-	while ((*envp)[count] != NULL)
-		count++;
-	new_envp = malloc((count + 2) * sizeof(char *)); //+2 for var and NULL
-	if (new_envp == NULL)
-	{
-		free(new_var);
-		return (NULL);
-	}
-	i = 0;
-	while (i < count)
-	{
-		new_envp[i] = ft_strdup((*envp)[i]);
-		i++;
-	}
-	ft_free(*envp);
-	new_envp[i] = ft_strdup(new_var);
-	new_envp[i + 1] = NULL;
-	*envp = new_envp;
-	return (new_envp);
-}
-
-void	ft_free(char **envp)
+void	ft_printexport(char **export)
 {
 	int	i;
 
 	i = 0;
-	while (envp[i])
+	while (export[i] != NULL)
 	{
-		free(envp[i]);
+		printf("declare -x %s\n", export[i]);
 		i++;
 	}
-	free(envp);
 }
 
 void	set_env_with_equal(char ***envp, char *var_value)
 {
-	int	index;
-	int	var_len;
-	int	value_len;
+	int		index;
+	int		var_len;
+	int		value_len;
 	char	*new_value;
 
 	index = find_var(*envp, var_value);
 	if (index >= 0)
 	{
-		new_value = ft_strdup(var_value);
 		free((*envp)[index]);
-		(*envp)[index] = new_value;
+		(*envp)[index] = ft_strdup(var_value);
 	}
 	else
 	{
@@ -111,18 +49,20 @@ void	set_env_with_equal_envp(char ***envp, char *var_value, int *i)
 	int	index;
 	int	var_len;
 	int	value_len;
-	char	*new_value;
 
 	index = find_var(*envp, var_value);
 	if (index >= 0)
 	{
-		new_value = ft_strdup(var_value);
-		(*envp)[index] = new_value;
+		if (*i == 1)
+			free((*envp)[index]);
+		else
+			*i == 1;
+		(*envp)[index] = ft_strdup(var_value);
 	}
 	else
 	{
 		if (resize_and_add_envp(envp, var_value, i) == NULL)
-			return ; 
+			return ;
 	}
 }
 
@@ -133,7 +73,7 @@ void	set_env_without_equal(char ***envp, char *var)
 
 	index = find_var(*envp, var);
 	if (index >= 0)
-		return ; // Variable already exists, do nothing
+		return ;
 	else
 	{
 		if (resize_and_add(envp, var) == NULL)
@@ -157,8 +97,7 @@ void	ft_doexport(t_env *env, char **params)
 			{
 				*equal_sign = '=';
 				set_env_with_equal(&env->export, params[i]);
-				//a=bº da um enter a mais
-				// s tiver valor ent vai sermodificada em ambos
+				// a=bº da um enter a mais
 				set_env_with_equal_envp(&env->envp, params[i], &env->i);
 			}
 		}
@@ -166,7 +105,6 @@ void	ft_doexport(t_env *env, char **params)
 		{
 			if (is_valid_identifier(params[i], NULL))
 				set_env_without_equal(&env->export, params[i]);
-			// se a var n tiver valor ent so é mostrada no export
 		}
 		i++;
 	}
