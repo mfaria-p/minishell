@@ -131,3 +131,96 @@ void print_node_type(int code) {
 /**/
 /*	return EXIT_SUCCESS;
 }*/
+
+/* char	**remove_var_envp(char **envp, char *var, int k)
+{
+	int		count;
+	int		i;
+	int		j;
+	char	**new_envp;
+	int		len2;
+	int		len1;
+	char	*equal_sign;
+
+	count = 0;
+	i = 0;
+	j = 0;
+	len2 = ft_strlen(var);
+	while (envp[count] != NULL)
+		count++;
+	new_envp = malloc(count * sizeof(char *));
+	if (new_envp == NULL)
+		return (NULL);
+	while (envp[i] != NULL)
+	{
+		equal_sign = ft_strchr(envp[i], '=');
+		if (equal_sign != NULL)
+		{
+			*equal_sign = '\0';
+			len1 = ft_strlen(envp[i]);
+		}
+		else
+			len1 = ft_strlen(envp[i]);
+		if (len1 == len2 && ft_strncmp(envp[i], var, len2 + 1) == 0)
+		{
+			i++;
+			continue ;
+		}
+		if (equal_sign != NULL)
+			*equal_sign = '=';
+		new_envp[j] = ft_strdup(envp[i]);
+		j++;
+		i++;
+	}
+	new_envp[j] = NULL;
+	if (k == 1)
+		ft_free(envp);
+	else
+		k == 1;
+	return (new_envp);
+} */
+
+/* char	**remove_var(char **envp, char *var)
+{
+	int		count;
+	int		i;
+	int		j;
+	char	**new_envp;
+	int		len2;
+	int		len1;
+	char	*equal_sign;
+
+	count = 0;
+	i = 0;
+	j = 0;
+	len2 = ft_strlen(var);
+	while (envp[count] != NULL)
+		count++;
+	new_envp = malloc(count * sizeof(char *));
+	if (new_envp == NULL)
+		return (NULL);
+	while (envp[i] != NULL)
+	{
+		equal_sign = ft_strchr(envp[i], '=');
+		if (equal_sign != NULL)
+		{
+			*equal_sign = '\0';
+			len1 = ft_strlen(envp[i]);
+		}
+		else
+			len1 = ft_strlen(envp[i]);
+		if (len1 == len2 && ft_strncmp(envp[i], var, len2 + 1) == 0)
+		{
+			i++;
+			continue ;
+		}
+		if (equal_sign != NULL)
+			*equal_sign = '=';
+		new_envp[j] = ft_strdup(envp[i]);
+		j++;
+		i++;
+	}
+	new_envp[j] = NULL;
+	ft_free(envp);
+	return (new_envp);
+} */

@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/17 21:31:02 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/17 23:54:36 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,11 +141,16 @@ void	set_env_with_equal_envp(char ***envp, char *var_value, int *i);
 // void						sort_env(char **envp);
 int							find_var(char **envp, const char *var);
 char	**resize_and_add_envp(char ***envp, char *new_var, int *j);
-char	**remove_var(char **envp, char *var);
-char	**remove_var_envp(char **envp, char *var, int k);
-void ft_free(char **envp);
 
 void	ft_unset(char **args, t_env *env);
+char	**remove_var(char **envp, char *var);
+char	**remove_var_envp(char **envp, char *var, int *k);
+char	**allocate_env_array(char **envp);
+int	matches_var(char *env_entry, char *var, int len2);
+char	**remove_var(char **envp, char *var);
+
+void ft_free(char **envp);
+
 
 void						ft_printenv(char **envp);
 
