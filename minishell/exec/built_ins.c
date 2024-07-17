@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:13:55 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/14 20:29:26 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/17 20:39:57 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,15 +97,11 @@ char	**remove_var(char **envp, char *var)
 	i = 0;
 	j = 0;
 	len2 = ft_strlen(var);
-	// Count the number of environment variables
 	while (envp[count] != NULL)
 		count++;
-	// Allocate space for the new envp array (count
-	//	- 1 because we remove one variable)
 	new_envp = malloc(count * sizeof(char *));
 	if (new_envp == NULL)
 		return (NULL);
-	// Copy variables to new_envp except the one to be removed
 	while (envp[i] != NULL)
 	{
 		equal_sign = ft_strchr(envp[i], '=');
@@ -123,12 +119,12 @@ char	**remove_var(char **envp, char *var)
 		}
 		if (equal_sign != NULL)
 			*equal_sign = '=';
-		new_envp[j] = envp[i];
+		new_envp[j] = ft_strdup(envp[i]);
 		j++;
 		i++;
 	}
 	new_envp[j] = NULL;
-	//ft_free(envp);
+	ft_free(envp);
 	return (new_envp);
 }
 
@@ -146,15 +142,11 @@ char	**remove_var_envp(char **envp, char *var, int k)
 	i = 0;
 	j = 0;
 	len2 = ft_strlen(var);
-	// Count the number of environment variables
 	while (envp[count] != NULL)
 		count++;
-	// Allocate space for the new envp array (count
-	//	- 1 because we remove one variable)
 	new_envp = malloc(count * sizeof(char *));
 	if (new_envp == NULL)
 		return (NULL);
-	// Copy variables to new_envp except the one to be removed
 	while (envp[i] != NULL)
 	{
 		equal_sign = ft_strchr(envp[i], '=');
@@ -172,40 +164,35 @@ char	**remove_var_envp(char **envp, char *var, int k)
 		}
 		if (equal_sign != NULL)
 			*equal_sign = '=';
-		new_envp[j] = envp[i];
+		new_envp[j] = ft_strdup(envp[i]);
 		j++;
 		i++;
 	}
 	new_envp[j] = NULL;
-	/* if (i == 1)
+	if (k == 1)
 		ft_free(envp);
 	else
-		i == 1; */
+		k == 1;
 	return (new_envp);
 }
 
 void	ft_unset(char **args, t_env *env)
 {
 	int	i;
+	int	j;
 
 	i = 0;
 	if (!args || !*args)
 		return ;
 	while (args[i])
 	{
-		if (find_var(env->envp, args[i]))
+		if (find_var(env->envp, args[i]) != -1)
 		{
-			printf("bug here 0");
-			env->envp = remove_var_envp(env->envp, args[i], env->i); // n ta a funceminar
-			printf("bug here 1");
+			env->envp = remove_var_envp(env->envp, args[i], env->i);
 			env->export = remove_var(env->export, args[i]);
-			printf("bug here 2");
 		}
-		else if (find_var(env->export, args[i]))
-		{
+		else if (find_var(env->export, args[i]) != -1)
 			env->export = remove_var(env->export, args[i]);
-			printf("bug here 3");
-		}
 		i++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 21:18:12 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/13 21:28:51 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/17 21:32:28 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,22 +143,36 @@ char	*create_env_var(const char *var, const char *value)
 	return (env_var);
 }
 
+char	*find_oldpwd(char **envp)
+{
+	while (*envp && ft_strncmp("OLDPWD=", *envp, 7) != 0)
+		envp++;
+	if (*envp)
+		return (*envp + 7);
+	else
+	{
+		ft_error(8);
+		return (NULL);
+	}
+}
+
 void	ft_cd(t_env *env, char *path)
 {
 	char	current[200];
 	char	*old_dir;
 	char	*oldpwd_var;
 	char	*pwd_var;
+	int	index;
 
-	old_dir = find_var2("OLDPWD");
+	old_dir = find_oldpwd(env->envp);
 	getcwd(current, sizeof(current));
 	if (ft_strlen(path) == 1 && path[0] == '-')
 	{
 		printf("%s\n", old_dir);
 		chdir(old_dir);
 	}
-	else
-		chdir(path);
+	else if (chdir(path) == -1)
+		file_not_found(path);
 	if (current)
 	{
 		oldpwd_var = create_env_var("OLDPWD", current);

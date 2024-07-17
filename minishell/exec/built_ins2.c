@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 12:13:16 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/14 20:30:06 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/17 21:05:22 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,14 @@ char	**resize_and_add_envp(char ***envp, char *new_var, int *j)
 	i = 0;
 	while (i < count)
 	{
-		new_envp[i] = (*envp)[i];
+		new_envp[i] = ft_strdup((*envp)[i]);
 		i++;
 	}
-	/* if (*j == 1)
-		ft_free(envp);
+	if (*j == 1)
+		ft_free(*envp);
 	else
-		*j == 1; */
-	new_envp[i] = new_var;
+		*j == 1;
+	new_envp[i] = ft_strdup(new_var);
 	new_envp[i + 1] = NULL;
 	*envp = new_envp;
 	return (new_envp);
@@ -62,18 +62,17 @@ char	**resize_and_add(char ***envp, char *new_var)
 	i = 0;
 	while (i < count)
 	{
-		new_envp[i] = (*envp)[i];
+		new_envp[i] = ft_strdup((*envp)[i]);
 		i++;
 	}
-	/* ft_free(*envp); */
-	free(*envp);
-	new_envp[i] = new_var;
+	ft_free(*envp);
+	new_envp[i] = ft_strdup(new_var);
 	new_envp[i + 1] = NULL;
 	*envp = new_envp;
 	return (new_envp);
 }
 
-/* void	ft_free(char **envp)
+void	ft_free(char **envp)
 {
 	int	i;
 
@@ -84,9 +83,8 @@ char	**resize_and_add(char ***envp, char *new_var)
 		i++;
 	}
 	free(envp);
-} */
+}
 
-// Function to set the environment variable WHEN VALUE EXISTS E ELES METEM IGUAL E O VALOR
 void	set_env_with_equal(char ***envp, char *var_value)
 {
 	int	index;
@@ -104,8 +102,7 @@ void	set_env_with_equal(char ***envp, char *var_value)
 	else
 	{
 		if (resize_and_add(envp, var_value) == NULL)
-			return ; // Error already handled in resize_and_add
-		//sort_env(*envp);
+			return ;
 	}
 }
 
@@ -125,8 +122,7 @@ void	set_env_with_equal_envp(char ***envp, char *var_value, int *i)
 	else
 	{
 		if (resize_and_add_envp(envp, var_value, i) == NULL)
-			return ; // Error already handled in resize_and_add
-		//sort_env(*envp);
+			return ; 
 	}
 }
 
@@ -141,8 +137,7 @@ void	set_env_without_equal(char ***envp, char *var)
 	else
 	{
 		if (resize_and_add(envp, var) == NULL)
-			return ; // Error already handled in resize_and_add
-		//sort_env(*envp);
+			return ;
 	}
 }
 
