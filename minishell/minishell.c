@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/16 20:19:15 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/17 18:51:03 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,15 @@ void	free_env_export(t_env *env)
 		i++;
 	}
 	free(env->export);
+	if (env->i == 1)
+	{
+		while (env->envp[i] != NULL)
+		{
+			free(env->envp[i]);
+			i++;
+		}
+		free(env->envp);
+	}
 }
 
 // Function for the main execution loop
