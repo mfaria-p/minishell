@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:05:32 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/13 12:53:57 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/18 20:23:00 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,19 +79,22 @@ void	ft_execute(struct s_node_execution *exec, char **envp)
 	i = 0;
 	param_count = 0;
 	command = find_the_command(envp, exec);
-	while (exec->params && exec->params[param_count] != NULL)
-		param_count++;
-	argv = (char **)malloc((param_count + 2) * sizeof(char *));
-	argv[0] = command;
-	while (i < param_count)
+	if (command)
 	{
-		argv[i + 1] = exec->params[i];
-		i++;
+		while (exec->params && exec->params[param_count] != NULL)
+			param_count++;
+		argv = (char **)malloc((param_count + 2) * sizeof(char *));
+		argv[0] = command;
+		while (i < param_count)
+		{
+			argv[i + 1] = exec->params[i];
+			i++;
+		}
+		argv[param_count + 1] = NULL;
+		execve(command, argv, envp);
+		free(command);
+		free(argv);
 	}
-	argv[param_count + 1] = NULL;
-	execve(command, argv, envp);
-	free(command);
-	free(argv);
 }
 
 int	file_exist(const char *filename)
