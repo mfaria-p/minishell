@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 19:57:26 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/07/05 21:26:34 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/18 14:51:16 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	siginit(void)
 	}
 	sa.sa_mask = sa_mask;
 	sa.sa_handler = sighandler;
+	sa.sa_flags = 0;
 	if (sigaction(SIGINT, &sa, NULL) < 0 || sigaction(SIGQUIT, &sa, NULL) < 0 \
 		|| sigaction(SIGUSR1, &sa, NULL) < 0)
 	{

@@ -163,7 +163,6 @@ typedef struct s_env
 {
 	char	**envp;
 	char	**export;
-	int	i;
 }	t_env;
 
 typedef struct s_fds
@@ -182,8 +181,9 @@ void			destroy_tree(t_node_default *node);
 int				siginit(void);
 void			process_sig(void);
 
-t_env			init_env(char ***export, char **envp);
+t_env	init_env(char ***export, char ***envp2, char **envp);
 void			free_env_export(t_env *env);
+//t_env	init_env_envp(char ***envp2, char **envp);
 void			main_loop(t_env *env);
 
 #endif

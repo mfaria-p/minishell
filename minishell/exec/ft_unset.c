@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:13:55 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/18 00:37:11 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/18 19:12:38 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ char	**remove_var(char **envp, char *var)
 
 int	matches_var(char *env_entry, char *var, int len2)
 {
-	char *equal_sign;
-    int len1;
-	
+	char	*equal_sign;
+	int		len1;
+
 	equal_sign = strchr(env_entry, '=');
 	if (equal_sign != NULL)
 	{
@@ -75,35 +75,6 @@ char	**allocate_env_array(char **envp)
 	return (new_envp);
 }
 
-// Main function to remove the variable from the environment
-char	**remove_var_envp(char **envp, char *var, int *k)
-{
-	int		i;
-	int		j;
-	char	**new_envp;
-
-	i = 0;
-	j = 0;
-	new_envp = allocate_env_array(envp);
-	while (envp[i] != NULL)
-	{
-		if (matches_var(envp[i], var, ft_strlen(var)))
-		{
-			i++;
-			continue ;
-		}
-		new_envp[j] = strdup(envp[i]);
-		j++;
-		i++;
-	}
-	new_envp[j] = NULL;
-	if (*k == 1)
-		ft_free(envp);
-	else
-		*k == 1;
-	return (new_envp);
-}
-
 void	ft_unset(char **args, t_env *env)
 {
 	int	i;
@@ -116,7 +87,7 @@ void	ft_unset(char **args, t_env *env)
 	{
 		if (find_var(env->envp, args[i]) != -1)
 		{
-			env->envp = remove_var_envp(env->envp, args[i], &env->i);
+			env->envp = remove_var(env->envp, args[i]);
 			env->export = remove_var(env->export, args[i]);
 		}
 		else if (find_var(env->export, args[i]) != -1)

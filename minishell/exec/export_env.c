@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 00:09:12 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/18 00:35:40 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/18 19:21:37 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,28 +44,6 @@ void	set_env_with_equal(char ***envp, char *var_value)
 	}
 }
 
-void	set_env_with_equal_envp(char ***envp, char *var_value, int *i)
-{
-	int	index;
-	int	var_len;
-	int	value_len;
-
-	index = find_var(*envp, var_value);
-	if (index >= 0)
-	{
-		if (*i == 1)
-			free((*envp)[index]);
-		else
-			*i == 1;
-		(*envp)[index] = ft_strdup(var_value);
-	}
-	else
-	{
-		if (resize_and_add_envp(envp, var_value, i) == NULL)
-			return ;
-	}
-}
-
 // Function to set the environment variable when there is no value
 void	set_env_without_equal(char ***envp, char *var)
 {
@@ -97,8 +75,7 @@ void	ft_doexport(t_env *env, char **params)
 			{
 				*equal_sign = '=';
 				set_env_with_equal(&env->export, params[i]);
-				// a=bº da um enter a mais
-				set_env_with_equal_envp(&env->envp, params[i], &env->i);
+				set_env_with_equal(&env->envp, params[i]);
 			}
 		}
 		else

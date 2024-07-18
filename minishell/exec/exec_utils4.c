@@ -1,41 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export_env2.c                                      :+:      :+:    :+:   */
+/*   exec_utils4.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/27 12:13:16 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/18 19:10:57 by mfaria-p         ###   ########.fr       */
+/*   Created: 2024/07/18 19:29:32 by mfaria-p          #+#    #+#             */
+/*   Updated: 2024/07/18 19:29:59 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-char	**resize_and_add(char ***envp, char *new_var)
+size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {
-	char	**new_envp;
-	int		count;
-	int		i;
+	size_t	i;
+	size_t	l;
 
-	count = 0;
-	while ((*envp)[count] != NULL)
-		count++;
-	new_envp = malloc((count + 2) * sizeof(char *));
-	if (new_envp == NULL)
-	{
-		free(new_var);
-		return (NULL);
-	}
+	l = 0;
 	i = 0;
-	while (i < count)
+	if (size > 0)
 	{
-		new_envp[i] = ft_strdup((*envp)[i]);
-		i++;
+		while (src[i] != '\0' && (i + 1) < size)
+		{
+			dst[i] = src[i];
+			i++;
+		}
+		dst[i] = '\0';
 	}
-	ft_free(*envp);
-	new_envp[i] = ft_strdup(new_var);
-	new_envp[i + 1] = NULL;
-	*envp = new_envp;
-	return (new_envp);
+	while (src[l] != '\0')
+		l++;
+	return (l);
 }

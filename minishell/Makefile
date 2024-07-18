@@ -8,14 +8,18 @@ SRCS_PARSER =	destroy_tree.c	\
 
 SRCS_EXEC =		ft_echo.c			\
 				ft_pwd.c		\
+				ft_cd.c	\
+				ft_cd2.c \
 				built_ins3.c		\
 				ft_unset.c	\
 				export_env.c \
 				export_env2.c	\
 				error_handling.c	\
+				error_handling2.c \
 				exec_utils.c		\
 				exec_utils2.c		\
 				exec_utils3.c		\
+				exec_utils4.c \
 				execution.c			\
 				execution2.c		\
 				execution3.c
