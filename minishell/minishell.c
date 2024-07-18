@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/17 18:51:03 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/18 18:42:57 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,12 @@ int	g_sig = 0;
 int	main(int argc, char **argv, char **envp)
 {
 	char	**export;
+	char	**envp2;
 	t_env	env;
 	const char	*temp_file_name = "/tmp/heredoc_tmp";
 
 	siginit();
-	env = init_env(&export, envp);
+	env = init_env(&export, &envp2, envp);
 	main_loop(&env);
 	free_env_export(&env);
 	rl_clear_history();
@@ -41,7 +42,7 @@ int	ft_isexit(char *str)
 	return (0);
 }
 
-t_env	init_env(char ***export, char **envp)
+t_env	init_env(char ***export, char ***envp2, char **envp)
 {
 	t_env	env;
 	int		count;
@@ -60,9 +61,18 @@ t_env	init_env(char ***export, char **envp)
 		i++;
 	}
 	(*export)[count] = NULL;
-	env.envp = envp;
 	env.export = *export;
-	env.i = 0;
+	*envp2 = malloc((count + 1) * sizeof(char *));
+	if (*envp2 == NULL)
+		exit(EXIT_FAILURE);
+	i = 0;
+	while (i < count)
+	{
+		(*envp2)[i] = ft_strdup(envp[i]);
+		i++;
+	}
+	(*envp2)[count] = NULL;
+	env.envp = *envp2;
 	return (env);
 }
 
@@ -78,15 +88,13 @@ void	free_env_export(t_env *env)
 		i++;
 	}
 	free(env->export);
-	if (env->i == 1)
+	i = 0;
+	while (env->envp[i] != NULL)
 	{
-		while (env->envp[i] != NULL)
-		{
-			free(env->envp[i]);
-			i++;
-		}
-		free(env->envp);
+		free(env->envp[i]);
+		i++;
 	}
+	free(env->envp);
 }
 
 // Function for the main execution loop
