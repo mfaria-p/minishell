@@ -6,30 +6,26 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/19 18:11:46 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/19 19:18:01 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <unistd.h>
 
-int	g_sig = 0;
+int		g_sig = 0;
 
 int	main(int argc, char **argv, char **envp)
 {
-	char	**export;
-	char	**envp2;
-	t_env	env;
+	char		**export;
+	char		**envp2;
+	t_env		env;
 	const char	*temp_file_name = "/tmp/heredoc_tmp";
 
 	siginit();
 	env = init_env(&export, &envp2, envp);
 	main_loop(&env);
 	free_env_export(&env);
-	if (env.export)
-		printf("not freed");
-	else
-		printf("freed");
 	rl_clear_history();
 	unlink(temp_file_name);
 }
@@ -121,20 +117,25 @@ void	main_loop(t_env *env)
 	{
 		line = readline("( ๑ ˃̵ᴗ˂̵)و ");
 		if (line)
-			add_history(line);
+		{
+			if (strlen(line) > 0)
+			{
+				add_history(line);
+				if (ft_isexit(line))
+				{
+					free(line);
+					break ;
+				}
+				lex(line);
+				destroy_tree(execution(parse(), env, 1, &fds));
+				waitpid(-1, NULL, 0);
+				dup2(fds.in, STDIN_FILENO);
+				dup2(fds.out, STDOUT_FILENO);
+			}
+			free(line);
+		}
 		else
 			exit(EXIT_SUCCESS);
-		if (ft_isexit(line))
-		{
-			free(line);
-			break ;
-		}
-		lex(line);
-		destroy_tree(execution(parse(), env, 1, &fds));
-		waitpid(-1, NULL, 0);
-		free(line);
-		dup2(fds.in, STDIN_FILENO);
-		dup2(fds.out, STDOUT_FILENO);
 	}
 	close(fds.in);
 	close(fds.out);
