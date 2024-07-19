@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/18 18:42:57 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/19 18:11:46 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,10 @@ int	main(int argc, char **argv, char **envp)
 	env = init_env(&export, &envp2, envp);
 	main_loop(&env);
 	free_env_export(&env);
+	if (env.export)
+		printf("not freed");
+	else
+		printf("freed");
 	rl_clear_history();
 	unlink(temp_file_name);
 }
@@ -82,19 +86,25 @@ void	free_env_export(t_env *env)
 	int	i;
 
 	i = 0;
-	while (env->export[i] != NULL)
+	if (env->export)
 	{
-		free(env->export[i]);
-		i++;
+		while (env->export[i] != NULL)
+		{
+			free(env->export[i]);
+			i++;
+		}
+		free(env->export);
 	}
-	free(env->export);
 	i = 0;
-	while (env->envp[i] != NULL)
+	if (env->envp)
 	{
-		free(env->envp[i]);
-		i++;
+		while (env->envp[i] != NULL)
+		{
+			free(env->envp[i]);
+			i++;
+		}
+		free(env->envp);
 	}
-	free(env->envp);
 }
 
 // Function for the main execution loop

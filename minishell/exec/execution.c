@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/16 18:46:47 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/19 18:17:29 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ pid_t	have_child(struct s_node_pipe *pip, int rw, int pipefd[2], t_env *env)
 			execution((struct s_node_default *)pip->left_node, env, pid, NULL);
 		else
 			execution((struct s_node_default *)pip->right_node, env, pid, NULL);
+		free_env_export(env);
 		exit(EXIT_SUCCESS);
 	}
 	return (pid);
@@ -101,6 +102,7 @@ void	exec_exec(struct s_node_execution *exec, t_env *env, pid_t is_parent)
 		if (pid == 0)
 		{
 			ft_execute(exec, env->envp);
+			free_env_export(env);
 			exit(EXIT_SUCCESS);
 		}
 		waitpid(pid, NULL, 0);
