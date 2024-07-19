@@ -174,6 +174,7 @@ typedef struct s_fds
 t_node_default	*execution(struct s_node_default *node, t_env *env, pid_t pid, t_fds *fd);
 int				create_heredoc(const char *delimiter, const char *file_name);
 char			*ft_strdup(const char *s);
+size_t	ft_strlen(const char *s);
 
 t_token			lex(char *str);
 t_node_default	*parse(void);
