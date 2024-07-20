@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 21:53:16 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/06/29 14:46:01 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/16 18:36:45 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,13 @@ t_token	parse_r(t_node_default **branch, t_node_default **root, t_node_execution
 	static t_node_redirect	*tail;
 	t_node_redirect			*new_node;
 	t_token					token;
+	const char				*temp_file_name = "/tmp/heredoc_tmp";
 
 	token = lex(NULL);
 	while (token.code & 1 << 5)
 	{
+		if (token.code == R_heredoc)
+			create_heredoc(token.content, temp_file_name);
 		new_node = ft_calloc(1, sizeof(t_node_redirect));
 		new_node->node_type = token.code;
 		new_node->filename = token.content;

@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:05:32 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/30 19:28:16 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/13 12:53:57 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,11 @@ char	*find_path(char **envp)
 		envp++;
 	if (*envp)
 		return (*envp + 5);
-	return (NULL);
+	else
+	{
+		ft_error(7);
+		return (NULL);
+	}
 }
 
 char	*get_cmd(char **paths, char *cmd)
@@ -72,7 +76,6 @@ void	ft_execute(struct s_node_execution *exec, char **envp)
 	int		i;
 	pid_t	pid;
 
-
 	i = 0;
 	param_count = 0;
 	command = find_the_command(envp, exec);
@@ -86,13 +89,7 @@ void	ft_execute(struct s_node_execution *exec, char **envp)
 		i++;
 	}
 	argv[param_count + 1] = NULL;
-	pid = fork();
-	if (pid == 0)
-	{
-		execve(command, argv, envp);
-		exit(EXIT_FAILURE); // Exit if execve fails
-	}
-	waitpid(pid, NULL, 0);
+	execve(command, argv, envp);
 	free(command);
 	free(argv);
 }
