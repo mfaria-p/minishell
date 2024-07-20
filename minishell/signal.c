@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 19:57:26 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/07/01 21:36:30 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/20 14:50:40 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,11 @@ void	sighandler(int sig)
 	static int	i;
 
 	g_sig = sig;
-	if (g_sig == SIGINT)
+	if (sig == SIGINT)
 	{
-		write(STDOUT_FILENO, "\n", 1);
 		rl_replace_line("", 1);
+		write(STDOUT_FILENO, "\n", 1);
 		rl_on_new_line();
 		rl_redisplay();
 	}
-	if (g_sig == SIGUSR1)
-		exit(EXIT_SUCCESS);
 }

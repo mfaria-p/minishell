@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:09:16 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/06/30 21:51:15 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/16 18:17:30 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	exec_not_heredoc(struct s_node_redirect *red, int flags, int io,
 		t_env *env)
 {
 	int	fd;
-	
+
 	if ((red->node_type == R_input && file_exist(red->filename)) \
 		|| red->node_type == R_out || red->node_type == R_app)
 	{
@@ -25,7 +25,6 @@ void	exec_not_heredoc(struct s_node_redirect *red, int flags, int io,
 			ft_error(4);
 		else if (fd == -1 && io == STDOUT_FILENO)
 			ft_error(3);
-		dup2(fd, io);
 		if (dup2(fd, io) == -1)
 		{
 			close(fd);
@@ -69,7 +68,7 @@ int	create_heredoc(const char *delimiter, const char *file_name)
 	int		fd;
 	char	*line;
 
-	fd = open(file_name, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	fd = open(file_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
 		ft_error(5);
 	line = readline(HEREDOC_MSG);
@@ -81,7 +80,7 @@ int	create_heredoc(const char *delimiter, const char *file_name)
 		line = readline(HEREDOC_MSG);
 	}
 	free(line);
-	close(fd);
+	close(fd); 
 	if (line == NULL)
 		return (EXIT_FAILURE);
 	else
@@ -107,12 +106,13 @@ int	create_heredoc(const char *delimiter, const char *file_name)
 	}
 } */
 
+//DEVO TER Q FZR UM FORK, SO N TOU A VER MT BE CM FAZE LO RESULTAR
 void	exec_heredoc(struct s_node_redirect *red, t_env *env)
 {
 	const char	*temp_file_name = "/tmp/heredoc_tmp";
-	int	fd;
+	int			fd;
 
-	if (create_heredoc(red->delimeter, temp_file_name) == EXIT_SUCCESS)
+	if (access(temp_file_name, F_OK) == EXIT_SUCCESS)
 	{
 		fd = open(temp_file_name, O_RDONLY);
 		if (fd < 0)
@@ -121,8 +121,6 @@ void	exec_heredoc(struct s_node_redirect *red, t_env *env)
 		close(fd);
 		// TENHO QUE CLEANAR O TEMP FILE DPS
 	}
-	else
-	{
-		exit(EXIT_FAILURE);
-	}
+	// else
+	// 	exit(EXIT_FAILURE);
 }

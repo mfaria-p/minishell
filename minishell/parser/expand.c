@@ -6,12 +6,13 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:57:40 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/06/29 15:58:24 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/16 20:12:09 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "parser.h"
+#include <unistd.h>
 
 char	*ft_strnadd(char const *s1, char const *s2, size_t n)
 {
@@ -75,7 +76,10 @@ void	check_squote(char **start, char **end, char **result)
 	*start = ++(*end);
 	*end = until_charset(*start, "'", 0, 0);
 	*result = ft_strnadd(*result, *start, *end - *start);
-	*start = ++(*end);
+	if (**end == '\0')
+		write(STDERR_FILENO, "minishell: unclosed squote\n", 28);
+	else
+		*start = ++(*end);
 }
 
 void	check_dquote(char **start, char **end, char **result)
@@ -92,7 +96,10 @@ void	check_dquote(char **start, char **end, char **result)
 		*end = until_charset(*start, "\"$", 0, 0);
 		*result = ft_strnadd(*result, *start, *end - *start);
 	}
-	*start = ++(*end);
+	if (**end == '\0')
+		write(STDERR_FILENO, "minishell: unclosed dquote\n", 28);
+	else
+		*start = ++(*end);
 }
 
 void	check_envvar(char **start, char **end, char **result)
@@ -124,7 +131,14 @@ char	*expand(char *str)
 		}
 		if (*end == '$')
 		{
-			if (*(end + 1) == '"')
+			if (*(end + 1) == '?')
+			{
+				end++;
+				start = ++end;
+				write(STDERR_FILENO, "minishell: exit status\n", 24);
+				continue ;
+			}
+			else if (*(end + 1) == '"')
 				start = ++end;
 			else if (ft_isspace(*(end + 1)) || *(end + 1) == '\n' || !*(end + 1))
 			{

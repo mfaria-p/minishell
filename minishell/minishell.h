@@ -163,14 +163,26 @@ typedef struct s_env
 {
 	char	**envp;
 	char	**export;
+	int	i;
 }	t_env;
 
-t_node_default	*execution(struct s_node_default *node, t_env *env);
+typedef struct s_fds
+{
+	int in;
+	int out;
+}	t_fds;
+
+t_node_default	*execution(struct s_node_default *node, t_env *env, pid_t pid, t_fds *fd);
+int				create_heredoc(const char *delimiter, const char *file_name);
 char			*ft_strdup(const char *s);
 
 t_token			lex(char *str);
 t_node_default	*parse(void);
 void			destroy_tree(t_node_default *node);
 int				siginit(void);
+
+t_env			init_env(char ***export, char **envp);
+void			free_env_export(t_env *env);
+void			main_loop(t_env *env);
 
 #endif

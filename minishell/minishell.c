@@ -6,14 +6,28 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/01 21:42:14 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/20 14:49:52 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <complex.h>
+#include <unistd.h>
 
 int	g_sig = 0;
+
+int	main(int argc, char **argv, char **envp)
+{
+	char	**export;
+	t_env	env;
+	const char	*temp_file_name = "/tmp/heredoc_tmp";
+
+	siginit();
+	env = init_env(&export, envp);
+	main_loop(&env);
+	free_env_export(&env);
+	rl_clear_history();
+	unlink(temp_file_name);
+}
 
 int	ft_isexit(char *str)
 {
@@ -48,6 +62,7 @@ t_env	init_env(char ***export, char **envp)
 	(*export)[count] = NULL;
 	env.envp = envp;
 	env.export = *export;
+	env.i = 0;
 	return (env);
 }
 
@@ -69,38 +84,31 @@ void	free_env_export(t_env *env)
 void	main_loop(t_env *env)
 {
 	char	*line;
-	int		fd[2];
+	t_fds	fds;
+	pid_t	pid;
 
 	line = NULL;
-	fd[0] = dup(STDIN_FILENO);
-	fd[1] = dup(STDOUT_FILENO);
+	fds.in = dup(STDIN_FILENO);
+	fds.out = dup(STDOUT_FILENO);
 	while (1)
 	{
 		line = readline("   /\\\n  /☆ \\\n_/☆ ☆ \\_\n( ๑ ˃̵ᴗ˂̵)و━☆ﾟ");
 		if (line)
 			add_history(line);
+		else
+			exit(EXIT_SUCCESS);
 		if (ft_isexit(line))
 		{
 			free(line);
 			break ;
 		}
 		lex(line);
-		execution(parse(), env);
+		destroy_tree(execution(parse(), env, 1, &fds));
 		waitpid(-1, NULL, 0);
-		dup2(fd[0], STDIN_FILENO);
-		dup2(fd[1], STDOUT_FILENO);
 		free(line);
+		dup2(fds.in, STDIN_FILENO);
+		dup2(fds.out, STDOUT_FILENO);
 	}
-}
-
-int	main(int argc, char **argv, char **envp)
-{
-	char	**export;
-	t_env	env;
-
-	siginit();
-	env = init_env(&export, envp);
-	main_loop(&env);
-	free_env_export(&env);
-	rl_clear_history();
+	close(fds.in);
+	close(fds.out);
 }

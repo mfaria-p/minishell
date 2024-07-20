@@ -1,0 +1,4 @@
+destroy_tree breaks export mallocd memory for new env (why?)
+syntax error for lexer and parser
+memory leaks for malloc and fds
+
