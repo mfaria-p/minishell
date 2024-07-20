@@ -24,7 +24,7 @@ OBJS = $(SRCS:.c=.o)
 CC = cc
 
 # CFLAGS = -Wall -Wextra -Werror -I. #-lreadline
-CFLAGS = -lreadline -I. -g
+CFLAGS = -lreadline -I. -g #-fsanitize=address -static-libasan
 
 RM = rm -rf
 
@@ -44,6 +44,11 @@ fclean: clean
 
 re: fclean all
 
+vgdb:
+	valgrind --suppressions=parser/ignore_readline --leak-check=full --show-leak-kinds=all --track-fds=yes -q --vgdb-error=0 ./$(NAME)
+
 .PHONY: all clean fclean re build
 
-#valgrind --suppressions=parser/ignore_readline --leak-check=full --show-leak-kinds=all --track-fds=yes ./a.out
+#valgrind --suppressions=parser/ignore_readline --leak-check=full --show-leak-kinds=all --track-fds=yes ./minishell
+# RUN VALGRIND AND GDB:
+#valgrind --suppressions=parser/ignore_readline --leak-check=full --show-leak-kinds=all --track-fds=yes -q --vgdb-error=0 ./minishell

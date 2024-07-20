@@ -180,7 +180,6 @@ t_token			lex(char *str);
 t_node_default	*parse(void);
 void			destroy_tree(t_node_default *node);
 int				siginit(void);
-void			process_sig(void);
 
 t_env			init_env(char ***export, char **envp);
 void			free_env_export(t_env *env);
