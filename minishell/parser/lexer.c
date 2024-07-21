@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:46:47 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/07/21 17:18:53 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/21 18:18:55 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ t_token	lex(char *str)
 			if (end == cpos)
 			{
 				write(STDERR_FILENO, "minishell: no redirect file\n", 28);
-				free(content);
 				return ((t_token){ERR, NULL, *cpos});
 			}
 			content = ft_strndup(cpos, end - cpos + 1);
@@ -98,7 +97,6 @@ t_token	lex(char *str)
 			if (end == cpos)
 			{
 				write(STDERR_FILENO, "minishell: no redirect file\n", 28);
-				free(content);
 				return ((t_token){ERR, NULL, *cpos});
 			}
 			content = ft_strndup(cpos, end - cpos + 1);
@@ -120,7 +118,6 @@ t_token	lex(char *str)
 			if (end == cpos)
 			{
 				write(STDERR_FILENO, "minishell: no heredoc delimeter\n", 33);
-				free(content);
 				return ((t_token){ERR, NULL, *cpos});
 			}
 			content = ft_strndup(cpos, end - cpos + 1);
@@ -137,7 +134,6 @@ t_token	lex(char *str)
 			if (end == cpos)
 			{
 				write(STDERR_FILENO, "minishell: no redirect file\n", 28);
-				free(content);
 				return ((t_token){ERR, NULL, *cpos});
 			}
 			content = ft_strndup(cpos, end - cpos + 1);

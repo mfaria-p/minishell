@@ -60,3 +60,6 @@ valgrind:
 
 
 .PHONY: all clean fclean re build vgdb valgrind
+
+# NOTE: PIPE WITH INVALID COMMAND HAS VALGRIND ERRORS
+# COMMAND WITH FILE AS INPUT HAS VALGRIND ERRORS

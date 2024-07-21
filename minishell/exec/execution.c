@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/21 17:35:09 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/21 18:22:58 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	exec_red(struct s_node_redirect *red, t_env *env, pid_t is_parent)
 		execution((struct s_node_default *)red->next, env, is_parent, NULL);
 }
 
-void	exec_exec(struct s_node_execution *exec, t_env *env, pid_t is_parent)
+void	exec_exec(struct s_node_execution *exec, t_env *env, pid_t is_parent, t_node_default *root, t_fds *fds)
 {
 	pid_t	pid;
 
@@ -95,13 +95,22 @@ void	exec_exec(struct s_node_execution *exec, t_env *env, pid_t is_parent)
 	else if (!ft_strncmp(exec->command, "env", 4))
 		ft_printenv(env->envp);
 	else if (!is_parent)
-		ft_execute(exec, env->envp);
+	{
+		close(fds->in);
+		close(fds->out);
+		ft_execute(exec, env->envp, root);
+		destroy_tree(root);
+		free_env_export(env);
+	}
 	else
 	{
 		pid = fork();
 		if (pid == 0)
 		{
-			ft_execute(exec, env->envp);
+			close(fds->in);
+			close(fds->out);
+			ft_execute(exec, env->envp, root);
+			destroy_tree(root);
 			free_env_export(env);
 			exit(EXIT_SUCCESS);
 		}
@@ -111,14 +120,29 @@ void	exec_exec(struct s_node_execution *exec, t_env *env, pid_t is_parent)
 
 t_node_default	*execution(struct s_node_default *node, t_env *env, pid_t is_parent, t_fds *fd)
 {
+	static t_node_default	*root;
+	static t_fds			*fds;
+
+	if (!root)
+		root = node;
+	if (!fds)
+		fds = fd;
 	if (node)
 	{
 		if ((node->node_type & E_cmd))
-			exec_exec((struct s_node_execution *)node, env, is_parent);
+			exec_exec((struct s_node_execution *)node, env, is_parent, root, fds);
 		else if (node->node_type & (1 << 5))
 			exec_red((struct s_node_redirect *)node, env, is_parent);
 		else
 			exec_pipe((struct s_node_pipe *)node, env);
 	}
+	if (!is_parent)
+	{
+		close(fds->in);
+		close(fds->out);
+		destroy_tree(root);
+	}
+	root = NULL;
+	fds = NULL;
 	return (node);
 }
