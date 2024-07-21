@@ -47,8 +47,8 @@ re: fclean all
 vgdb:
 	valgrind --suppressions=parser/ignore_readline --leak-check=full --show-leak-kinds=all --track-fds=yes -q --vgdb-error=0 ./$(NAME)
 
-.PHONY: all clean fclean re build
+valgrind:
+	valgrind --suppressions=parser/ignore_readline --leak-check=full --show-leak-kinds=all --track-fds=yes ./minishell
 
-#valgrind --suppressions=parser/ignore_readline --leak-check=full --show-leak-kinds=all --track-fds=yes ./minishell
-# RUN VALGRIND AND GDB:
-#valgrind --suppressions=parser/ignore_readline --leak-check=full --show-leak-kinds=all --track-fds=yes -q --vgdb-error=0 ./minishell
+
+.PHONY: all clean fclean re build vgdb valgrind
