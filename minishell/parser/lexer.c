@@ -6,11 +6,12 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:46:47 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/07/21 11:14:45 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/21 11:37:10 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+#include <unistd.h>
 
 char	*next_token(char *str)
 {
@@ -75,6 +76,8 @@ t_token	lex(char *str)
 			cpos++;
 			cpos = skip_space(cpos);
 			end = until_charset(cpos, "<>|", 1, 0);
+			if (end == cpos)
+				write(STDERR_FILENO, "minishell: no redirect file\n", 28);
 			content = ft_strndup(cpos, end - cpos + 1);
 			content = expand(content);
 			cpos = end;
@@ -84,6 +87,8 @@ t_token	lex(char *str)
 		{
 			cpos = skip_space(cpos);
 			end = until_charset(cpos, "<>|", 1, 0);
+			if (end == cpos)
+				write(STDERR_FILENO, "minishell: no redirect file\n", 28);
 			content = ft_strndup(cpos, end - cpos + 1);
 			content = expand(content);
 			cpos = end;
@@ -98,6 +103,8 @@ t_token	lex(char *str)
 			cpos++;
 			cpos = skip_space(cpos);
 			end = until_charset(cpos, "<>|", 1, 0);
+			if (end == cpos)
+				write(STDERR_FILENO, "minishell: no redirect file\n", 28);
 			content = ft_strndup(cpos, end - cpos + 1);
 			content = expand(content);
 			cpos = end;
@@ -107,6 +114,8 @@ t_token	lex(char *str)
 		{
 			cpos = skip_space(cpos);
 			end = until_charset(cpos, "<>|", 1, 0);
+			if (end == cpos)
+				write(STDERR_FILENO, "minishell: no redirect file\n", 28);
 			content = ft_strndup(cpos, end - cpos + 1);
 			content = expand(content);
 			cpos = end;
