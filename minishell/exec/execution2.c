@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:05:32 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/21 21:39:21 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/21 21:55:23 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ char	*get_cmd(char **paths, char *cmd)
 	char	*tmp;
 	char	*command;
 
-	if (access(cmd, 0) == 0)
+	if (access(cmd, X_OK) == 0)
 		return (cmd);
 	while (*paths)
 	{
 		tmp = ft_strjoin(*paths, "/");
 		command = ft_strjoin(tmp, cmd);
 		free(tmp);
-		if (access(command, 0) == 0)
+		if (access(command, X_OK) == 0)
 			return (command);
 		free(command);
 		paths++;
