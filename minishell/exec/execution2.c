@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:05:32 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/21 17:48:41 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/21 21:39:21 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,12 +87,13 @@ void	ft_execute(struct s_node_execution *exec, char **envp, t_node_default *root
 		argv[0] = command;
 		while (i < param_count)
 		{
-			argv[i + 1] = exec->params[i];
+			argv[i + 1] = ft_strdup(exec->params[i]);
 			i++;
 		}
 		argv[param_count + 1] = NULL;
 		destroy_tree(root);
 		execve(command, argv, envp);
+		write(STDERR_FILENO, "sera\n", 6);
 		free(command);
 		free(argv);
 	}
