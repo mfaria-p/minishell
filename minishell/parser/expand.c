@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:57:40 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/07/16 20:12:09 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/21 11:29:14 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,13 @@ void	check_dquote(char **start, char **end, char **result)
 	*result = ft_strnadd(*result, *start, *end - *start);
 	while (**end == '$')
 	{
+		if (*(*end + 1) == '?')
+		{
+			(*end)++;
+			(*start) = ++(*end);
+			write(STDERR_FILENO, "minishell: exit status\n", 24);
+			continue ;
+		}
 		*start = ++(*end);
 		*end = until_charset(*start, "\"$", 1, 1);
 		*result = ft_stradd(*result, ft_getenv(*start, *end - *start + 1));
