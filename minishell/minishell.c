@@ -6,23 +6,24 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/16 20:19:15 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/19 19:18:01 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <unistd.h>
 
-int	g_sig = 0;
+int		g_sig = 0;
 
 int	main(int argc, char **argv, char **envp)
 {
-	char	**export;
-	t_env	env;
+	char		**export;
+	char		**envp2;
+	t_env		env;
 	const char	*temp_file_name = "/tmp/heredoc_tmp";
 
 	siginit();
-	env = init_env(&export, envp);
+	env = init_env(&export, &envp2, envp);
 	main_loop(&env);
 	free_env_export(&env);
 	rl_clear_history();
@@ -41,7 +42,7 @@ int	ft_isexit(char *str)
 	return (0);
 }
 
-t_env	init_env(char ***export, char **envp)
+t_env	init_env(char ***export, char ***envp2, char **envp)
 {
 	t_env	env;
 	int		count;
@@ -60,9 +61,18 @@ t_env	init_env(char ***export, char **envp)
 		i++;
 	}
 	(*export)[count] = NULL;
-	env.envp = envp;
 	env.export = *export;
-	env.i = 0;
+	*envp2 = malloc((count + 1) * sizeof(char *));
+	if (*envp2 == NULL)
+		exit(EXIT_FAILURE);
+	i = 0;
+	while (i < count)
+	{
+		(*envp2)[i] = ft_strdup(envp[i]);
+		i++;
+	}
+	(*envp2)[count] = NULL;
+	env.envp = *envp2;
 	return (env);
 }
 
@@ -72,12 +82,25 @@ void	free_env_export(t_env *env)
 	int	i;
 
 	i = 0;
-	while (env->export[i] != NULL)
+	if (env->export)
 	{
-		free(env->export[i]);
-		i++;
+		while (env->export[i] != NULL)
+		{
+			free(env->export[i]);
+			i++;
+		}
+		free(env->export);
 	}
-	free(env->export);
+	i = 0;
+	if (env->envp)
+	{
+		while (env->envp[i] != NULL)
+		{
+			free(env->envp[i]);
+			i++;
+		}
+		free(env->envp);
+	}
 }
 
 // Function for the main execution loop
@@ -94,20 +117,25 @@ void	main_loop(t_env *env)
 	{
 		line = readline("( ๑ ˃̵ᴗ˂̵)و ");
 		if (line)
-			add_history(line);
+		{
+			if (strlen(line) > 0)
+			{
+				add_history(line);
+				if (ft_isexit(line))
+				{
+					free(line);
+					break ;
+				}
+				lex(line);
+				destroy_tree(execution(parse(), env, 1, &fds));
+				waitpid(-1, NULL, 0);
+				dup2(fds.in, STDIN_FILENO);
+				dup2(fds.out, STDOUT_FILENO);
+			}
+			free(line);
+		}
 		else
 			exit(EXIT_SUCCESS);
-		if (ft_isexit(line))
-		{
-			free(line);
-			break ;
-		}
-		lex(line);
-		destroy_tree(execution(parse(), env, 1, &fds));
-		waitpid(-1, NULL, 0);
-		free(line);
-		dup2(fds.in, STDIN_FILENO);
-		dup2(fds.out, STDOUT_FILENO);
 	}
 	close(fds.in);
 	close(fds.out);
