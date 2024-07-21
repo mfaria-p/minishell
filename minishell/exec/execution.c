@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/21 18:22:58 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/21 21:49:39 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,7 @@ void	exec_exec(struct s_node_execution *exec, t_env *env, pid_t is_parent, t_nod
 	else if (!ft_strncmp(exec->command, "env", 4))
 		ft_printenv(env->envp);
 	else if (!is_parent)
-	{
-		close(fds->in);
-		close(fds->out);
 		ft_execute(exec, env->envp, root);
-		destroy_tree(root);
-		free_env_export(env);
-	}
 	else
 	{
 		pid = fork();
