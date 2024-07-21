@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/19 18:17:29 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/21 17:35:09 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,11 +111,14 @@ void	exec_exec(struct s_node_execution *exec, t_env *env, pid_t is_parent)
 
 t_node_default	*execution(struct s_node_default *node, t_env *env, pid_t is_parent, t_fds *fd)
 {
-	if ((node->node_type & E_cmd))
-		exec_exec((struct s_node_execution *)node, env, is_parent);
-	else if (node->node_type & (1 << 5))
-		exec_red((struct s_node_redirect *)node, env, is_parent);
-	else
-		exec_pipe((struct s_node_pipe *)node, env);
+	if (node)
+	{
+		if ((node->node_type & E_cmd))
+			exec_exec((struct s_node_execution *)node, env, is_parent);
+		else if (node->node_type & (1 << 5))
+			exec_red((struct s_node_redirect *)node, env, is_parent);
+		else
+			exec_pipe((struct s_node_pipe *)node, env);
+	}
 	return (node);
 }

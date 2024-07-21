@@ -118,6 +118,7 @@ typedef struct s_token
 {
 	int				code;
 	char			*content;
+	char			unexpected;
 }					t_token;
 
 typedef struct s_node_default

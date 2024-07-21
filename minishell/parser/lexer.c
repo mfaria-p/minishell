@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:46:47 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/07/21 11:37:10 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/21 17:18:53 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ t_token	lex(char *str)
 	{
 		content = ft_strndup(cpos, end - cpos + 1);
 		content = expand(content);
+		if (!content)
+			return ((t_token){ERR, NULL, *cpos});
 		cpos = end;
 		return ((t_token){E_cmd, content});
 	}
@@ -77,9 +79,15 @@ t_token	lex(char *str)
 			cpos = skip_space(cpos);
 			end = until_charset(cpos, "<>|", 1, 0);
 			if (end == cpos)
+			{
 				write(STDERR_FILENO, "minishell: no redirect file\n", 28);
+				free(content);
+				return ((t_token){ERR, NULL, *cpos});
+			}
 			content = ft_strndup(cpos, end - cpos + 1);
 			content = expand(content);
+			if (!content)
+				return ((t_token){ERR, NULL, *cpos});
 			cpos = end;
 			return ((t_token){R_heredoc, content});
 		}
@@ -88,9 +96,15 @@ t_token	lex(char *str)
 			cpos = skip_space(cpos);
 			end = until_charset(cpos, "<>|", 1, 0);
 			if (end == cpos)
+			{
 				write(STDERR_FILENO, "minishell: no redirect file\n", 28);
+				free(content);
+				return ((t_token){ERR, NULL, *cpos});
+			}
 			content = ft_strndup(cpos, end - cpos + 1);
 			content = expand(content);
+			if (!content)
+				return ((t_token){ERR, NULL, *cpos});
 			cpos = end;
 			return ((t_token){R_input, content});
 		}
@@ -104,9 +118,15 @@ t_token	lex(char *str)
 			cpos = skip_space(cpos);
 			end = until_charset(cpos, "<>|", 1, 0);
 			if (end == cpos)
-				write(STDERR_FILENO, "minishell: no redirect file\n", 28);
+			{
+				write(STDERR_FILENO, "minishell: no heredoc delimeter\n", 33);
+				free(content);
+				return ((t_token){ERR, NULL, *cpos});
+			}
 			content = ft_strndup(cpos, end - cpos + 1);
 			content = expand(content);
+			if (!content)
+				return ((t_token){ERR, NULL, *cpos});
 			cpos = end;
 			return ((t_token){R_app, content});
 		}
@@ -115,9 +135,15 @@ t_token	lex(char *str)
 			cpos = skip_space(cpos);
 			end = until_charset(cpos, "<>|", 1, 0);
 			if (end == cpos)
+			{
 				write(STDERR_FILENO, "minishell: no redirect file\n", 28);
+				free(content);
+				return ((t_token){ERR, NULL, *cpos});
+			}
 			content = ft_strndup(cpos, end - cpos + 1);
 			content = expand(content);
+			if (!content)
+				return ((t_token){ERR, NULL, *cpos});
 			cpos = end;
 			return ((t_token){R_out, content});
 		}
