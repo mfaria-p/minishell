@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 21:53:16 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/07/16 18:36:45 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/21 17:39:21 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@ t_node_default	*parse(void)
 
 	root = NULL;
 	parse_p(&root);
+	if (check_tree(root) < 0)
+	{
+		destroy_tree(root);
+		root = NULL;
+	}
 	return (root);
 }
 
@@ -44,6 +49,12 @@ void	parse_p(t_node_default **root)
 	}
 	else if (tail && token.code == EOL)
 		tail->right_node = (t_node_default *)branch;
+	else if (token.code == ERR)
+	{
+		destroy_tree(*root);
+		*root = NULL;
+	}
+	tail = NULL;
 }
 
 t_token	parse_e(t_node_default **branch, t_node_default **root)

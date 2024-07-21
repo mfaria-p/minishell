@@ -1,6 +1,7 @@
 NAME = minishell
 
 SRCS_PARSER =	destroy_tree.c	\
+				check_tree.c	\
 				expand.c		\
 				lexer.c			\
 				lexer_utils.c	\

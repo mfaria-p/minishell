@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:57:40 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/07/21 11:29:14 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/21 17:17:17 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,18 +71,22 @@ char	*ft_getenv(char *str, size_t n)
 	return (result);
 }
 
-void	check_squote(char **start, char **end, char **result)
+int	check_squote(char **start, char **end, char **result)
 {
 	*start = ++(*end);
 	*end = until_charset(*start, "'", 0, 0);
 	*result = ft_strnadd(*result, *start, *end - *start);
 	if (**end == '\0')
+	{
 		write(STDERR_FILENO, "minishell: unclosed squote\n", 28);
+		return (-1);
+	}
 	else
 		*start = ++(*end);
+	return (0);
 }
 
-void	check_dquote(char **start, char **end, char **result)
+int	check_dquote(char **start, char **end, char **result)
 {
 	*start = ++(*end);
 	*end = until_charset(*start, "\"$", 0, 0);
@@ -104,9 +108,13 @@ void	check_dquote(char **start, char **end, char **result)
 		*result = ft_strnadd(*result, *start, *end - *start);
 	}
 	if (**end == '\0')
+	{
 		write(STDERR_FILENO, "minishell: unclosed dquote\n", 28);
+		return (-1);
+	}
 	else
 		*start = ++(*end);
+	return (0);
 }
 
 void	check_envvar(char **start, char **end, char **result)
@@ -133,7 +141,12 @@ char	*expand(char *str)
 		start = end;
 		if (*end == '\'')
 		{
-			check_squote(&start, &end, &result);
+			if (check_squote(&start, &end, &result) < 0)
+			{
+				free(result);
+				free(str);
+				return (NULL);
+			}
 			continue ;
 		}
 		if (*end == '$')
@@ -160,7 +173,12 @@ char	*expand(char *str)
 		}
 		if (*end == '"')
 		{
-			check_dquote(&start, &end, &result);
+			if (check_dquote(&start, &end, &result) < 0)
+			{
+				free(result);
+				free(str);
+				return (NULL);
+			}
 			continue ;
 		}
 	}
