@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/16 18:14:54 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/18 19:43:02 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ enum						e_nodetype
 
 // EXECUTION
 
-t_node_default				*execution(struct s_node_default *node, t_env *env, pid_t pid, t_fds *fd);
+t_node_default				*execution(struct s_node_default *node, t_env *env,
+								pid_t pid, t_fds *fd);
 
 // pipe executing functions
 void						exec_pipe(struct s_node_pipe *pip, t_env *env);
@@ -81,7 +82,8 @@ pid_t						have_child(struct s_node_pipe *pip, int rw,
 								int pipefd[2], t_env *env);
 
 // redirect executing functions
-void						exec_red(struct s_node_redirect *red, t_env *env, pid_t pid);
+void						exec_red(struct s_node_redirect *red, t_env *env,
+								pid_t pid);
 void						exec_not_heredoc(struct s_node_redirect *red,
 								int flags, int io, t_env *env);
 void						exec_heredoc(struct s_node_redirect *red,
@@ -93,8 +95,8 @@ int							file_exist(const char *filename);
 								t_env *env, int flags, int io); */
 
 // Simple commands executing functions
-void						exec_exec(struct s_node_execution *exec,
-								t_env *env, pid_t pid);
+void						exec_exec(struct s_node_execution *exec, t_env *env,
+								pid_t pid);
 char						*find_path(char **envp);
 char						*get_cmd(char **paths, char *cmd);
 char						*find_the_command(char **envp,
@@ -122,10 +124,13 @@ size_t						ft_strlcpy(char *dst, const char *src, size_t size);
 void						ft_echo(char **params);
 int							ft_countchar(const char *str, char c);
 
-void	ft_cd(t_env *env, char *path);
-char	*find_var2(char	*name);
+void						ft_cd(t_env *env, char *path);
+char						*find_var2(char *name);
+char						*find_oldpwd(char **envp);
 char						*create_env_var(const char *var, const char *value);
-void						ft_cd_home(t_env	*env);
+void						ft_cd_home(t_env *env);
+void						update_pwd(t_env *env, const char *current);
+void						update_oldpwd(t_env *env, const char *current);
 
 void						ft_pwd(char **envp);
 
@@ -136,15 +141,18 @@ void						set_env_with_equal(char ***envp, char *var_value);
 void						set_env_without_equal(char ***envp, char *var);
 void						ft_doexport(t_env *env, char **params);
 int							is_valid_identifier(char *var, char *value);
-void	set_env_with_equal_envp(char ***envp, char *var_value, int *i);
-// void						sort_env(char **envp);
 int							find_var(char **envp, const char *var);
-char	**resize_and_add_envp(char ***envp, char *new_var, int *j);
-char	**remove_var(char **envp, char *var);
-char	**remove_var_envp(char **envp, char *var, int k);
-//void ft_free(char **envp);
+int							compare_env_var(const char *env_var,
+								const char *var, int len2);
+int							get_var_length(const char *var);
 
-void	ft_unset(char **args, t_env *env);
+void						ft_unset(char **args, t_env *env);
+char						**remove_var(char **envp, char *var);
+char						**allocate_env_array(char **envp);
+int							matches_var(char *env_entry, char *var, int len2);
+char						**remove_var(char **envp, char *var);
+
+void						ft_free(char **envp);
 
 void						ft_printenv(char **envp);
 
@@ -154,6 +162,6 @@ int							cmd_not_found(char *str);
 void						ft_putstr_fd(char *s, int fd);
 int							file_not_found(char *str);
 void						error_identifier(char *var, char *value);
-int	error_envp(char *str);
+int							error_envp(char *str);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 23:47:45 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/13 12:31:16 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/18 19:16:19 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,22 +73,4 @@ int	error_envp(char *str)
 	ft_putstr_fd(str, STDERR_FILENO);
 	ft_putstr_fd("not found in environment variables.\n", STDERR_FILENO);
 	return (EXIT_FAILURE);
-}
-
-void	error_identifier(char *var, char *value)
-{
-	if (!value)
-	{
-		ft_putstr_fd("minishell: export: `", STDERR_FILENO);
-		ft_putstr_fd(var, STDERR_FILENO);
-		ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
-	}
-	else
-	{
-		ft_putstr_fd("minishell: export: `", STDERR_FILENO);
-		ft_putstr_fd(var, STDERR_FILENO);
-		ft_putstr_fd("=", STDERR_FILENO);
-		ft_putstr_fd(value, STDERR_FILENO);
-		ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
-	}
 }
