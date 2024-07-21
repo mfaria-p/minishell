@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/18 19:43:02 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/21 18:01:59 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,13 +96,13 @@ int							file_exist(const char *filename);
 
 // Simple commands executing functions
 void						exec_exec(struct s_node_execution *exec, t_env *env,
-								pid_t pid);
+								pid_t pid, t_node_default *root, t_fds *fds);
 char						*find_path(char **envp);
 char						*get_cmd(char **paths, char *cmd);
 char						*find_the_command(char **envp,
 								struct s_node_execution *exec);
 void						ft_execute(struct s_node_execution *exec,
-								char **envp);
+								char **envp, t_node_default *root);
 
 // utils
 size_t						ft_strlen(const char *s);
