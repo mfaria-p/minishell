@@ -5,3 +5,5 @@ redirect to null arg
 export +=
 
 signals inside heredoc
+
+changing $HOME doesn't update HOME for cd
