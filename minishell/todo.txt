@@ -1,0 +1,7 @@
+Ctrl-C on minishell on minishell
+
+redirect to null arg
+
+export +=
+
+signals inside heredoc
