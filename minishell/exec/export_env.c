@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 00:09:12 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/18 19:21:37 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/25 17:24:14 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,23 @@ void	set_env_with_equal(char ***envp, char *var_value)
 		free((*envp)[index]);
 		(*envp)[index] = ft_strdup(var_value);
 	}
+	else
+	{
+		if (resize_and_add(envp, var_value) == NULL)
+			return ;
+	}
+}
+
+void	set_env_with_equal_plus(char ***envp, char *var_value)
+{
+	int		index;
+	int		var_len;
+	int		value_len;
+	char	*new_value;
+
+	index = find_var(*envp, var_value);
+	if (index >= 0)
+		return ;
 	else
 	{
 		if (resize_and_add(envp, var_value) == NULL)
@@ -78,7 +95,7 @@ void	ft_doexport(t_env *env, char **params)
 				set_env_with_equal(&env->envp, params[i]);
 			}
 		}
-		else
+		else if (equal_sign == NULL)
 		{
 			if (is_valid_identifier(params[i], NULL))
 				set_env_without_equal(&env->export, params[i]);

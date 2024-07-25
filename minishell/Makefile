@@ -11,7 +11,6 @@ SRCS_EXEC =		ft_echo.c			\
 				ft_pwd.c		\
 				ft_cd.c	\
 				ft_cd2.c \
-				built_ins3.c		\
 				ft_unset.c	\
 				export_env.c \
 				export_env2.c	\
@@ -23,7 +22,8 @@ SRCS_EXEC =		ft_echo.c			\
 				exec_utils4.c \
 				execution.c			\
 				execution2.c		\
-				execution3.c
+				execution3.c		\
+				export_env3.c
 
 SRCS = minishell.c signal.c $(addprefix parser/, $(SRCS_PARSER)) $(addprefix exec/, $(SRCS_EXEC))
 
