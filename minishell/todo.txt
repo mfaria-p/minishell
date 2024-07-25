@@ -1,9 +1,11 @@
 Ctrl-C on minishell on minishell
 
-redirect to null arg
+redirect to null arg - ACHO Q TA
 
 export +=
 
 signals inside heredoc
 
-changing $HOME doesn't update HOME for cd
+changing $HOME doesn't update HOME for cd - ACHO Q TA
+
+$PWD n aparece o que aparece no bash

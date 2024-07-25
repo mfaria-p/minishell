@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:51:23 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/18 19:53:44 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/25 13:23:22 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,19 @@ char	*find_oldpwd(char **envp)
 	}
 }
 
+char	*find_home(char **envp)
+{
+	while (*envp && ft_strncmp("HOME=", *envp, 5) != 0)
+		envp++;
+	if (*envp)
+		return (*envp + 5);
+	else
+	{
+		err_cd();
+		return (NULL);
+	}
+}
+
 void	ft_cd(t_env *env, char *path)
 {
 	char	current[200];
@@ -84,7 +97,7 @@ void	ft_cd_home(t_env *env)
 	char	current[200];
 
 	getcwd(current, sizeof(current));
-	home = find_var2("HOME");
+	home = find_home(env->envp);
 	chdir(home);
 	oldpwd_var = create_env_var("OLDPWD", current);
 	home_var = create_env_var("PWD", home);

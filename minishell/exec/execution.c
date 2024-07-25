@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/21 21:49:39 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/25 12:04:53 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,16 @@ void	exec_pipe(struct s_node_pipe *pip, t_env *env)
 
 void	exec_red(struct s_node_redirect *red, t_env *env, pid_t is_parent)
 {
-	if (red->node_type == R_out)
-		exec_not_heredoc(red, O_CREAT | O_WRONLY | O_TRUNC, STDOUT_FILENO, env);
-	else if (red->node_type == R_app)
-		exec_not_heredoc(red, O_CREAT | O_WRONLY | O_APPEND, STDOUT_FILENO, env);
-	else if (red->node_type == R_heredoc)
-		exec_heredoc(red, env);
-	else
-		exec_not_heredoc(red, O_RDONLY, STDIN_FILENO, env);
-	if (red->next)
-		execution((struct s_node_default *)red->next, env, is_parent, NULL);
+		if (red->node_type == R_out)
+			exec_not_heredoc(red, O_CREAT | O_WRONLY | O_TRUNC, STDOUT_FILENO, env);
+		else if (red->node_type == R_app)
+			exec_not_heredoc(red, O_CREAT | O_WRONLY | O_APPEND, STDOUT_FILENO, env);
+		else if (red->node_type == R_heredoc)
+			exec_heredoc(red, env);
+		else
+			exec_not_heredoc(red, O_RDONLY, STDIN_FILENO, env);
+		if (red->next && (*(red->filename)) && red->filename != NULL)
+			execution((struct s_node_default *)red->next, env, is_parent, NULL);
 }
 
 void	exec_exec(struct s_node_execution *exec, t_env *env, pid_t is_parent, t_node_default *root, t_fds *fds)

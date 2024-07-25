@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/21 18:01:59 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/25 13:17:02 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ pid_t						have_child(struct s_node_pipe *pip, int rw,
 // redirect executing functions
 void						exec_red(struct s_node_redirect *red, t_env *env,
 								pid_t pid);
+char	*find_home(char **envp);
 void						exec_not_heredoc(struct s_node_redirect *red,
 								int flags, int io, t_env *env);
 void						exec_heredoc(struct s_node_redirect *red,
