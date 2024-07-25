@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 00:09:12 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/25 17:24:14 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/25 23:12:26 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	ft_doexport(t_env *env, char **params)
 	while (params[i] != NULL)
 	{
 		equal_sign = ft_strchr(params[i], '=');
-		if (equal_sign != NULL)
+		if (equal_sign != NULL && *(equal_sign - 1) != '+')
 		{
 			*equal_sign = '\0';
 			if (is_valid_identifier(params[i], equal_sign + 1) == 1)
@@ -99,6 +99,18 @@ void	ft_doexport(t_env *env, char **params)
 		{
 			if (is_valid_identifier(params[i], NULL))
 				set_env_without_equal(&env->export, params[i]);
+		}
+		else
+		{
+			*equal_sign = '\0';
+			*(equal_sign - 1) = '\0';
+			if (is_valid_identifier_plus(params[i], equal_sign + 1) == 1)
+				{
+					*equal_sign = '=';
+					*(equal_sign - 1) = '+';
+					//set_env_with_equal_plus(&env->export, params[i]);
+					//set_env_with_equal_plus(&env->envp, params[i]);
+				}
 		}
 		i++;
 	}

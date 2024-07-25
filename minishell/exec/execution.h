@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/25 13:17:02 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/25 23:09:21 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ void						set_env_with_equal(char ***envp, char *var_value);
 void						set_env_without_equal(char ***envp, char *var);
 void						ft_doexport(t_env *env, char **params);
 int							is_valid_identifier(char *var, char *value);
+int	is_valid_identifier_plus(char *var, char *value);
 int							find_var(char **envp, const char *var);
 int							compare_env_var(const char *env_var,
 								const char *var, int len2);
@@ -163,6 +164,7 @@ int							cmd_not_found(char *str);
 void						ft_putstr_fd(char *s, int fd);
 int							file_not_found(char *str);
 void						error_identifier(char *var, char *value);
+void	error_identifier_plus(char *var, char *value);
 int							error_envp(char *str);
 
 #endif
