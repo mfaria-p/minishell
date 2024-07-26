@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/25 23:09:21 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/26 11:11:25 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ void						ft_doexport(t_env *env, char **params);
 char						**resize_and_add(char ***envp, char *new_var);
 void						set_env_with_equal(char ***envp, char *var_value);
 void						set_env_without_equal(char ***envp, char *var);
+void set_env_with_equal_plus(char ***envp, char *var_value);
 void						ft_doexport(t_env *env, char **params);
 int							is_valid_identifier(char *var, char *value);
 int	is_valid_identifier_plus(char *var, char *value);
@@ -166,5 +167,6 @@ int							file_not_found(char *str);
 void						error_identifier(char *var, char *value);
 void	error_identifier_plus(char *var, char *value);
 int							error_envp(char *str);
+int err_cd(void);
 
 #endif
