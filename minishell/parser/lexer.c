@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:46:47 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/07/28 21:47:20 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/28 22:24:07 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,15 @@ char	*next_token(char *str)
 	}
 }
 
-t_token	lex(char *str)
+t_token	lex(char *str, int *wstatus)
 {
 	static char	*cpos;
 	static int	status;	
 	char		*end;
 	char		*content;
 
+	if (wstatus)
+		status = *wstatus;
 	if (str)
 	{
 		cpos = str;

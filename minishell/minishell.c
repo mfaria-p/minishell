@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/21 17:59:50 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/28 22:24:37 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,10 @@ void	free_env_export(t_env *env)
 // Function for the main execution loop
 void	main_loop(t_env *env)
 {
-	char	*line;
-	t_fds	fds;
-	pid_t	pid;
+	char		*line;
+	t_fds		fds;
+	pid_t		pid;
+	static int	status;
 
 	line = NULL;
 	fds.in = dup(STDIN_FILENO);
@@ -126,7 +127,7 @@ void	main_loop(t_env *env)
 					free(line);
 					break ;
 				}
-				lex(line);
+				lex(line, &status);
 				destroy_tree(execution(parse(), env, 1, &fds));
 				waitpid(-1, NULL, 0);
 				dup2(fds.in, STDIN_FILENO);

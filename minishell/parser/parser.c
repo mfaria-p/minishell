@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 21:53:16 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/07/21 17:39:21 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/28 22:24:57 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ t_token	parse_r(t_node_default **branch, t_node_default **root, t_node_execution
 	t_token					token;
 	const char				*temp_file_name = "/tmp/heredoc_tmp";
 
-	token = lex(NULL);
+	token = lex(NULL, NULL);
 	while (token.code & 1 << 5)
 	{
 		if (token.code == R_heredoc)
@@ -132,7 +132,7 @@ t_token	parse_r(t_node_default **branch, t_node_default **root, t_node_execution
 		else
 			tail = new_node;
 		tail->next = (t_node_default *)node_exec;
-		token = lex(NULL);
+		token = lex(NULL, NULL);
 	}
 	return (token);
 }

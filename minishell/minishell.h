@@ -177,7 +177,7 @@ int				create_heredoc(const char *delimiter, const char *file_name);
 char			*ft_strdup(const char *s);
 size_t	ft_strlen(const char *s);
 
-t_token			lex(char *str);
+t_token			lex(char *str, int *wstatus);
 t_node_default	*parse(void);
 void			destroy_tree(t_node_default *node);
 int				siginit(void);
