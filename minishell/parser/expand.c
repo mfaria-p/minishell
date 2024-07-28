@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:57:40 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/07/21 17:17:17 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/28 22:03:36 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,21 +86,30 @@ int	check_squote(char **start, char **end, char **result)
 	return (0);
 }
 
-int	check_dquote(char **start, char **end, char **result)
+int	check_dquote(char **start, char **end, char **result, int status)
 {
 	*start = ++(*end);
 	*end = until_charset(*start, "\"$", 0, 0);
 	*result = ft_strnadd(*result, *start, *end - *start);
 	while (**end == '$')
 	{
+		if (ft_isspace(*(*end + 1)) || *(*end + 1) == '\n' || !*(*end + 1) || *(*end + 1) == '"')
+		{
+			*result = ft_strnadd(*result, "$", 1);
+			*start = ++(*end);
+			*end = until_charset(*start, "\"$", 0, 0);
+			continue ;
+		}
 		if (*(*end + 1) == '?')
 		{
 			(*end)++;
 			(*start) = ++(*end);
-			write(STDERR_FILENO, "minishell: exit status\n", 24);
+			*result = ft_stradd(*result, ft_itoa(status));
+			*end = until_charset(*start, "\"$", 0, 0);
 			continue ;
 		}
-		*start = ++(*end);
+		else
+			*start = ++(*end);
 		*end = until_charset(*start, "\"$", 1, 1);
 		*result = ft_stradd(*result, ft_getenv(*start, *end - *start + 1));
 		*start = *end;
@@ -125,7 +134,7 @@ void	check_envvar(char **start, char **end, char **result)
 	*start = *end;
 }
 
-char	*expand(char *str)
+char	*expand(char *str, int status)
 {
 	char	*result;
 	char	*start;
@@ -155,7 +164,7 @@ char	*expand(char *str)
 			{
 				end++;
 				start = ++end;
-				write(STDERR_FILENO, "minishell: exit status\n", 24);
+				result = ft_stradd(result, ft_itoa(status));
 				continue ;
 			}
 			else if (*(end + 1) == '"')
@@ -173,7 +182,7 @@ char	*expand(char *str)
 		}
 		if (*end == '"')
 		{
-			if (check_dquote(&start, &end, &result) < 0)
+			if (check_dquote(&start, &end, &result, status) < 0)
 			{
 				free(result);
 				free(str);

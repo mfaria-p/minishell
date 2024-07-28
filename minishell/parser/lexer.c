@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:46:47 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/07/21 18:18:55 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/28 21:47:20 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*next_token(char *str)
 t_token	lex(char *str)
 {
 	static char	*cpos;
-	static int	state;	
+	static int	status;	
 	char		*end;
 	char		*content;
 
@@ -64,7 +64,7 @@ t_token	lex(char *str)
 	if (end != cpos)
 	{
 		content = ft_strndup(cpos, end - cpos + 1);
-		content = expand(content);
+		content = expand(content, status);
 		if (!content)
 			return ((t_token){ERR, NULL, *cpos});
 		cpos = end;
@@ -84,7 +84,7 @@ t_token	lex(char *str)
 				return ((t_token){ERR, NULL, *cpos});
 			}
 			content = ft_strndup(cpos, end - cpos + 1);
-			content = expand(content);
+			content = expand(content, status);
 			if (!content)
 				return ((t_token){ERR, NULL, *cpos});
 			cpos = end;
@@ -100,7 +100,7 @@ t_token	lex(char *str)
 				return ((t_token){ERR, NULL, *cpos});
 			}
 			content = ft_strndup(cpos, end - cpos + 1);
-			content = expand(content);
+			content = expand(content, status);
 			if (!content)
 				return ((t_token){ERR, NULL, *cpos});
 			cpos = end;
@@ -121,7 +121,7 @@ t_token	lex(char *str)
 				return ((t_token){ERR, NULL, *cpos});
 			}
 			content = ft_strndup(cpos, end - cpos + 1);
-			content = expand(content);
+			content = expand(content, status);
 			if (!content)
 				return ((t_token){ERR, NULL, *cpos});
 			cpos = end;
@@ -137,7 +137,7 @@ t_token	lex(char *str)
 				return ((t_token){ERR, NULL, *cpos});
 			}
 			content = ft_strndup(cpos, end - cpos + 1);
-			content = expand(content);
+			content = expand(content, status);
 			if (!content)
 				return ((t_token){ERR, NULL, *cpos});
 			cpos = end;
