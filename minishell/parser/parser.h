@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:12:15 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/07/21 17:32:18 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/28 21:47:30 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int				ft_isspace(int c);
 char			*skip_space(char *str);
 char			*until_charset(char *str, char *charset, int until_space, int oalnum);
 char			*ft_strndup(const char *s, size_t n);
-char			*expand(char *str);
+char			*expand(char *str, int status);
 
 char			*next_token(char *str);
 t_token			lex(char *str);
