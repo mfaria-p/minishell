@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:12:15 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/07/28 21:47:30 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/28 22:24:18 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char			*ft_strndup(const char *s, size_t n);
 char			*expand(char *str, int status);
 
 char			*next_token(char *str);
-t_token			lex(char *str);
+t_token			lex(char *str, int *wstatus);
 
 void			parse_p(t_node_default **root);
 t_token			parse_r(t_node_default **branch, t_node_default **root, t_node_execution *node_exec);
