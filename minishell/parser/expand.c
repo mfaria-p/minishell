@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:57:40 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/07/28 22:03:36 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/29 20:24:10 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ int	check_squote(char **start, char **end, char **result)
 
 int	check_dquote(char **start, char **end, char **result, int status)
 {
+	char *exit_status;
+
 	*start = ++(*end);
 	*end = until_charset(*start, "\"$", 0, 0);
 	*result = ft_strnadd(*result, *start, *end - *start);
@@ -104,7 +106,9 @@ int	check_dquote(char **start, char **end, char **result, int status)
 		{
 			(*end)++;
 			(*start) = ++(*end);
-			*result = ft_stradd(*result, ft_itoa(status));
+			exit_status = ft_itoa(status);
+			*result = ft_stradd(*result, exit_status);
+			free(exit_status);
 			*end = until_charset(*start, "\"$", 0, 0);
 			continue ;
 		}
@@ -139,6 +143,7 @@ char	*expand(char *str, int status)
 	char	*result;
 	char	*start;
 	char	*end;
+	char	*exit_status;
 
 	result = ft_calloc(1, sizeof(char));
 	*result = '\0';
@@ -164,7 +169,9 @@ char	*expand(char *str, int status)
 			{
 				end++;
 				start = ++end;
-				result = ft_stradd(result, ft_itoa(status));
+				exit_status = ft_itoa(status);
+				result = ft_stradd(result, exit_status);
+				free(exit_status);
 				continue ;
 			}
 			else if (*(end + 1) == '"')
