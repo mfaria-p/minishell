@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/26 11:11:25 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/29 19:53:09 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,16 +74,16 @@ enum						e_nodetype
 // EXECUTION
 
 t_node_default				*execution(struct s_node_default *node, t_env *env,
-								pid_t pid, t_fds *fd);
+								pid_t pid, t_fds *fd, int *wstatus);
 
 // pipe executing functions
-void						exec_pipe(struct s_node_pipe *pip, t_env *env);
+void						exec_pipe(struct s_node_pipe *pip, t_env *env, int *wstatus);
 pid_t						have_child(struct s_node_pipe *pip, int rw,
-								int pipefd[2], t_env *env);
+								int pipefd[2], t_env *env, int *wstatus);
 
 // redirect executing functions
 void						exec_red(struct s_node_redirect *red, t_env *env,
-								pid_t pid);
+								pid_t pid, int *wstatus);
 char	*find_home(char **envp);
 void						exec_not_heredoc(struct s_node_redirect *red,
 								int flags, int io, t_env *env);
@@ -97,7 +97,7 @@ int							file_exist(const char *filename);
 
 // Simple commands executing functions
 void						exec_exec(struct s_node_execution *exec, t_env *env,
-								pid_t pid, t_node_default *root, t_fds *fds);
+								pid_t pid, t_node_default *root, t_fds *fds, int *status);
 char						*find_path(char **envp);
 char						*get_cmd(char **paths, char *cmd);
 char						*find_the_command(char **envp,

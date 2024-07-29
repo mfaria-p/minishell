@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/25 12:04:53 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/07/29 19:56:42 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 // o redirect input e append n ta a dar (da segmentation fault),
 // nem o seu erro handling
 
-pid_t	have_child(struct s_node_pipe *pip, int rw, int pipefd[2], t_env *env)
+pid_t	have_child(struct s_node_pipe *pip, int rw, int pipefd[2], t_env *env, int *wstatus)
 {
 	int	pid;
 
@@ -32,45 +32,46 @@ pid_t	have_child(struct s_node_pipe *pip, int rw, int pipefd[2], t_env *env)
 		close(pipefd[0]);
 		close(pipefd[1]);
 		if (rw == PIPE_WRITE)
-			execution((struct s_node_default *)pip->left_node, env, pid, NULL);
+			execution((struct s_node_default *)pip->left_node, env, pid, NULL, wstatus);
 		else
-			execution((struct s_node_default *)pip->right_node, env, pid, NULL);
+			execution((struct s_node_default *)pip->right_node, env, pid, NULL, wstatus);
 		free_env_export(env);
 		exit(EXIT_SUCCESS);
 	}
 	return (pid);
 }
 
-void	exec_pipe(struct s_node_pipe *pip, t_env *env)
+void	exec_pipe(struct s_node_pipe *pip, t_env *env, int *wstatus)
 {
 	int		pipefd[2];
 	pid_t	pid[2];
 
 	if (pipe(pipefd) == -1)
 		ft_error(2);
-	pid[0] = have_child(pip, PIPE_WRITE, pipefd, env);
-	pid[1] = have_child(pip, PIPE_READ, pipefd, env);
+	pid[0] = have_child(pip, PIPE_WRITE, pipefd, env, wstatus);
+	pid[1] = have_child(pip, PIPE_READ, pipefd, env, wstatus);
 	close(pipefd[0]);
 	close(pipefd[1]);
 	waitpid(pid[0], NULL, 0);
-	waitpid(pid[1], NULL, 0);
+	waitpid(pid[1], wstatus, 0);
 }
 
-void	exec_red(struct s_node_redirect *red, t_env *env, pid_t is_parent)
+void	exec_red(struct s_node_redirect *red, t_env *env, pid_t is_parent, int *wstatus)
 {
-		if (red->node_type == R_out)
-			exec_not_heredoc(red, O_CREAT | O_WRONLY | O_TRUNC, STDOUT_FILENO, env);
-		else if (red->node_type == R_app)
-			exec_not_heredoc(red, O_CREAT | O_WRONLY | O_APPEND, STDOUT_FILENO, env);
-		else if (red->node_type == R_heredoc)
-			exec_heredoc(red, env);
-		else
-			exec_not_heredoc(red, O_RDONLY, STDIN_FILENO, env);
-		if (red->next && (*(red->filename)) && red->filename != NULL)
-			execution((struct s_node_default *)red->next, env, is_parent, NULL);
+	*wstatus = 0;
+	if (red->node_type == R_out)
+		exec_not_heredoc(red, O_CREAT | O_WRONLY | O_TRUNC, STDOUT_FILENO, env);
+	else if (red->node_type == R_app)
+		exec_not_heredoc(red, O_CREAT | O_WRONLY | O_APPEND, STDOUT_FILENO, env);
+	else if (red->node_type == R_heredoc)
+		exec_heredoc(red, env);
+	else
+		exec_not_heredoc(red, O_RDONLY, STDIN_FILENO, env);
+	if (red->next && (*(red->filename)) && red->filename != NULL)
+		execution((struct s_node_default *)red->next, env, is_parent, NULL, wstatus);
 }
 
-void	exec_exec(struct s_node_execution *exec, t_env *env, pid_t is_parent, t_node_default *root, t_fds *fds)
+void	exec_exec(struct s_node_execution *exec, t_env *env, pid_t is_parent, t_node_default *root, t_fds *fds, int *wstatus)
 {
 	pid_t	pid;
 
@@ -108,11 +109,11 @@ void	exec_exec(struct s_node_execution *exec, t_env *env, pid_t is_parent, t_nod
 			free_env_export(env);
 			exit(EXIT_SUCCESS);
 		}
-		waitpid(pid, NULL, 0);
+		waitpid(pid, wstatus, 0);
 	}
 }
 
-t_node_default	*execution(struct s_node_default *node, t_env *env, pid_t is_parent, t_fds *fd)
+t_node_default	*execution(struct s_node_default *node, t_env *env, pid_t is_parent, t_fds *fd, int *wstatus)
 {
 	static t_node_default	*root;
 	static t_fds			*fds;
@@ -124,11 +125,11 @@ t_node_default	*execution(struct s_node_default *node, t_env *env, pid_t is_pare
 	if (node)
 	{
 		if ((node->node_type & E_cmd))
-			exec_exec((struct s_node_execution *)node, env, is_parent, root, fds);
+			exec_exec((struct s_node_execution *)node, env, is_parent, root, fds, wstatus);
 		else if (node->node_type & (1 << 5))
-			exec_red((struct s_node_redirect *)node, env, is_parent);
+			exec_red((struct s_node_redirect *)node, env, is_parent, wstatus);
 		else
-			exec_pipe((struct s_node_pipe *)node, env);
+			exec_pipe((struct s_node_pipe *)node, env, wstatus);
 	}
 	if (!is_parent)
 	{

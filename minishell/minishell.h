@@ -172,7 +172,7 @@ typedef struct s_fds
 	int out;
 }	t_fds;
 
-t_node_default	*execution(struct s_node_default *node, t_env *env, pid_t pid, t_fds *fd);
+t_node_default	*execution(struct s_node_default *node, t_env *env, pid_t pid, t_fds *fd, int *wstatus);
 int				create_heredoc(const char *delimiter, const char *file_name);
 char			*ft_strdup(const char *s);
 size_t	ft_strlen(const char *s);
