@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:46:47 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/07/28 22:24:07 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/31 16:47:49 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*next_token(char *str)
 		{
 			str++;
 			if (*str != '?')
-				str = until_charset(str, "=<>|", 1, 1);
+				str = until_charset(str, "<>|", 1, 1);
 			else
 				str++;
 		}
