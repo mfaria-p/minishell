@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:57:40 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/07/31 17:05:01 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/31 17:12:28 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,9 @@ int	check_dquote(char **start, char **end, char **result, int status)
 		if (*(*end + 1) == '?')
 		{
 			(*end)++;
-			(*start) = ++(*end);
 			exit_status = ft_itoa(status);
 			*result = ft_stradd(*result, exit_status);
 			free(exit_status);
-			*end = until_charset(*start, "\"$", 0, 0);
-			continue ;
 		}
 		*start = ++(*end);
 		*end = until_charset(*start, "\"$", 1, 1);
