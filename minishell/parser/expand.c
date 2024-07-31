@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:57:40 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/07/29 20:24:10 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/07/31 17:05:01 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,8 @@ int	check_dquote(char **start, char **end, char **result, int status)
 	*result = ft_strnadd(*result, *start, *end - *start);
 	while (**end == '$')
 	{
-		if (ft_isspace(*(*end + 1)) || *(*end + 1) == '\n' || !*(*end + 1) || *(*end + 1) == '"')
-		{
+		if (ft_isspace(*(*end + 1)) || ft_strchr("\n\"=", *(*end + 1)) || !*(*end + 1) || ft_isdigit(*(*end + 1)))
 			*result = ft_strnadd(*result, "$", 1);
-			*start = ++(*end);
-			*end = until_charset(*start, "\"$", 0, 0);
-			continue ;
-		}
 		if (*(*end + 1) == '?')
 		{
 			(*end)++;
@@ -112,8 +107,7 @@ int	check_dquote(char **start, char **end, char **result, int status)
 			*end = until_charset(*start, "\"$", 0, 0);
 			continue ;
 		}
-		else
-			*start = ++(*end);
+		*start = ++(*end);
 		*end = until_charset(*start, "\"$", 1, 1);
 		*result = ft_stradd(*result, ft_getenv(*start, *end - *start + 1));
 		*start = *end;
@@ -132,10 +126,18 @@ int	check_dquote(char **start, char **end, char **result, int status)
 
 void	check_envvar(char **start, char **end, char **result)
 {
-	*start = ++(*end);
-	*end = until_charset(*start, NULL, 1, 1);
-	*result = ft_stradd(*result, ft_getenv(*start, *end - *start + 1));
-	*start = *end;
+	if (ft_isspace(*(*end + 1)) || ft_strchr("\n=", *(*end + 1)) || !*(*end + 1) || ft_isdigit(*(*end + 1)))
+	{
+		*result = ft_strnadd(*result, "$", 1);
+		*start = ++(*end);
+	}
+	else
+	{
+		*start = ++(*end);
+		*end = until_charset(*start, NULL, 1, 1);
+		*result = ft_stradd(*result, ft_getenv(*start, *end - *start + 1));
+		*start = *end;
+	}
 }
 
 char	*expand(char *str, int status)
