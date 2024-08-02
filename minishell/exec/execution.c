@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/02 19:42:16 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/02 19:57:33 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	exec_exec(t_node_e *exec, t_node_d *root, t_fds *fd, t_sh sh)
 	else if (!ft_strncmp(exec->command, "env", 4))
 		ft_printenv(sh.env->envp);
 	else if (!sh.pid)
-		ft_execute(exec, sh.env->envp, root);
+		ft_execute(exec, root, sh);
 	else
 	{
 		pid = fork();
@@ -117,10 +117,10 @@ void	exec_exec(t_node_e *exec, t_node_d *root, t_fds *fd, t_sh sh)
 		{
 			close(fd->in);
 			close(fd->out);
-			ft_execute(exec, sh.env->envp, root);
+			ft_execute(exec, root, sh);
 			destroy_tree(root);
 			free_env_export(sh.env);
-			exit(EXIT_SUCCESS);
+			exit(*sh.stat);
 		}
 		waitpid(pid, sh.stat, 0);
 		*sh.stat = WEXITSTATUS(*sh.stat);

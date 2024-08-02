@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/02 18:50:04 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/02 19:57:18 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void		exec_exec(t_node_e *exec, t_node_d *root, t_fds *fd, t_sh sh);
 char		*find_path(char **envp);
 char		*get_cmd(char **paths, char *cmd);
 char		*find_the_command(char **envp, t_node_e *exec);
-void		ft_execute(t_node_e *exec, char **envp, t_node_d *root);
+void		ft_execute(t_node_e *exec, t_node_d *root, t_sh sh);
 
 // utils
 size_t		ft_strlen(const char *s);

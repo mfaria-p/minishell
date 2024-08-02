@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:05:32 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/02 11:08:48 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/02 19:58:35 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*find_the_command(char **envp, t_node_e *exec)
 	return (command);
 }
 
-void	ft_execute(t_node_e *exec, char **envp, t_node_d *root)
+void	ft_execute(t_node_e *exec, t_node_d *root, t_sh sh)
 {
 	char	*command;
 	int		param_count;
@@ -78,7 +78,7 @@ void	ft_execute(t_node_e *exec, char **envp, t_node_d *root)
 
 	i = 0;
 	param_count = 0;
-	command = find_the_command(envp, exec);
+	command = find_the_command(sh.env->envp, exec);
 	if (command)
 	{
 		while (exec->params && exec->params[param_count] != NULL)
@@ -92,8 +92,9 @@ void	ft_execute(t_node_e *exec, char **envp, t_node_d *root)
 		}
 		argv[param_count + 1] = NULL;
 		destroy_tree(root);
-		execve(argv[0], argv, envp);
+		execve(argv[0], argv, sh.env->envp);
 	}
+	*sh.stat = 127;
 }
 
 int	file_exist(const char *filename)
