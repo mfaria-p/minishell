@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 00:09:12 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/02 11:14:08 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/02 16:56:06 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ void	set_env_with_equal_plus(char ***envp, char *var_value)
 	free(key);
 }
 
-void	ft_doexport(t_env *env, char **params)
+void	ft_doexport(t_env *env, char **params, int *wstatus)
 {
 	int		i;
 	char	*equal_sign;
@@ -143,7 +143,8 @@ void	ft_doexport(t_env *env, char **params)
 		if (equal_sign != NULL && *(equal_sign - 1) != '+')
 		{
 			*equal_sign = '\0';
-			if (is_valid_identifier(params[i], equal_sign + 1) == 1)
+			*wstatus = !is_valid_identifier(params[i], equal_sign + 1);
+			if (!*wstatus)
 			{
 				*equal_sign = '=';
 				set_env_with_equal(&env->export, params[i]);
@@ -152,14 +153,16 @@ void	ft_doexport(t_env *env, char **params)
 		}
 		else if (equal_sign == NULL)
 		{
-			if (is_valid_identifier(params[i], NULL))
+			*wstatus = !is_valid_identifier(params[i], NULL);
+			if (!*wstatus)
 				set_env_without_equal(&env->export, params[i]);
 		}
 		else
 		{
 			*equal_sign = '\0';
 			*(equal_sign - 1) = '\0';
-			if (is_valid_identifier_plus(params[i], equal_sign + 1) == 1)
+			*wstatus = !is_valid_identifier_plus(params[i], equal_sign + 1);
+			if (!*wstatus)
 			{
 				*equal_sign = '=';
 				*(equal_sign - 1) = '+';

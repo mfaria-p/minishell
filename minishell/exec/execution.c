@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/02 11:44:32 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/02 17:29:40 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	exec_pipe(t_node_p *pip, t_sh sh)
 	close(pipefd[1]);
 	waitpid(pid[0], NULL, 0);
 	waitpid(pid[1], sh.stat, 0);
+	*sh.stat = WEXITSTATUS(*sh.stat);
 }
 
 void	exec_red(t_node_r *red, t_sh sh)
@@ -96,7 +97,7 @@ void	exec_exec(t_node_e *exec, t_node_d *root, t_fds *fd, t_sh sh)
 	else if (!ft_strncmp(exec->command, "export", 7) && !exec->params)
 		ft_printexport(sh.env->export);
 	else if (!ft_strncmp(exec->command, "export", 7) && exec->params[0])
-		ft_doexport(sh.env, exec->params);
+		ft_doexport(sh.env, exec->params, sh.stat);
 	else if (!ft_strncmp(exec->command, "unset", 6))
 		ft_unset(exec->params, sh.env);
 	else if (!ft_strncmp(exec->command, "env", 4))
@@ -116,6 +117,7 @@ void	exec_exec(t_node_e *exec, t_node_d *root, t_fds *fd, t_sh sh)
 			exit(EXIT_SUCCESS);
 		}
 		waitpid(pid, sh.stat, 0);
+		*sh.stat = WEXITSTATUS(*sh.stat);
 	}
 }
 

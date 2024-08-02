@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/02 11:44:11 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/02 16:57:06 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,48 +28,6 @@
 # define PIPE_WRITE STDOUT_FILENO
 # define MODE 00644
 # define HEREDOC_MSG "> "
-
-/*
-//Nodes structures
-struct						s_node_default
-{
-	int	s_node_type; //PIPE REDIRECT EXEC
-};
-
-struct						s_node_pipe
-{
-	int						s_node_type;
-	struct s_node_default	*left_node;
-	struct s_node_default	*right_node;
-};
-
-struct						s_node_redirect
-{
-	int						s_node_type;
-	char					*filename;
-	char					*delimeter;
-	struct s_node_default	*next;
-};
-
-struct						s_node_execution
-{
-	int						s_node_type;
-	char					*command;
-	char					**params;
-};
-
-//Node types
-enum						e_nodetype
-{
-	E_cmd = 0b1<<4,
-	E_builtin,
-	R_out = 0b1<<5,
-	R_app,
-	R_heredoc,
-	R_input,
-	P = 0b1<<6
-};
-*/
 
 // EXECUTION
 
@@ -123,12 +81,11 @@ void		update_oldpwd(t_env *env, const char *current);
 void		ft_pwd(char **envp);
 
 void		ft_printexport(char **export);
-void		ft_doexport(t_env *env, char **params);
+void		ft_doexport(t_env *env, char **params, int *wstatus);
 char		**resize_and_add(char ***envp, char *new_var);
 void		set_env_with_equal(char ***envp, char *var_value);
 void		set_env_without_equal(char ***envp, char *var);
 void		set_env_with_equal_plus(char ***envp, char *var_value);
-void		ft_doexport(t_env *env, char **params);
 int			is_valid_identifier(char *var, char *value);
 int			is_valid_identifier_plus(char *var, char *value);
 int			find_var(char **envp, const char *var);
