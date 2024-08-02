@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 19:15:48 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/25 23:08:01 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/08/02 11:15:19 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,13 @@ void	error_identifier(char *var, char *value)
 }
 
 void	error_identifier_plus(char *var, char *value)
-	{
-		ft_putstr_fd("minishell: export: `", STDERR_FILENO);
-		ft_putstr_fd(var, STDERR_FILENO);
-		ft_putstr_fd("+=", STDERR_FILENO);
-		ft_putstr_fd(value, STDERR_FILENO);
-		ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
-	}
+{
+	ft_putstr_fd("minishell: export: `", STDERR_FILENO);
+	ft_putstr_fd(var, STDERR_FILENO);
+	ft_putstr_fd("+=", STDERR_FILENO);
+	ft_putstr_fd(value, STDERR_FILENO);
+	ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
+}
 
 void	ft_free(char **envp)
 {

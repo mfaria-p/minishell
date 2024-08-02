@@ -12,32 +12,32 @@
 
 #include "parser.h"
 
-void	destroy_p(t_node_pipe *node);
-void	destroy_r(t_node_redirect *node);
-void	destroy_e(t_node_execution *node);
+void	destroy_p(t_node_p *node);
+void	destroy_r(t_node_r *node);
+void	destroy_e(t_node_e *node);
 
-void	destroy_tree(t_node_default *node)
+void	destroy_tree(t_node_d *node)
 {
 	if (node)
 	{
-		if (node->node_type & 1 << 6)
-			destroy_p((t_node_pipe *)node);
-		else if (node->node_type & 1 << 5)
-			destroy_r((t_node_redirect *)node);
-		else if (node->node_type & 1 << 4)
-			destroy_e((t_node_execution *)node);
+		if (node->type & 1 << 6)
+			destroy_p((t_node_p *)node);
+		else if (node->type & 1 << 5)
+			destroy_r((t_node_r *)node);
+		else if (node->type & 1 << 4)
+			destroy_e((t_node_e *)node);
 	}
 }
 
-void	destroy_p(t_node_pipe *node)
+void	destroy_p(t_node_p *node)
 {
-	destroy_tree(node->left_node);
-	destroy_tree(node->right_node);
+	destroy_tree(node->lnode);
+	destroy_tree(node->rnode);
 	if (node)
 		free(node);
 }
 
-void	destroy_r(t_node_redirect *node)
+void	destroy_r(t_node_r *node)
 {
 	destroy_tree(node->next);
 	if (node->filename)
@@ -46,7 +46,7 @@ void	destroy_r(t_node_redirect *node)
 		free(node);
 }
 
-void	destroy_e(t_node_execution *node)
+void	destroy_e(t_node_e *node)
 {
 	int	i;
 

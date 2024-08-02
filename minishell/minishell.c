@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/29 19:56:12 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/02 11:44:00 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,13 +107,13 @@ void	free_env_export(t_env *env)
 void	main_loop(t_env *env)
 {
 	char		*line;
-	t_fds		fds;
+	t_fds		fd;
 	pid_t		pid;
-	static int	status;
+	static int	stat;
 
 	line = NULL;
-	fds.in = dup(STDIN_FILENO);
-	fds.out = dup(STDOUT_FILENO);
+	fd.in = dup(STDIN_FILENO);
+	fd.out = dup(STDOUT_FILENO);
 	while (1)
 	{
 		line = readline("( ๑ ˃̵ᴗ˂̵)و ");
@@ -127,17 +127,17 @@ void	main_loop(t_env *env)
 					free(line);
 					break ;
 				}
-				lex(line, &status);
-				destroy_tree(execution(parse(), env, 1, &fds, &status));
-				status = WEXITSTATUS(status);
-				dup2(fds.in, STDIN_FILENO);
-				dup2(fds.out, STDOUT_FILENO);
+				lex(line, &stat);
+				destroy_tree(execution(parse(), (t_sh){env, pid, &fd, &stat}));
+				stat = WEXITSTATUS(stat);
+				dup2(fd.in, STDIN_FILENO);
+				dup2(fd.out, STDOUT_FILENO);
 			}
 			free(line);
 		}
 		else
 			exit(EXIT_SUCCESS);
 	}
-	close(fds.in);
-	close(fds.out);
+	close(fd.in);
+	close(fd.out);
 }
