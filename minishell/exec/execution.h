@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/02 18:07:11 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/02 18:50:04 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ pid_t		have_child(t_node_p *pip, int rw, int pipefd[2], t_sh sh);
 // redirect executing functions
 void		exec_red(t_node_r *red, t_sh sh);
 char		*find_home(char **envp);
-void		exec_not_heredoc(t_node_r *red, int flags, int io, t_env *env);
-void		exec_heredoc(t_node_r *red, t_env *env);
+void		exec_not_heredoc(t_node_r *red, int flags, int io, t_sh sh);
+void		exec_heredoc(t_node_r *red, t_sh sh);
 int			file_exist(const char *filename);
 
 // Simple commands executing functions
