@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/02 17:29:40 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/02 17:39:18 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,12 @@ void	exec_exec(t_node_e *exec, t_node_d *root, t_fds *fd, t_sh sh)
 		ft_cd_home(sh.env);
 	else if (!ft_strncmp(exec->command, "cd", 3) && exec->params[0])
 	{
-		ft_cd(sh.env, exec->params[0]);
+		ft_cd(sh.env, exec->params[0], sh.stat);
 		if (exec->params[1])
-			printf("minishell: cd: too many arguments\n");
+		{
+			write(STDERR_FILENO ,"minishell: cd: too many arguments\n", 35);
+			*sh.stat = 1;
+		}
 	}
 	else if (!ft_strncmp(exec->command, "pwd", 4))
 		ft_pwd(sh.env->envp);
