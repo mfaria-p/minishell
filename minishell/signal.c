@@ -6,12 +6,13 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 19:57:26 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/07/21 12:56:55 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/02 20:24:20 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
+#include <signal.h>
 
 static void	sighandler(int sig, siginfo_t *info, void *ucontext);
 extern int	g_sig;
@@ -54,4 +55,23 @@ void	sighandler(int sig, siginfo_t *info, void *ucontext)
 		rl_on_new_line();
 		rl_redisplay();
 	}
+}
+
+void  sigignore(void)
+{
+	struct sigaction  act;
+
+	ft_memset(&act, 0, sizeof(struct sigaction));
+	act.sa_handler = SIG_IGN;
+	sigaction(SIGINT, &act, NULL);
+}
+
+void  sigchild(void)
+{
+	struct sigaction  act;
+
+	ft_memset(&act, 0, sizeof(struct sigaction));
+	act.sa_handler = SIG_DFL;
+	sigaction(SIGQUIT, &act, NULL);
+	sigaction(SIGINT, &act, NULL);
 }

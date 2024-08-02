@@ -189,6 +189,8 @@ t_token		lex(char *str, int *wstatus);
 t_node_d	*parse(void);
 void		destroy_tree(t_node_d *node);
 int			siginit(void);
+void		sigignore(void);
+void		sigchild(void);
 
 t_env		init_env(char ***export, char ***envp2, char **envp);
 void		free_env_export(t_env *env);
