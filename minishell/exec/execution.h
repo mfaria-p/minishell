@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/02 17:34:08 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/02 18:07:11 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void		update_oldpwd(t_env *env, const char *current);
 
 void		ft_pwd(char **envp);
 
+void		ft_exit(char **params, int *status);
 void		ft_printexport(char **export);
 void		ft_doexport(t_env *env, char **params, int *wstatus);
 char		**resize_and_add(char ***envp, char *new_var);

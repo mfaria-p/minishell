@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/02 17:27:21 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/02 18:05:49 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,21 @@ int	main(int argc, char **argv, char **envp)
 	char		**envp2;
 	t_env		env;
 	const char	*temp_file_name = "/tmp/heredoc_tmp";
+	int			exit_status;
 
 	siginit();
 	env = init_env(&export, &envp2, envp);
-	main_loop(&env);
+	exit_status = main_loop(&env);
 	free_env_export(&env);
 	rl_clear_history();
 	unlink(temp_file_name);
+	return (exit_status);
 }
 
 int	ft_isexit(char *str)
 {
-	if (str)
-		if (*str++ == 'e')
-			if (*str++ == 'x')
-				if (*str++ == 'i')
-					if (*str++ == 't')
-						if (*str == '\0')
-							return (1);
+	if (!ft_strncmp(str, "exit", 4) && (ft_isspace(*(str + 4)) || !*(str + 4)))
+		return (1);
 	return (0);
 }
 
@@ -104,7 +101,7 @@ void	free_env_export(t_env *env)
 }
 
 // Function for the main execution loop
-void	main_loop(t_env *env)
+int	main_loop(t_env *env)
 {
 	char		*line;
 	t_fds		fd;
@@ -124,6 +121,10 @@ void	main_loop(t_env *env)
 				add_history(line);
 				if (ft_isexit(line))
 				{
+					lex(line, &stat);
+					destroy_tree(execution(parse(), (t_sh){env, pid, &fd, &stat}));
+					dup2(fd.in, STDIN_FILENO);
+					dup2(fd.out, STDOUT_FILENO);
 					free(line);
 					break ;
 				}
@@ -139,4 +140,5 @@ void	main_loop(t_env *env)
 	}
 	close(fd.in);
 	close(fd.out);
+	return (stat);
 }
