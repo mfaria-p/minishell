@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/02 19:57:33 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/02 20:22:37 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ pid_t	have_child(t_node_p *pip, int rw, int pipefd[2], t_sh sh)
 		ft_error(1);
 	if (pid == 0)
 	{
+		sigchild();
 		if (dup2(pipefd[rw], rw) == -1)
 			ft_error(2);
 		close(pipefd[0]);
@@ -41,6 +42,7 @@ pid_t	have_child(t_node_p *pip, int rw, int pipefd[2], t_sh sh)
 		rl_clear_history();
 		exit(*sh.stat);
 	}
+	sigignore();
 	return (pid);
 }
 
@@ -115,6 +117,7 @@ void	exec_exec(t_node_e *exec, t_node_d *root, t_fds *fd, t_sh sh)
 		pid = fork();
 		if (pid == 0)
 		{
+			sigchild();
 			close(fd->in);
 			close(fd->out);
 			ft_execute(exec, root, sh);
@@ -122,6 +125,7 @@ void	exec_exec(t_node_e *exec, t_node_d *root, t_fds *fd, t_sh sh)
 			free_env_export(sh.env);
 			exit(*sh.stat);
 		}
+		sigignore();
 		waitpid(pid, sh.stat, 0);
 		*sh.stat = WEXITSTATUS(*sh.stat);
 	}
