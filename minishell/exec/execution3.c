@@ -6,20 +6,20 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:09:16 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/25 12:02:15 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/08/02 11:09:31 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-void	exec_not_heredoc(struct s_node_redirect *red, int flags, int io,
-		t_env *env)
+void	exec_not_heredoc(t_node_r *red, int flags, int io, t_env *env)
 {
 	int	fd;
+
 	if (*(red->filename))
 	{
-		if ((red->node_type == R_input && file_exist(red->filename)) \
-			|| red->node_type == R_out || red->node_type == R_app)
+		if ((red->type == R_input && file_exist(red->filename)) \
+			|| red->type == R_out || red->type == R_app)
 		{
 			fd = open(red->filename, flags, MODE);
 			if (fd == -1 && io == STDIN_FILENO)
@@ -72,7 +72,7 @@ int	create_heredoc(const char *delimiter, const char *file_name)
 		return (EXIT_SUCCESS);
 }
 
-void	exec_heredoc(struct s_node_redirect *red, t_env *env)
+void	exec_heredoc(t_node_r *red, t_env *env)
 {
 	const char	*temp_file_name = "/tmp/heredoc_tmp";
 	int			fd;

@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:46:47 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/01 18:51:57 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/02 11:17:58 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ t_token	lex(char *str, int *wstatus)
 			cpos++;
 			cpos = skip_space(cpos);
 			end = next_token(cpos);
-			// end = until_charset(cpos, "<>|", 1, 0);
 			if (end == cpos)
 			{
 				write(STDERR_FILENO, "minishell: no redirect file\n", 28);
@@ -97,7 +96,6 @@ t_token	lex(char *str, int *wstatus)
 		{
 			cpos = skip_space(cpos);
 			end = next_token(cpos);
-			// end = until_charset(cpos, "<>|", 1, 0);
 			if (end == cpos)
 			{
 				write(STDERR_FILENO, "minishell: no redirect file\n", 28);
@@ -119,7 +117,6 @@ t_token	lex(char *str, int *wstatus)
 			cpos++;
 			cpos = skip_space(cpos);
 			end = next_token(cpos);
-			// end = until_charset(cpos, "<>|", 1, 0);
 			if (end == cpos)
 			{
 				write(STDERR_FILENO, "minishell: no heredoc delimeter\n", 33);
@@ -136,7 +133,6 @@ t_token	lex(char *str, int *wstatus)
 		{
 			cpos = skip_space(cpos);
 			end = next_token(cpos);
-			// end = until_charset(cpos, "<>|", 1, 0);
 			if (end == cpos)
 			{
 				write(STDERR_FILENO, "minishell: no redirect file\n", 28);
