@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/02 18:12:23 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/02 18:44:03 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ pid_t	have_child(t_node_p *pip, int rw, int pipefd[2], t_sh sh)
 		else
 			execution((t_node_d *)pip->rnode, sh);
 		free_env_export(sh.env);
-		exit(EXIT_SUCCESS);
+		rl_clear_history();
+		exit(*sh.stat);
 	}
 	return (pid);
 }
