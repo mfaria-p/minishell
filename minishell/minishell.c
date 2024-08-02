@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/02 20:20:17 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/02 20:29:41 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ int	main_loop(t_env *env)
 {
 	char		*line;
 	t_fds		fd;
-	pid_t		pid;
 	static int	stat;
 
 	line = NULL;
@@ -122,14 +121,14 @@ int	main_loop(t_env *env)
 				if (ft_isexit(line))
 				{
 					lex(line, &stat);
-					destroy_tree(execution(parse(), (t_sh){env, pid, &fd, &stat}));
+					destroy_tree(execution(parse(), (t_sh){env, 1, &fd, &stat}));
 					dup2(fd.in, STDIN_FILENO);
 					dup2(fd.out, STDOUT_FILENO);
 					free(line);
 					break ;
 				}
 				lex(line, &stat);
-				destroy_tree(execution(parse(), (t_sh){env, pid, &fd, &stat}));
+				destroy_tree(execution(parse(), (t_sh){env, 1, &fd, &stat}));
 				dup2(fd.in, STDIN_FILENO);
 				dup2(fd.out, STDOUT_FILENO);
 			}
