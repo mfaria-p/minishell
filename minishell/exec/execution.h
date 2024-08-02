@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/02 16:57:06 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/02 17:34:08 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ size_t		ft_strlcpy(char *dst, const char *src, size_t size);
 void		ft_echo(char **params);
 int			ft_countchar(const char *str, char c);
 
-void		ft_cd(t_env *env, char *path);
+void		ft_cd(t_env *env, char *path, int *wstatus);
 char		*find_var2(char *name);
 char		*find_oldpwd(char **envp);
 char		*create_env_var(const char *var, const char *value);
