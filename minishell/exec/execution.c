@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/02 18:44:03 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/02 19:42:16 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,14 @@ void	exec_red(t_node_r *red, t_sh sh)
 	*sh.stat = 0;
 	sh.fd = NULL;
 	if (red->type == R_out)
-		exec_not_heredoc(red, out | O_TRUNC, STDOUT_FILENO, sh.env);
+		exec_not_heredoc(red, out | O_TRUNC, STDOUT_FILENO, sh);
 	else if (red->type == R_app)
-		exec_not_heredoc(red, out | O_APPEND, STDOUT_FILENO, sh.env);
+		exec_not_heredoc(red, out | O_APPEND, STDOUT_FILENO, sh);
 	else if (red->type == R_heredoc)
-		exec_heredoc(red, sh.env);
+		exec_heredoc(red, sh);
 	else
-		exec_not_heredoc(red, O_RDONLY, STDIN_FILENO, sh.env);
-	if (red->next && (*(red->filename)) && red->filename != NULL)
+		exec_not_heredoc(red, O_RDONLY, STDIN_FILENO, sh);
+	if (red->next && (*(red->filename)) && red->filename != NULL && !*sh.stat)
 		execution((t_node_d *)red->next, sh);
 }
 

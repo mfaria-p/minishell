@@ -6,13 +6,13 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:09:16 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/02 11:09:31 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/02 19:39:17 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-void	exec_not_heredoc(t_node_r *red, int flags, int io, t_env *env)
+void	exec_not_heredoc(t_node_r *red, int flags, int io, t_sh sh)
 {
 	int	fd;
 
@@ -25,23 +25,29 @@ void	exec_not_heredoc(t_node_r *red, int flags, int io, t_env *env)
 			if (fd == -1 && io == STDIN_FILENO)
 			{
 				ft_error(4);
+				*sh.stat = 1;
 				return ;
 			}
 			else if (fd == -1 && io == STDOUT_FILENO)
 			{
 				ft_error(3);
+				*sh.stat = 1;
 				return ;
 			}
 			if (dup2(fd, io) == -1)
 			{
 				close(fd);
 				ft_error(3);
+				*sh.stat = 1;
 				return ;
 			}
 			close(fd);
 		}
 		else
+		{
 			file_not_found(red->filename);
+			*sh.stat = 1;
+		}
 	}
 	else
 		ft_error(9);
@@ -72,7 +78,7 @@ int	create_heredoc(const char *delimiter, const char *file_name)
 		return (EXIT_SUCCESS);
 }
 
-void	exec_heredoc(t_node_r *red, t_env *env)
+void	exec_heredoc(t_node_r *red, t_sh sh)
 {
 	const char	*temp_file_name = "/tmp/heredoc_tmp";
 	int			fd;
@@ -81,7 +87,10 @@ void	exec_heredoc(t_node_r *red, t_env *env)
 	{
 		fd = open(temp_file_name, O_RDONLY);
 		if (fd < 0)
+		{
 			ft_error(5);
+			*sh.stat = 1;
+		}
 		dup2(fd, STDIN_FILENO);
 		close(fd);
 	}
