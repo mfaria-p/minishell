@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 19:57:26 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/02 20:24:20 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/02 21:07:09 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include <signal.h>
 
 static void	sighandler(int sig, siginfo_t *info, void *ucontext);
-extern int	g_sig;
 
 int	siginit(void)
 {
@@ -47,9 +46,9 @@ void	sighandler(int sig, siginfo_t *info, void *ucontext)
 
 	(void)info;
 	(void)ucontext;
-	g_sig = sig;
 	if (sig == SIGINT)
 	{
+		g_sig = sig;
 		rl_replace_line("", 1);
 		write(STDOUT_FILENO, "\n", 1);
 		rl_on_new_line();

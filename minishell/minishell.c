@@ -6,14 +6,14 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/02 20:29:41 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/02 21:06:43 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <unistd.h>
 
-int		g_sig = 0;
+int	g_sig = 0;
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -111,8 +111,11 @@ int	main_loop(t_env *env)
 	fd.out = dup(STDOUT_FILENO);
 	while (1)
 	{
+		g_sig = 0;
 		siginit();
 		line = readline("( ๑ ˃̵ᴗ˂̵)و ");
+		if (g_sig)
+			stat = g_sig + 128;
 		if (line)
 		{
 			if (strlen(line) > 0)
@@ -135,7 +138,7 @@ int	main_loop(t_env *env)
 			free(line);
 		}
 		else
-			exit(EXIT_SUCCESS);
+			exit(EXIT_FAILURE);
 	}
 	close(fd.in);
 	close(fd.out);
