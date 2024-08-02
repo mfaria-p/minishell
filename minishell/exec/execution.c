@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/02 17:39:18 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/02 18:12:23 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,9 @@ void	exec_exec(t_node_e *exec, t_node_d *root, t_fds *fd, t_sh sh)
 {
 	pid_t	pid;
 
-	if (!ft_strncmp(exec->command, "echo", 5))
+	if (!ft_strncmp(exec->command, "exit", 5))
+		ft_exit(exec->params, sh.stat);
+	else if (!ft_strncmp(exec->command, "echo", 5))
 		ft_echo(exec->params);
 	else if (!ft_strncmp(exec->command, "cd", 3) && !exec->params)
 		ft_cd_home(sh.env);

@@ -193,6 +193,6 @@ int			siginit(void);
 t_env		init_env(char ***export, char ***envp2, char **envp);
 void		free_env_export(t_env *env);
 //t_env	init_env_envp(char ***envp2, char **envp);
-void		main_loop(t_env *env);
+int			main_loop(t_env *env);
 
 #endif
