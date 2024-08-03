@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:12:15 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 16:14:09 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:18:13 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define PARSER_H
 
 # include "../minishell.h"
-# include "libft.h"
 
 # define EOL 1
 # define ERR 0
@@ -100,6 +99,10 @@ void		parse_r_loop(t_redir redir);
 /* ************************************************************************** */
 // check_tree.c
 int			check_tree(t_node_d *node);
+
+/* ************************************************************************** */
+// destroy_tree.c
+void		destroy_tree(t_node_d *node);
 
 t_node_d	*print_tree(t_node_d *root);
 
