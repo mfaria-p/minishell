@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 12:43:04 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 17:02:24 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 17:04:04 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,7 +220,7 @@ void		free_env_export(t_env *env);
 
 /* ************************************************************************** */
 // fd.c
-void		fd_close(t_fds *fd);
 void		fd_init(t_fds *fd);
+void		fd_close(t_fds *fd);
 
 #endif
