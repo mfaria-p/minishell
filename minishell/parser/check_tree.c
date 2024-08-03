@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 13:51:34 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 16:19:29 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 17:09:51 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	check_tree_aux(t_node_d *node, int *status)
 static void	check_p(t_node_p *node, int *status)
 {
 	if (!node->lnode || !node->rnode)
-		*status = -1;
+		*status = 1;
 	check_tree_aux(node->lnode, status);
 	check_tree_aux(node->rnode, status);
 }
@@ -41,7 +41,7 @@ static void	check_r(t_node_r *node, int *status)
 
 static void	check_tree_err(int status)
 {
-	if (status == -1)
+	if (status == 1)
 		write(STDERR_FILENO, "minishell: incomplete pipe\n", 28);
 }
 

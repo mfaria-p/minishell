@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/03 17:04:56 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 17:12:08 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,13 +134,13 @@ t_node_d	*execution(t_node_d *node, t_sh sh)
 	static t_node_d	*root;
 	static t_fds	*fd;
 
-	*sh.stat = 0;
 	if (!root)
 		root = node;
 	if (!fd)
 		fd = sh.fd;
 	if (node)
 	{
+		*sh.stat = 0;
 		if ((node->type & E_cmd))
 			exec_exec((t_node_e *)node, root, fd, sh);
 		else if (node->type & (1 << 5))

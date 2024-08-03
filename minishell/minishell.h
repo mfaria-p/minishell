@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 12:43:04 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 17:04:04 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 17:08:29 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,7 @@ size_t		ft_strlen(const char *s);
 // lexer + parser
 int			ft_isspace(int c);
 t_token		lex(char *str, int *wstatus);
-t_node_d	*parse(void);
+t_node_d	*parse(int *wstatus);
 void		destroy_tree(t_node_d *node);
 
 /* ************************************************************************** */
