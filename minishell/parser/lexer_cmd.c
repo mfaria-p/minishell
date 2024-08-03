@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 15:57:56 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 16:31:36 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:39:04 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,5 @@ t_token	lex_cmd(t_lex lex)
 	if (!*lex.content)
 		return ((t_token){ERR, NULL, **lex.cpos});
 	*lex.cpos = *lex.end;
-	return ((t_token){E_cmd, *lex.content});
+	return ((t_token){E_cmd, *lex.content, '\0'});
 }

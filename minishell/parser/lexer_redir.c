@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 15:53:56 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 15:54:30 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:39:57 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_token	lex_hd(t_lex lex)
 	if (!*lex.content)
 		return ((t_token){ERR, NULL, **lex.cpos});
 	*lex.cpos = *lex.end;
-	return ((t_token){R_heredoc, *lex.content});
+	return ((t_token){R_heredoc, *lex.content, '\0'});
 }
 
 t_token	lex_in(t_lex lex)
@@ -44,7 +44,7 @@ t_token	lex_in(t_lex lex)
 	if (!*lex.content)
 		return ((t_token){ERR, NULL, **lex.cpos});
 	*lex.cpos = *lex.end;
-	return ((t_token){R_input, *lex.content});
+	return ((t_token){R_input, *lex.content, '\0'});
 }
 
 t_token	lex_app(t_lex lex)
@@ -62,7 +62,7 @@ t_token	lex_app(t_lex lex)
 	if (!*lex.content)
 		return ((t_token){ERR, NULL, **lex.cpos});
 	*lex.cpos = *lex.end;
-	return ((t_token){R_app, *lex.content});
+	return ((t_token){R_app, *lex.content, '\0'});
 }
 
 t_token	lex_out(t_lex lex)
@@ -79,7 +79,7 @@ t_token	lex_out(t_lex lex)
 	if (!*lex.content)
 		return ((t_token){ERR, NULL, **lex.cpos});
 	*lex.cpos = *lex.end;
-	return ((t_token){R_out, *lex.content});
+	return ((t_token){R_out, *lex.content, '\0'});
 }
 
 t_token	lex_redir(t_lex lex)
@@ -98,4 +98,5 @@ t_token	lex_redir(t_lex lex)
 			return (lex_app(lex));
 		return (lex_out(lex));
 	}
+	return ((t_token){});
 }

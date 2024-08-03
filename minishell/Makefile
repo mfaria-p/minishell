@@ -36,10 +36,10 @@ SRCS = minishell.c signal.c $(addprefix parser/, $(SRCS_PARSER)) $(addprefix exe
 
 OBJS = $(SRCS:.c=.o)
 
-CC = cc
+CC = cc -Wall -Werror -Wextra
 
 # CFLAGS = -Wall -Wextra -Werror -I. #-lreadline
-CFLAGS = -lreadline -I. -g #-fsanitize=address -static-libasan
+CFLAGS = -I. -g #-fsanitize=address -static-libasan
 
 RM = rm -rf
 
@@ -49,7 +49,7 @@ all: $(NAME)
 	$(CC) $< -c -o $@ $(CFLAGS)
 
 $(NAME): $(OBJS)
-	$(CC) $(OBJS) parser/libft.a -o $(NAME) $(CFLAGS)
+	$(CC) $(OBJS) parser/libft.a -o $(NAME) -lreadline $(CFLAGS)
 
 clean:
 	$(RM) $(OBJS)
