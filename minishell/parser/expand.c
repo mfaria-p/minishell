@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:57:40 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 12:48:58 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 13:34:10 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,16 @@ char	*ft_stradd(char const *s1, char const *s2)
 	return (join);
 }
 
+char	*add_status(char *result, int status)
+{
+	char	*exit_status;
+
+	exit_status = ft_itoa(status);
+	result = ft_stradd(result, exit_status);
+	free(exit_status);
+	return (result);
+}
+
 char	*ft_getenv(char *str, size_t n)
 {
 	char	*envvar_name;
@@ -86,10 +96,18 @@ int	check_squote(char **start, char **end, char **result)
 	return (0);
 }
 
+void	check_dquote_help(char **start, char **end, char **result)
+{
+	*start = ++(*end);
+	*end = until_charset(*start, "\"$", 1, 1);
+	*result = ft_stradd(*result, ft_getenv(*start, *end - *start + 1));
+	*start = *end;
+	*end = until_charset(*start, "\"$", 0, 0);
+	*result = ft_strnadd(*result, *start, *end - *start);
+}
+
 int	check_dquote(char **start, char **end, char **result, int status)
 {
-	char	*exit_status;
-
 	*start = ++(*end);
 	*end = until_charset(*start, "\"$", 0, 0);
 	*result = ft_strnadd(*result, *start, *end - *start);
@@ -101,16 +119,9 @@ int	check_dquote(char **start, char **end, char **result, int status)
 		if (*(*end + 1) == '?')
 		{
 			(*end)++;
-			exit_status = ft_itoa(status);
-			*result = ft_stradd(*result, exit_status);
-			free(exit_status);
+			*result = add_status(*result, status);
 		}
-		*start = ++(*end);
-		*end = until_charset(*start, "\"$", 1, 1);
-		*result = ft_stradd(*result, ft_getenv(*start, *end - *start + 1));
-		*start = *end;
-		*end = until_charset(*start, "\"$", 0, 0);
-		*result = ft_strnadd(*result, *start, *end - *start);
+		check_dquote_help(start, end, result);
 	}
 	if (**end == '\0')
 	{
@@ -138,66 +149,74 @@ void	check_envvar(char **start, char **end, char **result)
 	}
 }
 
+int	check_dsign(char **start, char **end, char **result, int status)
+{
+	if (*(*end + 1) == '?')
+	{
+		(*end)++;
+		(*start) = ++(*end);
+		*result = add_status(*result, status);
+		return (1);
+	}
+	else if (*(*end + 1) == '"')
+		*start = ++(*end);
+	else if (ft_isspace(*(*end + 1)) || *(*end + 1) == '\n' || !*(*end + 1))
+	{
+		*result = ft_strnadd(*result, "$", 1);
+		*start = ++(*end);
+	}
+	else
+	{
+		check_envvar(start, end, result);
+		return (1);
+	}
+	return (0);
+}
+
+void	*expand_free(char *str, char *result)
+{
+	free(result);
+	free(str);
+	return (NULL);
+}
+
+int	expand_loop(char **start, char **end, char **result, int status)
+{
+	while (**start)
+	{
+		*end = until_charset(*start, "\"'$", 0, 0);
+		*result = ft_strnadd(*result, *start, *end - *start);
+		*start = *end;
+		if (**end == '\'')
+		{
+			if (check_squote(start, end, result) < 0)
+				return (-1);
+			continue ;
+		}
+		if (**end == '$')
+			if (check_dsign(start, end, result, status))
+				continue ;
+		if (**end == '"')
+		{
+			if (check_dquote(start, end, result, status) < 0)
+				return (-1);
+			continue ;
+		}
+	}
+	return (0);
+}
+
 char	*expand(char *str, int status)
 {
 	char	*result;
 	char	*start;
 	char	*end;
-	char	*exit_status;
 
 	result = ft_calloc(1, sizeof(char));
 	*result = '\0';
 	start = str;
-	while (*start)
-	{
-		end = until_charset(start, "\"'$", 0, 0);
-		result = ft_strnadd(result, start, end - start);
-		start = end;
-		if (*end == '\'')
-		{
-			if (check_squote(&start, &end, &result) < 0)
-			{
-				free(result);
-				free(str);
-				return (NULL);
-			}
-			continue ;
-		}
-		if (*end == '$')
-		{
-			if (*(end + 1) == '?')
-			{
-				end++;
-				start = ++end;
-				exit_status = ft_itoa(status);
-				result = ft_stradd(result, exit_status);
-				free(exit_status);
-				continue ;
-			}
-			else if (*(end + 1) == '"')
-				start = ++end;
-			else if (ft_isspace(*(end + 1)) || *(end + 1) == '\n' || !*(end + 1))
-			{
-				result = ft_strnadd(result, "$", 1);
-				start = ++end;
-			}
-			else
-			{
-				check_envvar(&start, &end, &result);
-				continue ;
-			}
-		}
-		if (*end == '"')
-		{
-			if (check_dquote(&start, &end, &result, status) < 0)
-			{
-				free(result);
-				free(str);
-				return (NULL);
-			}
-			continue ;
-		}
-	}
+	if (expand_loop(&start, &end, &result, status) < 0)
+		return (expand_free(str, result));
 	free(str);
 	return (result);
 }
