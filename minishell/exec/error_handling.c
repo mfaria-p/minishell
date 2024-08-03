@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 23:47:45 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/03 12:56:21 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 18:58:25 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,7 @@ int	ft_error(int error)
 		ft_putstr_fd("OLDPWD not found in environment variables.\n",
 			STDERR_FILENO);
 	else if (error == 9)
-		ft_putstr_fd("ambiguous redirect\n",
-			STDERR_FILENO);
+		ft_putstr_fd("ambiguous redirect\n", STDERR_FILENO);
 	return (EXIT_FAILURE);
 }
 
