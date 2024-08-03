@@ -30,7 +30,8 @@ SRCS_EXEC =		ft_exit.c			\
 				execution.c			\
 				execution2.c		\
 				execution3.c		\
-				export_env3.c
+				export_env3.c		\
+				execution4.c
 
 SRCS = minishell.c							\
 	   signal.c								\

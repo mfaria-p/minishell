@@ -6,22 +6,11 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:51:23 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/03 19:01:18 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/04 00:27:02 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
-
-char	*find_var2(char *name)
-{
-	if (getenv(name))
-		return (getenv(name));
-	else
-	{
-		error_envp(name);
-		return (NULL);
-	}
-}
 
 char	*create_env_var(const char *var, const char *value)
 {
@@ -29,14 +18,14 @@ char	*create_env_var(const char *var, const char *value)
 	size_t	var_len;
 	size_t	value_len;
 
-	var_len = strlen(var);
-	value_len = strlen(value);
+	var_len = ft_strlen(var);
+	value_len = ft_strlen(value);
 	env_var = malloc(var_len + value_len + 2);
 	if (!env_var)
 		return (NULL);
-	strcpy(env_var, var);
-	strcat(env_var, "=");
-	strcat(env_var, value);
+	ft_strlcpy(env_var, var, -1);
+	ft_strlcat(env_var, "=", -1);
+	ft_strlcat(env_var, value, -1);
 	return (env_var);
 }
 

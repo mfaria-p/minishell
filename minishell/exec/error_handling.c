@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 23:47:45 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/03 18:58:25 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/04 00:18:59 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,5 @@ int	error_envp(char *str)
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(str, STDERR_FILENO);
 	ft_putstr_fd("not found in environment variables.\n", STDERR_FILENO);
-	return (EXIT_FAILURE);
-}
-
-int	err_cd(void)
-{
-	ft_putstr_fd("minishell: cd: HOME not set \n", STDERR_FILENO);
 	return (EXIT_FAILURE);
 }

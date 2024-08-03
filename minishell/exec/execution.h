@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/03 21:25:25 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/04 00:17:46 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ void		ft_echo(char **params);
 int			ft_countchar(const char *str, char c);
 
 void		ft_cd(t_env *env, char *path, int *wstatus);
-char		*find_var2(char *name);
 char		*find_oldpwd(char **envp);
 char		*create_env_var(const char *var, const char *value);
 void		ft_cd_home(t_env *env);
