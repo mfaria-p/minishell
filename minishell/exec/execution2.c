@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:05:32 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/02 19:58:35 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:43:43 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ void	ft_execute(t_node_e *exec, t_node_d *root, t_sh sh)
 	int		param_count;
 	char	**argv;
 	int		i;
-	pid_t	pid;
 
 	i = 0;
 	param_count = 0;

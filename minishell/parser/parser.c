@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 21:53:16 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 16:08:51 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:41:22 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ t_token	parse_e(t_node_d **branch, t_node_d **root)
 t_token	parse_r(t_node_d **branch, t_node_d **root, t_node_e *node_exec)
 {
 	static t_node_r	*tail;
-	const char		*temp_file_name = "/tmp/heredoc_tmp";
 	t_node_r		*new_node;
 	t_token			token;
 
