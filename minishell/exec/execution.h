@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/03 17:04:58 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 20:48:45 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,17 @@
 # define PIPE_WRITE STDOUT_FILENO
 # define MODE 00644
 # define HEREDOC_MSG "> "
+
+typedef struct s_setenv_context
+{
+	int		idx;
+	char	*key;
+	char	*new_val;
+	char	*plus;
+	char	*equal;
+	size_t	key_len;
+	size_t	val_len;
+}	t_setenv;
 
 // EXECUTION
 
