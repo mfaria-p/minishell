@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:46:47 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/02 11:17:58 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 12:51:14 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,19 @@ char	*next_token(char *str)
 		str = until_charset(str, "|<>$\"'", 1, 0);
 		if (*str == '\'')
 		{
-			str++;
-			str = until_charset(str, "'", 0, 0);
+			str = until_charset(++str, "'", 0, 0);
 			if (*str)
 				str++;
 		}
 		else if (*str == '"')
 		{
-			str++;
-			str = until_charset(str, "\"", 0, 0);
+			str = until_charset(++str, "\"", 0, 0);
 			if (*str)
 				str++;
 		}
 		else if (*str == '$')
 		{
-			str++;
-			if (*str != '?')
+			if (*++str != '?')
 				str = until_charset(str, "<>|", 1, 1);
 			else
 				str++;
