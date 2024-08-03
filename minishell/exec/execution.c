@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/03 21:35:33 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 21:52:19 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,8 @@ void	exec_red(t_node_r *red, t_sh sh)
 		execution((t_node_d *)red->next, sh);
 }
 
-void	exec_exec(t_node_e *exec, t_node_d *root, t_fds *fd, t_sh sh)
+static int exec_exec_aux(t_node_e *exec, t_sh sh)
 {
-	pid_t	pid;
-
 	if (!ft_strncmp(exec->command, "exit", 5))
 		ft_exit(exec->params, sh.stat);
 	else if (!ft_strncmp(exec->command, "echo", 5))
@@ -102,6 +100,27 @@ void	exec_exec(t_node_e *exec, t_node_d *root, t_fds *fd, t_sh sh)
 	}
 	else if (!ft_strncmp(exec->command, "pwd", 4))
 		ft_pwd(sh.env->envp);
+	else
+		return (1);
+	return (0);
+}
+
+void	exec_exec_child(t_node_e *exec, t_node_d *root, t_fds *fd, t_sh sh)
+{
+	sigchild();
+	fd_close(fd);
+	ft_execute(exec, root, sh);
+	destroy_tree(root);
+	free_env_export(sh.env);
+	exit(*sh.stat);
+}
+
+void	exec_exec(t_node_e *exec, t_node_d *root, t_fds *fd, t_sh sh)
+{
+	pid_t	pid;
+
+	if (exec_exec_aux(exec, sh) == 0)
+		return ;
 	else if (!ft_strncmp(exec->command, "export", 7) && !exec->params)
 		ft_printexport(sh.env->export);
 	else if (!ft_strncmp(exec->command, "export", 7) && exec->params[0])
@@ -116,15 +135,7 @@ void	exec_exec(t_node_e *exec, t_node_d *root, t_fds *fd, t_sh sh)
 	{
 		pid = fork();
 		if (pid == 0)
-		{
-			sigchild();
-			close(fd->in);
-			close(fd->out);
-			ft_execute(exec, root, sh);
-			destroy_tree(root);
-			free_env_export(sh.env);
-			exit(*sh.stat);
-		}
+			exec_exec_child(exec, root, fd, sh);
 		sigignore();
 		waitpid(pid, sh.stat, 0);
 		child_signal(*sh.stat);
