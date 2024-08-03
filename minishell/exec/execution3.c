@@ -6,11 +6,22 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:09:16 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/03 17:16:50 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 19:16:03 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+
+static int	check_file(char *filename, int io)
+{
+	if (io == R_input)
+		return (access(filename, W_OK) != -1);
+	if ((io == R_out || io == R_app) && access(filename, F_OK) != -1)
+		return (access(filename, R_OK) != -1);
+	if ((io == R_out || io == R_app) && access(filename, F_OK) == -1)
+		return (1);
+	return (0);
+}
 
 void	exec_not_heredoc(t_node_r *red, int flags, int io, t_sh sh)
 {
@@ -18,8 +29,7 @@ void	exec_not_heredoc(t_node_r *red, int flags, int io, t_sh sh)
 
 	if (*(red->filename))
 	{
-		if ((red->type == R_input && file_exist(red->filename)) \
-			|| red->type == R_out || red->type == R_app)
+		if (check_file(red->filename, red->type))
 		{
 			fd = open(red->filename, flags, MODE);
 			if (fd == -1 && io == STDIN_FILENO)
