@@ -6,11 +6,12 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/03 17:12:08 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 17:38:16 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+#include <unistd.h>
 
 // falta error handling no here doc (mb tenho q cleanar o temp file dps?)
 // o redirect input e append n ta a dar (da segmentation fault),
@@ -57,6 +58,7 @@ void	exec_pipe(t_node_p *pip, t_sh sh)
 	close(pipefd[1]);
 	waitpid(pid[0], NULL, 0);
 	waitpid(pid[1], sh.stat, 0);
+	child_signal(*sh.stat);
 	*sh.stat = WEXITSTATUS(*sh.stat);
 }
 
@@ -125,6 +127,7 @@ void	exec_exec(t_node_e *exec, t_node_d *root, t_fds *fd, t_sh sh)
 		}
 		sigignore();
 		waitpid(pid, sh.stat, 0);
+		child_signal(*sh.stat);
 		*sh.stat = WEXITSTATUS(*sh.stat);
 	}
 }
