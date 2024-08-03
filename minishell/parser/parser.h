@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:12:15 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 15:05:35 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 15:25:58 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,13 @@ typedef struct s_lex_context
 	char	**end;
 	char	**content;
 }	t_lex;
+
+typedef struct s_pipe_context
+{
+	t_node_p	*new_node;
+	t_node_d	*branch;
+	t_token		token;
+}	t_pipe_context;
 
 int			ft_isspace(int c);
 char		*skip_space(char *str);
