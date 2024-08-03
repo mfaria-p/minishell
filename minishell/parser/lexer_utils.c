@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 22:07:45 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 16:31:34 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 17:48:24 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ char	*skip_space(char *str)
 char	*until_charset(char *str, char *charset, int until_space, int oalnum)
 {
 	while (*str && (!charset || !ft_strchr(charset, *str)) && \
-		(!ft_isspace(*str) || !until_space) && (ft_isalnum(*str) || !oalnum))
+		(!ft_isspace(*str) || !until_space) && ((ft_isalnum(*str) \
+		|| *str == '-' || *str == '_') || !oalnum))
 		str++;
 	return (str);
 }
