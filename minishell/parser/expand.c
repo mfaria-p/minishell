@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:57:40 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/07/31 17:12:28 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 12:48:58 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,14 +88,15 @@ int	check_squote(char **start, char **end, char **result)
 
 int	check_dquote(char **start, char **end, char **result, int status)
 {
-	char *exit_status;
+	char	*exit_status;
 
 	*start = ++(*end);
 	*end = until_charset(*start, "\"$", 0, 0);
 	*result = ft_strnadd(*result, *start, *end - *start);
 	while (**end == '$')
 	{
-		if (ft_isspace(*(*end + 1)) || ft_strchr("\n\"=", *(*end + 1)) || !*(*end + 1) || ft_isdigit(*(*end + 1)))
+		if (ft_isspace(*(*end + 1)) || ft_strchr("\n\"=", *(*end + 1)) \
+			|| !*(*end + 1) || ft_isdigit(*(*end + 1)))
 			*result = ft_strnadd(*result, "$", 1);
 		if (*(*end + 1) == '?')
 		{
@@ -116,14 +117,14 @@ int	check_dquote(char **start, char **end, char **result, int status)
 		write(STDERR_FILENO, "minishell: unclosed dquote\n", 28);
 		return (-1);
 	}
-	else
-		*start = ++(*end);
+	*start = ++(*end);
 	return (0);
 }
 
 void	check_envvar(char **start, char **end, char **result)
 {
-	if (ft_isspace(*(*end + 1)) || ft_strchr("\n=", *(*end + 1)) || !*(*end + 1) || ft_isdigit(*(*end + 1)))
+	if (ft_isspace(*(*end + 1)) || ft_strchr("\n=", *(*end + 1)) \
+		|| !*(*end + 1) || ft_isdigit(*(*end + 1)))
 	{
 		*result = ft_strnadd(*result, "$", 1);
 		*start = ++(*end);

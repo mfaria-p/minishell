@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 19:57:26 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/02 21:07:09 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 12:37:28 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	siginit(void)
 	sigset_t			sa_mask;
 	struct sigaction	act;
 
+	g_sig = 0;
 	ft_memset(&act, 0, sizeof(struct sigaction));
 	if (sigemptyset(&sa_mask) < 0 || sigaddset(&sa_mask, SIGINT) < 0 \
 		|| sigaddset(&sa_mask, SIGQUIT) < 0)
@@ -56,18 +57,18 @@ void	sighandler(int sig, siginfo_t *info, void *ucontext)
 	}
 }
 
-void  sigignore(void)
+void	sigignore(void)
 {
-	struct sigaction  act;
+	struct sigaction	act;
 
 	ft_memset(&act, 0, sizeof(struct sigaction));
 	act.sa_handler = SIG_IGN;
 	sigaction(SIGINT, &act, NULL);
 }
 
-void  sigchild(void)
+void	sigchild(void)
 {
-	struct sigaction  act;
+	struct sigaction	act;
 
 	ft_memset(&act, 0, sizeof(struct sigaction));
 	act.sa_handler = SIG_DFL;

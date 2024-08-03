@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/02 21:06:43 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 12:42:00 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,26 +48,19 @@ t_env	init_env(char ***export, char ***envp2, char **envp)
 	while (envp[count] != NULL)
 		count++;
 	*export = malloc((count + 1) * sizeof(char *));
-	if (*export == NULL)
+	*envp2 = malloc((count + 1) * sizeof(char *));
+	if (!*export || !*envp2)
 		exit(EXIT_FAILURE);
 	i = 0;
 	while (i < count)
 	{
 		(*export)[i] = ft_strdup(envp[i]);
-		i++;
-	}
-	(*export)[count] = NULL;
-	env.export = *export;
-	*envp2 = malloc((count + 1) * sizeof(char *));
-	if (*envp2 == NULL)
-		exit(EXIT_FAILURE);
-	i = 0;
-	while (i < count)
-	{
 		(*envp2)[i] = ft_strdup(envp[i]);
 		i++;
 	}
+	(*export)[count] = NULL;
 	(*envp2)[count] = NULL;
+	env.export = *export;
 	env.envp = *envp2;
 	return (env);
 }
@@ -106,41 +99,44 @@ int	main_loop(t_env *env)
 	t_fds		fd;
 	static int	stat;
 
-	line = NULL;
-	fd.in = dup(STDIN_FILENO);
-	fd.out = dup(STDOUT_FILENO);
+	fd_init(&fd);
 	while (1)
 	{
-		g_sig = 0;
 		siginit();
 		line = readline("( ๑ ˃̵ᴗ˂̵)و ");
+		if (!line)
+			exit(EXIT_FAILURE);
 		if (g_sig)
 			stat = g_sig + 128;
-		if (line)
+		if (strlen(line) > 0)
 		{
-			if (strlen(line) > 0)
-			{
-				add_history(line);
-				if (ft_isexit(line))
-				{
-					lex(line, &stat);
-					destroy_tree(execution(parse(), (t_sh){env, 1, &fd, &stat}));
-					dup2(fd.in, STDIN_FILENO);
-					dup2(fd.out, STDOUT_FILENO);
-					free(line);
-					break ;
-				}
-				lex(line, &stat);
-				destroy_tree(execution(parse(), (t_sh){env, 1, &fd, &stat}));
-				dup2(fd.in, STDIN_FILENO);
-				dup2(fd.out, STDOUT_FILENO);
-			}
-			free(line);
+			add_history(line);
+			run_command(line, (t_sh){env, 1, &fd, &stat});
+			if (ft_isexit(line))
+				break ;
 		}
-		else
-			exit(EXIT_FAILURE);
 	}
-	close(fd.in);
-	close(fd.out);
+	free(line);
+	fd_close(&fd);
 	return (stat);
+}
+
+void	run_command(char *command, t_sh sh)
+{
+	lex(command, sh.stat);
+	destroy_tree(execution(parse(), sh));
+	dup2(sh.fd->in, STDIN_FILENO);
+	dup2(sh.fd->out, STDOUT_FILENO);
+}
+
+void	fd_init(t_fds *fd)
+{
+	fd->in = dup(STDIN_FILENO);
+	fd->out = dup(STDOUT_FILENO);
+}
+
+void	fd_close(t_fds *fd)
+{
+	close(fd->in);
+	close(fd->out);
 }

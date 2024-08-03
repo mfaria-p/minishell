@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 21:53:16 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/02 11:18:31 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 12:53:35 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ t_token	parse_e(t_node_d **branch, t_node_d **root)
 		if (exec == NULL)
 		{
 			exec = ft_calloc(1, sizeof(t_node_e));
-			exec->type = token.code; // WILL ALWAYS BE E_CMD AND NEVER E_BUILDIN
+			exec->type = token.code;
 			exec->n_params = 0;
 			exec->command = token.content;
 			if (*branch == NULL)

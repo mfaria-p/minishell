@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/03 12:43:04 by ecorona-          #+#    #+#             */
+/*   Updated: 2024/08/03 12:44:30 by ecorona-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -182,7 +194,7 @@ typedef struct s_shell
 	int		*stat;
 }	t_sh;
 
-t_node_d	*execution(t_node_d *node, t_sh sh); //t_env *env, pid_t pid, t_fds *fd, int *wstatus);
+t_node_d	*execution(t_node_d *node, t_sh sh);
 int			create_heredoc(const char *delimiter, const char *file_name);
 char		*ft_strdup(const char *s);
 size_t		ft_strlen(const char *s);
@@ -196,7 +208,9 @@ void		sigchild(void);
 
 t_env		init_env(char ***export, char ***envp2, char **envp);
 void		free_env_export(t_env *env);
-//t_env	init_env_envp(char ***envp2, char **envp);
 int			main_loop(t_env *env);
 
+void		fd_close(t_fds *fd);
+void		fd_init(t_fds *fd);
+void		run_command(char *command, t_sh sh);
 #endif

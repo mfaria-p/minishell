@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 23:47:45 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/25 13:08:11 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/08/03 12:56:21 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	error_envp(char *str)
 	return (EXIT_FAILURE);
 }
 
-int err_cd(void)
+int	err_cd(void)
 {
 	ft_putstr_fd("minishell: cd: HOME not set \n", STDERR_FILENO);
 	return (EXIT_FAILURE);
