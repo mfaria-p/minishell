@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:09:16 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/03 16:44:23 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 17:16:50 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,10 @@ void	exec_not_heredoc(t_node_r *red, int flags, int io, t_sh sh)
 		}
 	}
 	else
+	{
 		ft_error(9);
+		*sh.stat = 1;
+	}
 }
 
 // Function to read input for the heredoc and write it to a temporary file
