@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/03 17:02:06 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 17:08:45 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	ft_isexit(char *str)
 static void	run_command(char *command, t_sh sh)
 {
 	lex(command, sh.stat);
-	destroy_tree(execution(parse(), sh));
+	destroy_tree(execution(parse(sh.stat), sh));
 	dup2(sh.fd->in, STDIN_FILENO);
 	dup2(sh.fd->out, STDOUT_FILENO);
 }

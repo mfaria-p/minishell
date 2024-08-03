@@ -6,19 +6,20 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 21:53:16 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 16:41:22 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 17:10:24 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-t_node_d	*parse(void)
+t_node_d	*parse(int *wstatus)
 {
 	t_node_d	*root;
 
 	root = NULL;
 	parse_p(&root);
-	if (check_tree(root) < 0)
+	*wstatus = check_tree(root);
+	if (*wstatus)
 	{
 		destroy_tree(root);
 		root = NULL;
