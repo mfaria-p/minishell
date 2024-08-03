@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 22:07:45 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/06/24 19:15:30 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:03:59 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,6 @@ int	ft_isspace(int c)
 char	*skip_space(char *str)
 {
 	while (*str && ft_isspace(*str))
-		str++;
-	return (str);
-}
-
-char	*skip_alnum(char *str)
-{
-	while (*str && ft_isalnum(*str))
 		str++;
 	return (str);
 }
