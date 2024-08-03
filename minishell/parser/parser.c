@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 21:53:16 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 12:53:35 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 15:27:21 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,27 +29,25 @@ t_node_d	*parse(void)
 void	parse_p(t_node_d **root)
 {
 	static t_node_p	*tail;
-	t_node_p		*new_node;
-	t_node_d		*branch;
-	t_token			token;
+	t_pipe_context	pipe;
 
-	branch = NULL;
-	token = parse_e(&branch, root);
-	if (token.code & 1 << 6)
+	pipe.branch = NULL;
+	pipe.token = parse_e(&pipe.branch, root);
+	if (pipe.token.code & 1 << 6)
 	{
-		new_node = ft_calloc(1, sizeof(t_node_p));
-		new_node->type = token.code;
-		new_node->lnode = (t_node_d *)branch;
+		pipe.new_node = ft_calloc(1, sizeof(t_node_p));
+		pipe.new_node->type = pipe.token.code;
+		pipe.new_node->lnode = (t_node_d *)pipe.branch;
 		if (tail)
-			tail->rnode = (t_node_d *)new_node;
-		tail = new_node;
+			tail->rnode = (t_node_d *)pipe.new_node;
+		tail = pipe.new_node;
 		if (*root == NULL || !((*root)->type & 1 << 6))
-			*root = (t_node_d *)new_node;
+			*root = (t_node_d *)pipe.new_node;
 		parse_p(root);
 	}
-	else if (tail && token.code == EOL)
-		tail->rnode = (t_node_d *)branch;
-	else if (token.code == ERR)
+	else if (tail && pipe.token.code == EOL)
+		tail->rnode = (t_node_d *)pipe.branch;
+	else if (pipe.token.code == ERR)
 	{
 		destroy_tree(*root);
 		*root = NULL;
@@ -103,9 +101,9 @@ t_token	parse_e(t_node_d **branch, t_node_d **root)
 t_token	parse_r(t_node_d **branch, t_node_d **root, t_node_e *node_exec)
 {
 	static t_node_r	*tail;
+	const char		*temp_file_name = "/tmp/heredoc_tmp";
 	t_node_r		*new_node;
 	t_token			token;
-	const char		*temp_file_name = "/tmp/heredoc_tmp";
 
 	token = lex(NULL, NULL);
 	while (token.code & 1 << 5)
