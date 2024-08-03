@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:12:15 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 16:27:50 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 18:42:17 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ t_token		lex(char *str, int *wstatus);
 char		*ft_strnadd(char const *s1, char const *s2, size_t n);
 char		*ft_stradd(char const *s1, char const *s2);
 char		*add_status(char *result, int status);
-char		*ft_getenv(char *str, size_t n);
 
 /* ************************************************************************** */
 // expand_check.c
