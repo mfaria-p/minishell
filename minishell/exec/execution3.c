@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:09:16 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/03 19:16:03 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 21:08:46 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,43 +27,29 @@ void	exec_not_heredoc(t_node_r *red, int flags, int io, t_sh sh)
 {
 	int	fd;
 
+	*sh.stat = 1;
 	if (*(red->filename))
 	{
 		if (check_file(red->filename, red->type))
 		{
 			fd = open(red->filename, flags, MODE);
 			if (fd == -1 && io == STDIN_FILENO)
-			{
 				ft_error(4);
-				*sh.stat = 1;
-				return ;
-			}
 			else if (fd == -1 && io == STDOUT_FILENO)
-			{
 				ft_error(3);
-				*sh.stat = 1;
-				return ;
-			}
-			if (dup2(fd, io) == -1)
+			else if (dup2(fd, io) == -1)
 			{
 				close(fd);
 				ft_error(3);
-				*sh.stat = 1;
-				return ;
 			}
+			*sh.stat = 0;
 			close(fd);
 		}
 		else
-		{
 			file_not_found(red->filename);
-			*sh.stat = 1;
-		}
 	}
 	else
-	{
 		ft_error(9);
-		*sh.stat = 1;
-	}
 }
 
 // Function to read input for the heredoc and write it to a temporary file
