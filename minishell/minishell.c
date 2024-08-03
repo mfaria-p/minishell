@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/03 12:42:00 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 13:41:58 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	main_loop(t_env *env)
 		siginit();
 		line = readline("( ๑ ˃̵ᴗ˂̵)و ");
 		if (!line)
-			exit(EXIT_FAILURE);
+			break ;
 		if (g_sig)
 			stat = g_sig + 128;
 		if (strlen(line) > 0)
@@ -115,8 +115,8 @@ int	main_loop(t_env *env)
 			if (ft_isexit(line))
 				break ;
 		}
+		free(line);
 	}
-	free(line);
 	fd_close(&fd);
 	return (stat);
 }
