@@ -3,11 +3,12 @@ NAME = minishell
 SRCS_PARSER =	destroy_tree.c	\
 				check_tree.c	\
 				expand.c		\
-				lexer.c			\
 				lexer_utils.c	\
+				lexer_pipe.c	\
 				lexer_redir.c	\
 				lexer_cmd.c		\
-				lexer_pipe.c	\
+				lexer.c			\
+				parser_utils.c	\
 				parser.c
 
 SRCS_EXEC =		ft_exit.c			\

@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:12:15 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 16:05:34 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:08:17 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,12 @@ char		*expand(char *str, int status);
 void		parse_p(t_node_d **root);
 t_token		parse_r(t_node_d **branch, t_node_d **root, t_node_e *node_exec);
 t_token		parse_e(t_node_d **branch, t_node_d **root);
+
+/* ************************************************************************** */
+// parser_utils.c
+void		parse_cmd(t_node_e **exec, t_token *token, t_node_d **branch);
+void		parse_param(t_node_e **exec, char ***new_params, t_token *token);
+void		parse_r_loop(t_redir redir);
 
 /* ************************************************************************** */
 // check_tree.c
