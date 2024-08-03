@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/02 19:57:18 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 17:04:58 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,6 @@
 # define EXECUTION_H
 
 # include "../minishell.h"
-# include <fcntl.h>
-# include <readline/readline.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <sys/types.h>
-# include <sys/wait.h>
-# include <unistd.h>
-//#include <string.h>
-//#include <stdio.h>
 
 # define PIPE_READ STDIN_FILENO
 # define PIPE_WRITE STDOUT_FILENO

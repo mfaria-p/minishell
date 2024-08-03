@@ -6,13 +6,11 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/03 13:36:26 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 17:04:56 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
-#include <stdlib.h>
-#include <unistd.h>
 
 // falta error handling no here doc (mb tenho q cleanar o temp file dps?)
 // o redirect input e append n ta a dar (da segmentation fault),
