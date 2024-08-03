@@ -32,7 +32,12 @@ SRCS_EXEC =		ft_exit.c			\
 				execution3.c		\
 				export_env3.c
 
-SRCS = minishell.c signal.c $(addprefix parser/, $(SRCS_PARSER)) $(addprefix exec/, $(SRCS_EXEC))
+SRCS = minishell.c							\
+	   signal.c								\
+	   env.c								\
+	   fd.c									\
+	   $(addprefix parser/, $(SRCS_PARSER))	\
+	   $(addprefix exec/, $(SRCS_EXEC))
 
 OBJS = $(SRCS:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 12:43:04 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 16:36:10 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 17:02:24 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,11 +213,14 @@ int			siginit(void);
 void		sigignore(void);
 void		sigchild(void);
 
+/* ************************************************************************** */
+// env.c
 t_env		init_env(char ***export, char ***envp2, char **envp);
 void		free_env_export(t_env *env);
-int			main_loop(t_env *env);
 
+/* ************************************************************************** */
+// fd.c
 void		fd_close(t_fds *fd);
 void		fd_init(t_fds *fd);
-void		run_command(char *command, t_sh sh);
+
 #endif
