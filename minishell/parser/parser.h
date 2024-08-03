@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:12:15 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 15:25:58 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 15:49:08 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,20 @@ typedef struct s_pipe_context
 	t_node_p	*new_node;
 	t_node_d	*branch;
 	t_token		token;
-}	t_pipe_context;
+}	t_pipe;
+
+typedef struct s_redir_context
+{
+	t_node_r	**tail;
+	t_node_r	**new_node;
+	t_token		*token;
+	t_node_d	**branch;
+	t_node_d	**root;
+}	t_redir;
 
 int			ft_isspace(int c);
 char		*skip_space(char *str);
-char		*until_charset(char *str, char *charset, int until_space, int oalnum);
+char		*until_charset(char *str, char *charset, int space, int oalnum);
 char		*ft_strndup(const char *s, size_t n);
 char		*expand(char *str, int status);
 
