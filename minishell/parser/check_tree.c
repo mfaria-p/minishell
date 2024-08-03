@@ -6,14 +6,14 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 13:51:34 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 16:12:10 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:19:29 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-static int	check_p(t_node_p *node, int *status);
-static int	check_r(t_node_r *node, int *status);
+static void	check_p(t_node_p *node, int *status);
+static void	check_r(t_node_r *node, int *status);
 
 static void	check_tree_aux(t_node_d *node, int *status)
 {
@@ -26,7 +26,7 @@ static void	check_tree_aux(t_node_d *node, int *status)
 	}
 }
 
-static int	check_p(t_node_p *node, int *status)
+static void	check_p(t_node_p *node, int *status)
 {
 	if (!node->lnode || !node->rnode)
 		*status = -1;
@@ -34,7 +34,7 @@ static int	check_p(t_node_p *node, int *status)
 	check_tree_aux(node->rnode, status);
 }
 
-static int	check_r(t_node_r *node, int *status)
+static void	check_r(t_node_r *node, int *status)
 {
 	check_tree_aux(node->next, status);
 }
