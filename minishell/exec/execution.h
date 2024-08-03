@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/03 20:48:45 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 21:25:25 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,16 @@ typedef struct s_setenv_context
 	size_t	key_len;
 	size_t	val_len;
 }	t_setenv;
+
+typedef struct s_export_context
+{
+	t_env	**env;
+	char	***params;
+	int		*wstatus;
+	int		*i;
+	char	**equal;
+	int		plus;
+}	t_exp;
 
 // EXECUTION
 
@@ -89,8 +99,8 @@ char		**resize_and_add(char ***envp, char *new_var);
 void		set_env_with_equal(char ***envp, char *var_value);
 void		set_env_without_equal(char ***envp, char *var);
 void		set_env_with_equal_plus(char ***envp, char *var_value);
-int			is_valid_identifier(char *var, char *value);
-int			is_valid_identifier_plus(char *var, char *value);
+int			valid_id(char *var, char *value);
+int			valid_id_plus(char *var, char *value);
 int			find_var(char **envp, const char *var);
 int			compare_env_var(const char *env_var, const char *var, int len2);
 int			get_var_length(const char *var);

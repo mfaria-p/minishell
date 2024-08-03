@@ -21,7 +21,7 @@ void	ft_printenv(char **envp)
 	}
 }
 
-int	is_valid_identifier(char *var, char *value)
+int	valid_id(char *var, char *value)
 {
 	int	i;
 
@@ -45,7 +45,7 @@ int	is_valid_identifier(char *var, char *value)
 	return (1);
 }
 
-int	is_valid_identifier_plus(char *var, char *value)
+int	valid_id_plus(char *var, char *value)
 {
 	int	i;
 
