@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:09:16 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/03 21:08:46 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/04 00:20:46 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,4 +94,32 @@ void	exec_heredoc(t_node_r *red, t_sh sh)
 		dup2(fd, STDIN_FILENO);
 		close(fd);
 	}
+}
+
+pid_t	have_child(t_node_p *pip, int rw, int pipefd[2], t_sh sh)
+{
+	int	pid;
+
+	pid = fork();
+	sh.pid = pid;
+	sh.fd = NULL;
+	if (pid < 0)
+		ft_error(1);
+	if (pid == 0)
+	{
+		sigchild();
+		if (dup2(pipefd[rw], rw) == -1)
+			ft_error(2);
+		close(pipefd[0]);
+		close(pipefd[1]);
+		if (rw == PIPE_WRITE)
+			execution((t_node_d *)pip->lnode, sh);
+		else
+			execution((t_node_d *)pip->rnode, sh);
+		free_env_export(sh.env);
+		rl_clear_history();
+		exit(*sh.stat);
+	}
+	sigignore();
+	return (pid);
 }

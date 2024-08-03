@@ -6,20 +6,11 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 21:18:12 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/25 23:07:23 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/08/04 00:18:21 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
-
-void	ft_printenv(char **envp)
-{
-	while (*envp)
-	{
-		printf("%s\n", *envp);
-		envp++;
-	}
-}
 
 int	valid_id(char *var, char *value)
 {

@@ -6,80 +6,36 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 00:09:12 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/03 21:30:59 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/04 00:31:58 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-void	ft_printexport(char **export)
-{
-	int	i;
-
-	i = 0;
-	while (export[i] != NULL)
-	{
-		printf("declare -x %s\n", export[i]);
-		i++;
-	}
-}
-
-void	set_env_with_equal(char ***envp, char *var_value)
-{
-	int		index;
-
-	index = find_var(*envp, var_value);
-	if (index >= 0)
-	{
-		free((*envp)[index]);
-		(*envp)[index] = ft_strdup(var_value);
-	}
-	else
-	{
-		if (resize_and_add(envp, var_value) == NULL)
-			return ;
-	}
-}
-
-// Function to set the environment variable when there is no value
-void	set_env_without_equal(char ***envp, char *var)
-{
-	int	index;
-
-	index = find_var(*envp, var);
-	if (index >= 0)
-		return ;
-	else
-	{
-		if (resize_and_add(envp, var) == NULL)
-			return ;
-	}
-}
-
 static void	set_env_index(char ***envp, t_setenv *setenv)
 {
 	if (setenv->equal)
 	{
-		setenv->new_val = malloc(strlen((*envp)[setenv->idx]) + strlen(setenv->plus + 2) + 1);
+		setenv->new_val = malloc(strlen((*envp)[setenv->idx]) + ft_strlen(setenv->plus + 2) + 1);
 		if (setenv->new_val == NULL)
 			free(setenv->key);
 		else
 		{
-			strcpy(setenv->new_val, (*envp)[setenv->idx]);
-			strcat(setenv->new_val, setenv->plus + 2);
+			ft_strlcpy(setenv->new_val, (*envp)[setenv->idx], -1);
+			ft_strlcat(setenv->new_val, setenv->plus + 2, -1);
 			free((*envp)[setenv->idx]);
 			(*envp)[setenv->idx] = setenv->new_val;
 		}
 		return ;
 	}
-	setenv->new_val = malloc(strlen((*envp)[setenv->idx]) + strlen(setenv->plus + 2) + 2);
+	setenv->new_val = malloc(ft_strlen((*envp)[setenv->idx]) + ft_strlen(setenv->plus + 2) + 2);
 	if (setenv->new_val == NULL)
 		free(setenv->key);
 	else
 	{
-		strcpy(setenv->new_val, (*envp)[setenv->idx]);
-		strcat(setenv->new_val, "=");
-		strcat(setenv->new_val, setenv->plus + 2);
+		ft_strlcpy(setenv->new_val, (*envp)[setenv->idx], -1);
+		ft_strlcat(setenv->new_val, "=", -1);
+		ft_strlcat(setenv->new_val, setenv->plus + 2, -1);
 		free((*envp)[setenv->idx]);
 		(*envp)[setenv->idx] = setenv->new_val;
 	}
@@ -90,7 +46,7 @@ static void	set_env_noindex(char ***envp, char *var_value, t_setenv *setenv)
 	*setenv->plus = '+';
 	setenv->equal = ft_strchr(var_value, '=');
 	setenv->key_len = setenv->plus - setenv->key;
-	setenv->val_len = strlen(setenv->equal + 1);
+	setenv->val_len = ft_strlen(setenv->equal + 1);
 	setenv->new_val = malloc(setenv->key_len + setenv->val_len + 2);
 	if (setenv->new_val == NULL)
 		free(setenv->key);
@@ -116,7 +72,7 @@ void	set_env_with_equal_plus(char ***envp, char *var_value)
 {
 	t_setenv	setenv;
 
-	setenv.key = strdup(var_value);
+	setenv.key = ft_strdup(var_value);
 	if (setenv.key == NULL)
 		return ;
 	setenv.plus = ft_strchr(setenv.key, '+');

@@ -6,61 +6,12 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/03 21:54:00 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/04 00:23:59 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include <unistd.h>
-
-// falta error handling no here doc (mb tenho q cleanar o temp file dps?)
-// o redirect input e append n ta a dar (da segmentation fault),
-// nem o seu erro handling
-
-pid_t	have_child(t_node_p *pip, int rw, int pipefd[2], t_sh sh)
-{
-	int	pid;
-
-	pid = fork();
-	sh.pid = pid;
-	sh.fd = NULL;
-	if (pid < 0)
-		ft_error(1);
-	if (pid == 0)
-	{
-		sigchild();
-		if (dup2(pipefd[rw], rw) == -1)
-			ft_error(2);
-		close(pipefd[0]);
-		close(pipefd[1]);
-		if (rw == PIPE_WRITE)
-			execution((t_node_d *)pip->lnode, sh);
-		else
-			execution((t_node_d *)pip->rnode, sh);
-		free_env_export(sh.env);
-		rl_clear_history();
-		exit(*sh.stat);
-	}
-	sigignore();
-	return (pid);
-}
-
-void	exec_pipe(t_node_p *pip, t_sh sh)
-{
-	int		pipefd[2];
-	pid_t	pid[2];
-
-	if (pipe(pipefd) == -1)
-		ft_error(2);
-	pid[0] = have_child(pip, PIPE_WRITE, pipefd, sh);
-	pid[1] = have_child(pip, PIPE_READ, pipefd, sh);
-	close(pipefd[0]);
-	close(pipefd[1]);
-	waitpid(pid[0], NULL, 0);
-	waitpid(pid[1], sh.stat, 0);
-	child_signal(*sh.stat);
-	*sh.stat = WEXITSTATUS(*sh.stat);
-}
 
 void	exec_red(t_node_r *red, t_sh sh)
 {
@@ -105,7 +56,7 @@ static int	exec_exec_aux(t_node_e *exec, t_sh sh)
 	return (0);
 }
 
-void	exec_exec_child(t_node_e *exec, t_node_d *root, t_fds *fd, t_sh sh)
+static void	exec_exec_child(t_node_e *exec, t_node_d *root, t_fds *fd, t_sh sh)
 {
 	sigchild();
 	fd_close(fd);
