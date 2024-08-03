@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 00:09:12 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/03 16:43:13 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 21:02:42 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,76 +56,80 @@ void	set_env_without_equal(char ***envp, char *var)
 	}
 }
 
-void	set_env_with_equal_plus(char ***envp, char *var_value)
+static void	set_env_index(char ***envp, t_setenv *setenv)
 {
-	int		index;
-	char	*key;
-	char	*new_value;
-
-	// Duplicate var_value to manipulate it
-	key = strdup(var_value);
-	if (key == NULL)
-		return ;
-	char	*plus_equal_sign = ft_strchr(key, '+');
-	*plus_equal_sign = '\0'; // Terminate key to get the correct key
-	index = find_var(*envp, key);
-	if (index >= 0)
+	if (setenv->equal)
 	{
-		char	*equal_sign = ft_strchr((*envp)[index], '=');
-		if (equal_sign)
+		setenv->new_val = malloc(strlen((*envp)[setenv->idx]) + strlen(setenv->plus + 2) + 1);
+		if (setenv->new_val == NULL)
+			free(setenv->key);
+		else
 		{
-			// Append the new value to the existing value
-			new_value = malloc(strlen((*envp)[index]) + strlen(plus_equal_sign + 2) + 1);
-			if (new_value == NULL)
-			{
-				free(key);
-				return ;
-			}
-			strcpy(new_value, (*envp)[index]);
-			strcat(new_value, plus_equal_sign + 2);
-			free((*envp)[index]);
-			(*envp)[index] = new_value;
+			strcpy(setenv->new_val, (*envp)[setenv->idx]);
+			strcat(setenv->new_val, setenv->plus + 2);
+			free((*envp)[setenv->idx]);
+			(*envp)[setenv->idx] = setenv->new_val;
+		}
+		return ;
+	}
+	setenv->new_val = malloc(strlen((*envp)[setenv->idx]) + strlen(setenv->plus + 2) + 2);
+	if (setenv->new_val == NULL)
+		free(setenv->key);
+	else
+	{
+		strcpy(setenv->new_val, (*envp)[setenv->idx]);
+		strcat(setenv->new_val, "=");
+		strcat(setenv->new_val, setenv->plus + 2);
+		free((*envp)[setenv->idx]);
+		(*envp)[setenv->idx] = setenv->new_val;
+	}
+}
+
+static void	set_env_noindex(char ***envp, char *var_value, t_setenv *setenv)
+{
+	*setenv->plus = '+';
+	setenv->equal = ft_strchr(var_value, '=');
+	setenv->key_len = setenv->plus - setenv->key;
+	setenv->val_len = strlen(setenv->equal + 1);
+	setenv->new_val = malloc(setenv->key_len + setenv->val_len + 2);
+	if (setenv->new_val == NULL)
+		free(setenv->key);
+	else
+	{
+		strncpy(setenv->new_val, var_value, setenv->plus - setenv->key);
+		(setenv->new_val)[setenv->plus - setenv->key] = '=';
+		strcpy(setenv->new_val + (setenv->plus - setenv->key) + 1, setenv->equal + 1);
+		if (resize_and_add(envp, setenv->new_val) == NULL)
+		{
+			free(setenv->key);
+			free(setenv->new_val);
 		}
 		else
 		{
-			new_value = malloc(strlen((*envp)[index]) + strlen(plus_equal_sign + 2) + 2);
-			if (new_value == NULL)
-			{
-				free(key);
-				return ;
-			}
-			strcpy(new_value, (*envp)[index]);
-			strcat(new_value, "=");
-			strcat(new_value, plus_equal_sign + 2);
-			free((*envp)[index]);
-			(*envp)[index] = new_value;
+			*setenv->plus = '+';
+			free(setenv->new_val);
 		}
+	}
+}
+
+void	set_env_with_equal_plus(char ***envp, char *var_value)
+{
+	t_setenv	setenv;
+
+	setenv.key = strdup(var_value);
+	if (setenv.key == NULL)
+		return ;
+	setenv.plus = ft_strchr(setenv.key, '+');
+	*setenv.plus = '\0';
+	setenv.idx = find_var(*envp, setenv.key);
+	if (setenv.idx >= 0)
+	{
+		setenv.equal = ft_strchr((*envp)[setenv.idx], '=');
+		set_env_index(envp, &setenv);
 	}
 	else
-	{
-		*plus_equal_sign = '+';
-		char	*equal_sign = ft_strchr(var_value, '=');
-		size_t	key_len = plus_equal_sign - key;
-	    size_t	value_len = strlen(equal_sign + 1);
-		new_value = malloc(key_len + value_len + 2);
-		if (new_value == NULL)
-		{
-			free(key);
-			return ;
-		}
-		strncpy(new_value, var_value, plus_equal_sign - key); // Copy part before `+=`
-		new_value[plus_equal_sign - key] = '='; // Replace `+` with `=`
-		strcpy(new_value + (plus_equal_sign - key) + 1, equal_sign + 1); // Copy part after `=`
-		if (resize_and_add(envp, new_value) == NULL)
-		{
-			free(key);
-			free(new_value);
-			return ;
-		}
-		*plus_equal_sign = '+';
-		free(new_value); // Free allocated memory
-	}
-	free(key);
+		set_env_noindex(envp, var_value, &setenv);
+	free(setenv.key);
 }
 
 void	ft_doexport(t_env *env, char **params, int *wstatus)
