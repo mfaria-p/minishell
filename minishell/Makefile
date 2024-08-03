@@ -5,6 +5,9 @@ SRCS_PARSER =	destroy_tree.c	\
 				expand.c		\
 				lexer.c			\
 				lexer_utils.c	\
+				lexer_redir.c	\
+				lexer_cmd.c		\
+				lexer_pipe.c	\
 				parser.c
 
 SRCS_EXEC =		ft_exit.c			\
