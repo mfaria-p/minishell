@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:46:47 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 12:51:14 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 15:20:49 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,116 @@ char	*next_token(char *str)
 	}
 }
 
+t_token	lex_cmd(t_lex lex)
+{
+	*lex.content = ft_strndup(*lex.cpos, *lex.end - *lex.cpos + 1);
+	*lex.content = expand(*lex.content, *lex.status);
+	if (!*lex.content)
+		return ((t_token){ERR, NULL, **lex.cpos});
+	*lex.cpos = *lex.end;
+	return ((t_token){E_cmd, *lex.content});
+}
+
+t_token	lex_hd(t_lex lex)
+{
+	(*lex.cpos)++;
+	*lex.cpos = skip_space(*lex.cpos);
+	*lex.end = next_token(*lex.cpos);
+	if (*lex.end == *lex.cpos)
+	{
+		write(STDERR_FILENO, "minishell: no redirect file\n", 28);
+		return ((t_token){ERR, NULL, **lex.cpos});
+	}
+	*lex.content = ft_strndup(*lex.cpos, *lex.end - *lex.cpos + 1);
+	*lex.content = expand(*lex.content, *lex.status);
+	if (!*lex.content)
+		return ((t_token){ERR, NULL, **lex.cpos});
+	*lex.cpos = *lex.end;
+	return ((t_token){R_heredoc, *lex.content});
+}
+
+t_token	lex_in(t_lex lex)
+{
+	*lex.cpos = skip_space(*lex.cpos);
+	*lex.end = next_token(*lex.cpos);
+	if (*lex.end == *lex.cpos)
+	{
+		write(STDERR_FILENO, "minishell: no redirect file\n", 28);
+		return ((t_token){ERR, NULL, **lex.cpos});
+	}
+	*lex.content = ft_strndup(*lex.cpos, *lex.end - *lex.cpos + 1);
+	*lex.content = expand(*lex.content, *lex.status);
+	if (!*lex.content)
+		return ((t_token){ERR, NULL, **lex.cpos});
+	*lex.cpos = *lex.end;
+	return ((t_token){R_input, *lex.content});
+}
+
+t_token	lex_app(t_lex lex)
+{
+	(*lex.cpos)++;
+	*lex.cpos = skip_space(*lex.cpos);
+	*lex.end = next_token(*lex.cpos);
+	if (*lex.end == *lex.cpos)
+	{
+		write(STDERR_FILENO, "minishell: no heredoc delimeter\n", 33);
+		return ((t_token){ERR, NULL, **lex.cpos});
+	}
+	*lex.content = ft_strndup(*lex.cpos, *lex.end - *lex.cpos + 1);
+	*lex.content = expand(*lex.content, *lex.status);
+	if (!*lex.content)
+		return ((t_token){ERR, NULL, **lex.cpos});
+	*lex.cpos = *lex.end;
+	return ((t_token){R_app, *lex.content});
+}
+
+t_token	lex_out(t_lex lex)
+{
+	*lex.cpos = skip_space(*lex.cpos);
+	*lex.end = next_token(*lex.cpos);
+	if (*lex.end == *lex.cpos)
+	{
+		write(STDERR_FILENO, "minishell: no redirect file\n", 28);
+		return ((t_token){ERR, NULL, **lex.cpos});
+	}
+	*lex.content = ft_strndup(*lex.cpos, *lex.end - *lex.cpos + 1);
+	*lex.content = expand(*lex.content, *lex.status);
+	if (!*lex.content)
+		return ((t_token){ERR, NULL, **lex.cpos});
+	*lex.cpos = *lex.end;
+	return ((t_token){R_out, *lex.content});
+}
+
+t_token	lex_pipe(t_lex lex)
+{
+	(*lex.cpos)++;
+	return ((t_token){P, NULL});
+}
+
+t_token	lex_redir(t_lex lex)
+{
+	if (**lex.cpos == '<')
+	{
+		(*lex.cpos)++;
+		if (**lex.cpos == '<')
+			return (lex_hd(lex));
+		return (lex_in(lex));
+	}
+	if (**lex.cpos == '>')
+	{
+		(*lex.cpos)++;
+		if (**lex.cpos == '>')
+			return (lex_app(lex));
+		return (lex_out(lex));
+	}
+}
+
+t_token	lex_init(t_lex lex)
+{
+	*lex.cpos = *lex.str;
+	return ((t_token){});
+}
+
 t_token	lex(char *str, int *wstatus)
 {
 	static char	*cpos;
@@ -52,101 +162,16 @@ t_token	lex(char *str, int *wstatus)
 	if (wstatus)
 		status = *wstatus;
 	if (str)
-	{
-		cpos = str;
-		return ((t_token){});
-	}
+		return (lex_init((t_lex){&str, &cpos, &status, &end, &content}));
 	cpos = skip_space(cpos);
 	if (*cpos == '\n' || *cpos == '\0')
 		return ((t_token){EOL, NULL});
 	end = next_token(cpos);
 	if (end != cpos)
-	{
-		content = ft_strndup(cpos, end - cpos + 1);
-		content = expand(content, status);
-		if (!content)
-			return ((t_token){ERR, NULL, *cpos});
-		cpos = end;
-		return ((t_token){E_cmd, content});
-	}
-	if (*cpos == '<')
-	{
-		cpos++;
-		if (*cpos == '<')
-		{
-			cpos++;
-			cpos = skip_space(cpos);
-			end = next_token(cpos);
-			if (end == cpos)
-			{
-				write(STDERR_FILENO, "minishell: no redirect file\n", 28);
-				return ((t_token){ERR, NULL, *cpos});
-			}
-			content = ft_strndup(cpos, end - cpos + 1);
-			content = expand(content, status);
-			if (!content)
-				return ((t_token){ERR, NULL, *cpos});
-			cpos = end;
-			return ((t_token){R_heredoc, content});
-		}
-		else
-		{
-			cpos = skip_space(cpos);
-			end = next_token(cpos);
-			if (end == cpos)
-			{
-				write(STDERR_FILENO, "minishell: no redirect file\n", 28);
-				return ((t_token){ERR, NULL, *cpos});
-			}
-			content = ft_strndup(cpos, end - cpos + 1);
-			content = expand(content, status);
-			if (!content)
-				return ((t_token){ERR, NULL, *cpos});
-			cpos = end;
-			return ((t_token){R_input, content});
-		}
-	}
-	if (*cpos == '>')
-	{
-		cpos++;
-		if (*cpos == '>')
-		{
-			cpos++;
-			cpos = skip_space(cpos);
-			end = next_token(cpos);
-			if (end == cpos)
-			{
-				write(STDERR_FILENO, "minishell: no heredoc delimeter\n", 33);
-				return ((t_token){ERR, NULL, *cpos});
-			}
-			content = ft_strndup(cpos, end - cpos + 1);
-			content = expand(content, status);
-			if (!content)
-				return ((t_token){ERR, NULL, *cpos});
-			cpos = end;
-			return ((t_token){R_app, content});
-		}
-		else
-		{
-			cpos = skip_space(cpos);
-			end = next_token(cpos);
-			if (end == cpos)
-			{
-				write(STDERR_FILENO, "minishell: no redirect file\n", 28);
-				return ((t_token){ERR, NULL, *cpos});
-			}
-			content = ft_strndup(cpos, end - cpos + 1);
-			content = expand(content, status);
-			if (!content)
-				return ((t_token){ERR, NULL, *cpos});
-			cpos = end;
-			return ((t_token){R_out, content});
-		}
-	}
+		return (lex_cmd((t_lex){&str, &cpos, &status, &end, &content}));
+	if (*cpos == '<' || *cpos == '>')
+		return (lex_redir((t_lex){&str, &cpos, &status, &end, &content}));
 	if (*cpos == '|')
-	{
-		cpos++;
-		return ((t_token){P, NULL});
-	}
+		return (lex_pipe((t_lex){&str, &cpos, &status, &end, &content}));
 	return ((t_token){EOL, NULL});
 }

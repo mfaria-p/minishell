@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:12:15 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 12:52:11 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 15:05:35 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,15 @@ typedef struct s_redirect_headtail
 	t_node_r	*head;
 	t_node_r	*tail;
 }	t_redirect_tailhead;
+
+typedef struct s_lex_context
+{
+	char	**str;
+	char	**cpos;
+	int		*status;
+	char	**end;
+	char	**content;
+}	t_lex;
 
 int			ft_isspace(int c);
 char		*skip_space(char *str);
