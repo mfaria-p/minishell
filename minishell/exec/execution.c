@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/03 13:00:11 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 13:36:26 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ t_node_d	*execution(t_node_d *node, t_sh sh)
 	static t_node_d	*root;
 	static t_fds	*fd;
 
+	*sh.stat = 0;
 	if (!root)
 		root = node;
 	if (!fd)
