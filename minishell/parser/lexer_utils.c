@@ -6,11 +6,10 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 22:07:45 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 16:03:59 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:31:34 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "parser.h"
 
 int	ft_isspace(int c)
