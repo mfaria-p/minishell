@@ -6,14 +6,14 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:46:47 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 15:59:59 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:14:05 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include <unistd.h>
 
-char	*next_token(char *str)
+static char	*next_token(char *str)
 {
 	while (1)
 	{
