@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:12:15 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 16:18:13 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:27:50 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,10 @@ char		*until_charset(char *str, char *charset, int space, int oalnum);
 char		*ft_strndup(const char *s, size_t n);
 
 /* ************************************************************************** */
+// lexer_pipe.c
+t_token		lex_pipe(t_lex lex);
+
+/* ************************************************************************** */
 // lexer_redir.c
 t_token		lex_hd(t_lex lex);
 t_token		lex_in(t_lex lex);
@@ -73,12 +77,24 @@ t_token		lex_redir(t_lex lex);
 t_token		lex_cmd(t_lex lex);
 
 /* ************************************************************************** */
-// lexer_pipe.c
-t_token		lex_pipe(t_lex lex);
+// lexer.c
+char		*next_token(char *str);
+t_token		lex(char *str, int *wstatus);
 
 /* ************************************************************************** */
-// lexer.c
-t_token		lex(char *str, int *wstatus);
+// expand_utils.c
+char		*ft_strnadd(char const *s1, char const *s2, size_t n);
+char		*ft_stradd(char const *s1, char const *s2);
+char		*add_status(char *result, int status);
+char		*ft_getenv(char *str, size_t n);
+
+/* ************************************************************************** */
+// expand_check.c
+int			check_squote(char **start, char **end, char **result);
+void		check_dquote_help(char **start, char **end, char **result);
+int			check_dquote(char **start, char **end, char **result, int status);
+void		check_envvar(char **start, char **end, char **result);
+int			check_dsign(char **start, char **end, char **result, int status);
 
 /* ************************************************************************** */
 // expand.c
