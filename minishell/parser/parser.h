@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:12:15 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 15:59:43 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:05:34 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,7 @@
 # define EOL 1
 # define ERR 0
 
-typedef struct s_redirect_headtail
-{
-	t_node_r	*head;
-	t_node_r	*tail;
-}	t_redirect_tailhead;
-
+// lexer.c
 typedef struct s_lex_context
 {
 	char	**str;
@@ -34,6 +29,14 @@ typedef struct s_lex_context
 	char	**content;
 }	t_lex;
 
+// parser.c
+typedef struct s_redirect_headtail
+{
+	t_node_r	*head;
+	t_node_r	*tail;
+}	t_redirect_tailhead;
+
+// parser.c
 typedef struct s_pipe_context
 {
 	t_node_p	*new_node;
@@ -41,6 +44,7 @@ typedef struct s_pipe_context
 	t_token		token;
 }	t_pipe;
 
+// parser.c
 typedef struct s_redir_context
 {
 	t_node_r	**tail;
@@ -82,10 +86,14 @@ t_token		lex(char *str, int *wstatus);
 // expand.c
 char		*expand(char *str, int status);
 
+/* ************************************************************************** */
+// parser.c
 void		parse_p(t_node_d **root);
 t_token		parse_r(t_node_d **branch, t_node_d **root, t_node_e *node_exec);
 t_token		parse_e(t_node_d **branch, t_node_d **root);
 
+/* ************************************************************************** */
+// check_tree.c
 int			check_tree(t_node_d *node);
 
 t_node_d	*print_tree(t_node_d *root);
