@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/03 21:52:19 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 21:54:00 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	exec_red(t_node_r *red, t_sh sh)
 		execution((t_node_d *)red->next, sh);
 }
 
-static int exec_exec_aux(t_node_e *exec, t_sh sh)
+static int	exec_exec_aux(t_node_e *exec, t_sh sh)
 {
 	if (!ft_strncmp(exec->command, "exit", 5))
 		ft_exit(exec->params, sh.stat);
