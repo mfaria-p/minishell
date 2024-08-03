@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:46:47 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 16:31:37 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:39:06 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ t_token	lex(char *str, int *wstatus)
 		return (lex_init((t_lex){&str, &cpos, &status, &end, &content}));
 	cpos = skip_space(cpos);
 	if (*cpos == '\n' || *cpos == '\0')
-		return ((t_token){EOL, NULL});
+		return ((t_token){EOL, NULL, '\0'});
 	end = next_token(cpos);
 	if (end != cpos)
 		return (lex_cmd((t_lex){&str, &cpos, &status, &end, &content}));
@@ -68,5 +68,5 @@ t_token	lex(char *str, int *wstatus)
 		return (lex_redir((t_lex){&str, &cpos, &status, &end, &content}));
 	if (*cpos == '|')
 		return (lex_pipe((t_lex){&str, &cpos, &status, &end, &content}));
-	return ((t_token){EOL, NULL});
+	return ((t_token){EOL, NULL, '\0'});
 }

@@ -6,13 +6,14 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 12:43:04 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 16:29:05 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:36:10 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "libft.h"
 /* ************************************************************************** */
 // MISSING FUNCTIONS
 // rl_clear_history
@@ -201,6 +202,7 @@ size_t		ft_strlen(const char *s);
 
 /* ************************************************************************** */
 // lexer + parser
+int			ft_isspace(int c);
 t_token		lex(char *str, int *wstatus);
 t_node_d	*parse(void);
 void		destroy_tree(t_node_d *node);

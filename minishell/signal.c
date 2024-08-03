@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 19:57:26 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 12:37:28 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:38:04 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,6 @@ int	siginit(void)
 
 void	sighandler(int sig, siginfo_t *info, void *ucontext)
 {
-	static char	c;
-	static int	i;
-
 	(void)info;
 	(void)ucontext;
 	if (sig == SIGINT)

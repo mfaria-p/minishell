@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/03 13:41:58 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:37:47 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int	main(int argc, char **argv, char **envp)
 	const char	*temp_file_name = "/tmp/heredoc_tmp";
 	int			exit_status;
 
+	(void)argc;
+	(void)argv;
 	env = init_env(&export, &envp2, envp);
 	exit_status = main_loop(&env);
 	free_env_export(&env);
