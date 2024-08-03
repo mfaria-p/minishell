@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 12:43:04 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 12:44:30 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:16:02 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,8 @@ int			create_heredoc(const char *delimiter, const char *file_name);
 char		*ft_strdup(const char *s);
 size_t		ft_strlen(const char *s);
 
+/* ************************************************************************** */
+// lexer + parser
 t_token		lex(char *str, int *wstatus);
 t_node_d	*parse(void);
 void		destroy_tree(t_node_d *node);
