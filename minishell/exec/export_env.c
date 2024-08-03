@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 00:09:12 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/02 16:56:06 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:43:13 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,6 @@ void	ft_printexport(char **export)
 void	set_env_with_equal(char ***envp, char *var_value)
 {
 	int		index;
-	int		var_len;
-	int		value_len;
-	char	*new_value;
 
 	index = find_var(*envp, var_value);
 	if (index >= 0)

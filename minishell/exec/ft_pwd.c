@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 00:03:01 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/18 19:13:20 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:41:56 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	ft_pwd(char **envp)
 {
 	char	cwd[200];
 
+	(void)envp;
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 		printf("%s\n", cwd);
 	else
@@ -26,6 +27,7 @@ char	*find_pwd(char **envp)
 {
 	char	cwd[200];
 
+	(void)envp;
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 		return (getcwd(cwd, sizeof(cwd)));
 	else

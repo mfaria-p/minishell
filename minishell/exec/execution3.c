@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:09:16 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/02 19:39:17 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:44:23 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void	exec_heredoc(t_node_r *red, t_sh sh)
 	const char	*temp_file_name = "/tmp/heredoc_tmp";
 	int			fd;
 
+	(void)red;
 	if (access(temp_file_name, F_OK) == EXIT_SUCCESS)
 	{
 		fd = open(temp_file_name, O_RDONLY);
