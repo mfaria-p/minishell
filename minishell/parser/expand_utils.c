@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 16:21:56 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 16:22:21 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 18:42:34 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,16 +65,5 @@ char	*add_status(char *result, int status)
 	exit_status = ft_itoa(status);
 	result = ft_stradd(result, exit_status);
 	free(exit_status);
-	return (result);
-}
-
-char	*ft_getenv(char *str, size_t n)
-{
-	char	*envvar_name;
-	char	*result;
-
-	envvar_name = ft_strndup(str, n);
-	result = getenv(envvar_name);
-	free(envvar_name);
 	return (result);
 }

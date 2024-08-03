@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_checkers.c                                  :+:      :+:    :+:   */
+/*   expand_checks.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 16:24:43 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 16:25:00 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 18:54:21 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	check_dquote_help(char **start, char **end, char **result)
 {
 	*start = ++(*end);
 	*end = until_charset(*start, "\"$", 1, 1);
-	*result = ft_stradd(*result, ft_getenv(*start, *end - *start + 1));
+	*result = ft_stradd(*result, ft_getenv(NULL, *start, *end - *start + 1));
 	*start = *end;
 	*end = until_charset(*start, "\"$", 0, 0);
 	*result = ft_strnadd(*result, *start, *end - *start);
@@ -75,7 +75,7 @@ void	check_envvar(char **start, char **end, char **result)
 	{
 		*start = ++(*end);
 		*end = until_charset(*start, NULL, 1, 1);
-		*result = ft_stradd(*result, ft_getenv(*start, *end - *start + 1));
+		*result = ft_stradd(*result, ft_getenv(0, *start, *end - *start + 1));
 		*start = *end;
 	}
 }

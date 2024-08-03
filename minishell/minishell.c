@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/03 17:08:45 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 18:47:55 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	env = init_env(&export, &envp2, envp);
+	ft_getenv(&env, NULL, 0);
 	exit_status = main_loop(&env);
 	free_env_export(&env);
 	rl_clear_history();

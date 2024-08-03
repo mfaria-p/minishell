@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 12:43:04 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 17:38:11 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 18:55:00 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,8 +216,11 @@ void		child_signal(int wstatus);
 
 /* ************************************************************************** */
 // env.c
+int			find_var(char **envp, const char *var);
+char		*ft_strndup(const char *s, size_t n);
 t_env		init_env(char ***export, char ***envp2, char **envp);
 void		free_env_export(t_env *env);
+char		*ft_getenv(t_env *env, char *str, size_t n);
 
 /* ************************************************************************** */
 // fd.c
