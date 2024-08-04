@@ -76,6 +76,7 @@ char		*ft_strdup(const char *s);
 int			ft_strcmp(char *s1, char *s2);
 int			ft_isdigit(int c);
 size_t		ft_strlcpy(char *dst, const char *src, size_t size);
+char		*ft_strncpy(char *dest, char *src, unsigned int n);
 
 // built ins
 void		ft_echo(char **params);
