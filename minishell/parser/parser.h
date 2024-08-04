@@ -6,93 +6,119 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:12:15 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/06/30 13:33:18 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 18:42:17 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
 
-#include "../minishell.h"
-# include "libft.h"
+# include "../minishell.h"
 
-# define EOL 0
+# define EOL 1
+# define ERR 0
 
-/*
-typedef struct s_token
+// lexer.c
+typedef struct s_lex_context
 {
-	int		code;
-	char	*content;
-}	t_token;
+	char	**str;
+	char	**cpos;
+	int		*status;
+	char	**end;
+	char	**content;
+}	t_lex;
 
-//Nodes structures
-// node_type := PIPE, REDIRECT, EXEC
-typedef struct s_node_default
-{
-	int	node_type;
-}	t_node_default;
-
-typedef struct s_node_pipe
-{
-	int					node_type;
-	t_node_default		*left_node;
-	t_node_default		*right_node;
-}	t_node_pipe;
-
-typedef struct s_node_redirect
-{
-	int					node_type;
-	char				*filename;
-	char				*delimeter;
-	t_node_default		*next;
-}	t_node_redirect;
-
-typedef struct s_node_execution
-{
-	int		node_type;
-	char	*command;
-	int		n_params;
-	char	**params;
-}	t_node_execution;
-
-//Node types
-enum e_nodetype
-{
-	E_cmd = 0b1<<4,
-	E_builtin,
-	R_out = 0b1<<5,
-	R_app,
-	R_heredoc,
-	R_input,
-	P = 0b1<<6
-};
-*/
-
+// parser.c
 typedef struct s_redirect_headtail
 {
-	t_node_redirect	*head;
-	t_node_redirect	*tail;
+	t_node_r	*head;
+	t_node_r	*tail;
 }	t_redirect_tailhead;
 
-int				ft_isspace(int c);
-char			*skip_space(char *str);
-char			*until_charset(char *str, char *charset, int until_space, int oalnum);
-char			*ft_strndup(const char *s, size_t n);
-char			*expand(char *str);
+// parser.c
+typedef struct s_pipe_context
+{
+	t_node_p	*new_node;
+	t_node_d	*branch;
+	t_token		token;
+}	t_pipe;
 
-char			*next_token(char *str);
-t_token			lex(char *str);
+// parser.c
+typedef struct s_redir_context
+{
+	t_node_r	**tail;
+	t_node_r	**new_node;
+	t_token		*token;
+	t_node_d	**branch;
+	t_node_d	**root;
+}	t_redir;
 
-// void			parse_e(t_token token, t_node_execution **node_execution, int *flags);
-// void			parse_r(t_token token, t_redirect_tailhead *node_redirect, int *flags);
-// void			parse_p(t_token token, t_node_pipe **node_pipe, int *flags);
-// t_node_default	*parse(char	*str);
+/* ************************************************************************** */
+// lexer_utils.c
+int			ft_isspace(int c);
+char		*skip_space(char *str);
+char		*until_charset(char *str, char *charset, int space, int oalnum);
+char		*ft_strndup(const char *s, size_t n);
 
-void			parse_p(t_node_default **root);
-t_token			parse_r(t_node_default **branch, t_node_default **root, t_node_execution *node_exec);
-t_token			parse_e(t_node_default **branch, t_node_default **root);
-// t_node_default	*parse(void);
+/* ************************************************************************** */
+// lexer_pipe.c
+t_token		lex_pipe(t_lex lex);
 
-t_node_default	*print_tree(t_node_default *root);
+/* ************************************************************************** */
+// lexer_redir.c
+t_token		lex_hd(t_lex lex);
+t_token		lex_in(t_lex lex);
+t_token		lex_app(t_lex lex);
+t_token		lex_out(t_lex lex);
+t_token		lex_redir(t_lex lex);
+
+/* ************************************************************************** */
+// lexer_cmd.c
+t_token		lex_cmd(t_lex lex);
+
+/* ************************************************************************** */
+// lexer.c
+char		*next_token(char *str);
+t_token		lex(char *str, int *wstatus);
+
+/* ************************************************************************** */
+// expand_utils.c
+char		*ft_strnadd(char const *s1, char const *s2, size_t n);
+char		*ft_stradd(char const *s1, char const *s2);
+char		*add_status(char *result, int status);
+
+/* ************************************************************************** */
+// expand_check.c
+int			check_squote(char **start, char **end, char **result);
+void		check_dquote_help(char **start, char **end, char **result);
+int			check_dquote(char **start, char **end, char **result, int status);
+void		check_envvar(char **start, char **end, char **result);
+int			check_dsign(char **start, char **end, char **result, int status);
+
+/* ************************************************************************** */
+// expand.c
+char		*expand(char *str, int status);
+
+/* ************************************************************************** */
+// parser.c
+void		parse_p(t_node_d **root);
+t_token		parse_r(t_node_d **branch, t_node_d **root, t_node_e *node_exec);
+t_token		parse_e(t_node_d **branch, t_node_d **root);
+
+/* ************************************************************************** */
+// parser_utils.c
+void		parse_cmd(t_node_e **exec, t_token *token, t_node_d **branch);
+void		parse_param(t_node_e **exec, char ***new_params, t_token *token);
+void		parse_r_loop(t_redir redir);
+
+/* ************************************************************************** */
+// check_tree.c
+int			check_tree(t_node_d *node);
+
+/* ************************************************************************** */
+// destroy_tree.c
+void		destroy_tree(t_node_d *node);
+
+t_node_d	*print_tree(t_node_d *root);
 
 #endif

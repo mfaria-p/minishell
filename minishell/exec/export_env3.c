@@ -1,27 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_ins3.c                                       :+:      :+:    :+:   */
+/*   export_env3.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 21:18:12 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/18 14:54:48 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/08/04 00:18:21 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-void	ft_printenv(char **envp)
-{
-	while (*envp)
-	{
-		printf("%s\n", *envp);
-		envp++;
-	}
-}
-
-int	is_valid_identifier(char *var, char *value)
+int	valid_id(char *var, char *value)
 {
 	int	i;
 
@@ -36,6 +27,30 @@ int	is_valid_identifier(char *var, char *value)
 		if (!(ft_isalnum(var[i]) || var[i] == '_'))
 		{
 			error_identifier(var, value);
+			return (0);
+		}
+		i++;
+	}
+	if (!value)
+		return (2);
+	return (1);
+}
+
+int	valid_id_plus(char *var, char *value)
+{
+	int	i;
+
+	i = 0;
+	if (!(ft_isalpha(var[0]) || var[0] == '_'))
+	{
+		error_identifier_plus(var, value);
+		return (0);
+	}
+	while (var[i])
+	{
+		if (!(ft_isalnum(var[i]) || var[i] == '_'))
+		{
+			error_identifier_plus(var, value);
 			return (0);
 		}
 		i++;

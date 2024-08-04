@@ -18,9 +18,9 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-void	write_node(int daddy, int	*n_node, t_node_default *node);
+void	write_node(int daddy, int	*n_node, t_node_d *node);
 
-t_node_default	*print_tree(t_node_default *root)
+t_node_d	*print_tree(t_node_d *root)
 {
 	int		fd;
 	int		n_node;
@@ -43,7 +43,7 @@ t_node_default	*print_tree(t_node_default *root)
 	return (root);
 }
 
-void	write_p(int daddy, int	*n_node, t_node_pipe *node_pipe)
+void	write_p(int daddy, int	*n_node, t_node_p *node_pipe)
 {
 	int	this;
 
@@ -52,11 +52,11 @@ void	write_p(int daddy, int	*n_node, t_node_pipe *node_pipe)
 		printf("\t%i-->%i\n", daddy, this);
 	*n_node = this;
 	printf("\t%i((PIPE))\n", this);
-	write_node(this, n_node, node_pipe->left_node);
-	write_node(this, n_node, node_pipe->right_node);
+	write_node(this, n_node, node_pipe->lnode);
+	write_node(this, n_node, node_pipe->rnode);
 }
 
-void	write_r(int daddy, int *n_node, t_node_redirect *node_redirect)
+void	write_r(int daddy, int *n_node, t_node_r *node_redirect)
 {
 	int	this;
 
@@ -65,7 +65,7 @@ void	write_r(int daddy, int *n_node, t_node_redirect *node_redirect)
 		printf("\t%i-->%i\n", daddy, this);
 	*n_node = this;
 	printf("\t%i((\"", this);
-	switch (node_redirect->node_type)
+	switch (node_redirect->type)
 	{
 		case R_app: printf(">> ");break;
 		case R_out: printf("> ");break;
@@ -76,7 +76,7 @@ void	write_r(int daddy, int *n_node, t_node_redirect *node_redirect)
 	write_node(this, n_node, node_redirect->next);
 }
 
-void	write_e(int daddy, int	*n_node, t_node_execution *node_execution)
+void	write_e(int daddy, int	*n_node, t_node_e *node_execution)
 {
 	int	this;
 
@@ -87,12 +87,12 @@ void	write_e(int daddy, int	*n_node, t_node_execution *node_execution)
 	printf("\t%i((\"%s\"))\n", this, node_execution->command);
 }
 
-void	write_node(int daddy, int	*n_node, t_node_default *node)
+void	write_node(int daddy, int	*n_node, t_node_d *node)
 {
-	if (node->node_type & 0b1 << 4)
-		write_e(daddy, n_node, (t_node_execution *)node);
-	else if (node->node_type & 0b1 << 5)
-		write_r(daddy, n_node, (t_node_redirect *)node);
-	else if (node->node_type & 0b1 << 6)
-		write_p(daddy, n_node, (t_node_pipe *)node);
+	if (node->type & 0b1 << 4)
+		write_e(daddy, n_node, (t_node_e *)node);
+	else if (node->type & 0b1 << 5)
+		write_r(daddy, n_node, (t_node_r *)node);
+	else if (node->type & 0b1 << 6)
+		write_p(daddy, n_node, (t_node_p *)node);
 }
