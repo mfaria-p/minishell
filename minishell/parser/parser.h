@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:12:15 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 18:42:17 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/04 09:10:07 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct s_redir_context
 // lexer_utils.c
 int			ft_isspace(int c);
 char		*skip_space(char *str);
+int			ft_validenv(char c);
 char		*until_charset(char *str, char *charset, int space, int oalnum);
 char		*ft_strndup(const char *s, size_t n);
 
@@ -90,10 +91,12 @@ char		*add_status(char *result, int status);
 /* ************************************************************************** */
 // expand_check.c
 int			check_squote(char **start, char **end, char **result);
-void		check_dquote_help(char **start, char **end, char **result);
-int			check_dquote(char **start, char **end, char **result, int status);
 void		check_envvar(char **start, char **end, char **result);
 int			check_dsign(char **start, char **end, char **result, int status);
+
+/* ************************************************************************** */
+// expand_check_dquote.c
+int			check_dquote(char **start, char **end, char **result, int status);
 
 /* ************************************************************************** */
 // expand.c

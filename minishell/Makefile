@@ -1,36 +1,37 @@
 NAME = minishell
 
-SRCS_PARSER =	destroy_tree.c	\
-				check_tree.c	\
-				expand_checks.c	\
-				expand_utils.c	\
-				expand.c		\
-				lexer_utils.c	\
-				lexer_pipe.c	\
-				lexer_redir.c	\
-				lexer_cmd.c		\
-				lexer.c			\
-				parser_utils.c	\
+SRCS_PARSER =	destroy_tree.c			\
+				check_tree.c			\
+				expand_checks.c			\
+				expand_checks_dquote.c	\
+				expand_utils.c			\
+				expand.c				\
+				lexer_utils.c			\
+				lexer_pipe.c			\
+				lexer_redir.c			\
+				lexer_cmd.c				\
+				lexer.c					\
+				parser_utils.c			\
 				parser.c
 
-SRCS_EXEC =		ft_exit.c			\
-				ft_echo.c			\
-				ft_pwd.c			\
-				ft_cd.c				\
-				ft_cd2.c 			\
-				ft_unset.c			\
-				export_env.c 		\
-				export_env2.c		\
-				error_handling.c	\
-				error_handling2.c	\
-				exec_utils.c		\
-				exec_utils2.c		\
-				exec_utils3.c		\
-				exec_utils4.c		\
-				execution.c			\
-				execution2.c		\
-				execution3.c		\
-				export_env3.c		\
+SRCS_EXEC =		ft_exit.c				\
+				ft_echo.c				\
+				ft_pwd.c				\
+				ft_cd.c					\
+				ft_cd2.c 				\
+				ft_unset.c				\
+				export_env.c 			\
+				export_env2.c			\
+				error_handling.c		\
+				error_handling2.c		\
+				exec_utils.c			\
+				exec_utils2.c			\
+				exec_utils3.c			\
+				exec_utils4.c			\
+				execution.c				\
+				execution2.c			\
+				execution3.c			\
+				export_env3.c			\
 				execution4.c
 
 SRCS = minishell.c							\
