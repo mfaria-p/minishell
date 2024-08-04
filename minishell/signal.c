@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 19:57:26 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 17:38:31 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/04 08:14:24 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,6 @@ void	child_signal(int wstatus)
 			write(STDERR_FILENO, "Quit", 4);
 			nl = 1;
 		}
-		if (WCOREDUMP(wstatus))
-			write(STDERR_FILENO, " (core dumped)", 14);
 	}
 	if (nl)
 		write(STDERR_FILENO, "\n", 1);
