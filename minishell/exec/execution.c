@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/04 00:23:59 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/08/04 01:15:36 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	exec_exec_aux(t_node_e *exec, t_sh sh)
 	else if (!ft_strncmp(exec->command, "echo", 5))
 		ft_echo(exec->params);
 	else if (!ft_strncmp(exec->command, "cd", 3) && !exec->params)
-		ft_cd_home(sh.env);
+		ft_cd_home(sh.env, sh.stat);
 	else if (!ft_strncmp(exec->command, "cd", 3) && exec->params[0])
 	{
 		ft_cd(sh.env, exec->params[0], sh.stat);

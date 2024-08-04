@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:51:23 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/04 00:27:02 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/08/04 01:26:29 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,49 +57,57 @@ char	*find_home(char **envp)
 
 void	ft_cd(t_env *env, char *path, int *wstatus)
 {
-	char	current[200];
+	char	*current;
 	char	*old_dir;
 
-	getcwd(current, sizeof(current));
+	current = find_pwd(env->envp);
 	old_dir = find_oldpwd(env->envp);
 	if (!old_dir)
 		*wstatus = 1;
-	if (ft_strlen(path) == 1 && path[0] == '-')
+	if (ft_strlen(path) == 1 && path[0] == '-' && old_dir)
 	{
 		printf("%s\n", old_dir);
-		if (chdir(old_dir) == -1)
+		/* if (chdir(old_dir) == -1)
 		{
 			file_not_found(old_dir);
 			*wstatus = 1;
-		}
+		} */
 	}
-	else if (chdir(path) == -1)
+	else if (chdir(path) == -1 && ft_strlen(path) != 1 && path[0] != '-')
 	{
 		file_not_found(path);
 		*wstatus = 1;
 		return ;
 	}
-	update_oldpwd(env, current);
-	if (getcwd(current, sizeof(current)))
-		update_pwd(env, current);
+	if (*wstatus == 0)
+	{
+		update_oldpwd(env, current);
+		if (current == find_pwd(env->envp))
+			update_pwd(env, current);
+	}
 }
 
-void	ft_cd_home(t_env *env)
+void	ft_cd_home(t_env *env, int *wstatus)
 {
 	char	*home;
 	char	*oldpwd_var;
 	char	*home_var;
-	char	current[200];
+	char	*current;
 
-	getcwd(current, sizeof(current));
+	current = find_pwd(env->envp);
 	home = find_home(env->envp);
-	chdir(home);
-	oldpwd_var = create_env_var("OLDPWD", current);
-	home_var = create_env_var("PWD", home);
-	set_env_with_equal(&env->envp, oldpwd_var);
-	set_env_with_equal(&env->export, oldpwd_var);
-	free(oldpwd_var);
-	set_env_with_equal(&env->envp, home_var);
-	set_env_with_equal(&env->export, home_var);
-	free(home_var);
+	if (home)
+	{
+		chdir(home);
+		oldpwd_var = create_env_var("OLDPWD", current);
+		home_var = create_env_var("PWD", home);
+		set_env_with_equal(&env->envp, oldpwd_var);
+		set_env_with_equal(&env->export, oldpwd_var);
+		free(oldpwd_var);
+		set_env_with_equal(&env->envp, home_var);
+		set_env_with_equal(&env->export, home_var);
+		free(home_var);
+	}
+	if (!home)
+		*wstatus = 1;	
 }

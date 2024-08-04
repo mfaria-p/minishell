@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 00:02:02 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/02 16:50:49 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/04 00:40:12 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ void	ft_echo(char **params)
 
 	i = 0;
 	newline = 1;
-	while (params && params[i] && strncmp(params[i], "-n", 2) == 0
-		&& ft_countchar(params[i] + 1, 'n') == (int)(strlen(params[i] + 1)))
+	while (params && params[i] && ft_strncmp(params[i], "-n", 2) == 0
+		&& ft_countchar(params[i] + 1, 'n') == (int)(ft_strlen(params[i] + 1)))
 	{
 		newline = 0;
 		i++;

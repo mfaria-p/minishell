@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/04 00:17:46 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/08/04 01:15:52 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef struct s_setenv_context
 	char	*equal;
 	size_t	key_len;
 	size_t	val_len;
-}	t_setenv;
+}			t_setenv;
 
 typedef struct s_export_context
 {
@@ -39,7 +39,7 @@ typedef struct s_export_context
 	int		*i;
 	char	**equal;
 	int		plus;
-}	t_exp;
+}			t_exp;
 
 // EXECUTION
 
@@ -77,19 +77,19 @@ int			ft_strcmp(char *s1, char *s2);
 int			ft_isdigit(int c);
 size_t		ft_strlcpy(char *dst, const char *src, size_t size);
 
-// not done (built ins)
-// dividir o main em dois pk ta mt grande
+// built ins
 void		ft_echo(char **params);
 int			ft_countchar(const char *str, char c);
 
 void		ft_cd(t_env *env, char *path, int *wstatus);
 char		*find_oldpwd(char **envp);
 char		*create_env_var(const char *var, const char *value);
-void		ft_cd_home(t_env *env);
+void		ft_cd_home(t_env *env, int *wstatus);
 void		update_pwd(t_env *env, const char *current);
 void		update_oldpwd(t_env *env, const char *current);
 
 void		ft_pwd(char **envp);
+char		*find_pwd(char **envp);
 
 void		ft_exit(char **params, int *status);
 void		ft_printexport(char **export);
