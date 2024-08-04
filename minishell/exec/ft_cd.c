@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:51:23 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/04 09:30:49 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/08/04 09:42:16 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,5 +114,5 @@ void	ft_cd_home(t_env *env, int *wstatus)
 		free(home_var);
 	}
 	if (!home)
-		*wstatus = 1;	
+		*wstatus = 1;
 }
