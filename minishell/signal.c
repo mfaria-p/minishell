@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 19:57:26 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/04 08:14:24 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/04 08:25:22 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,20 +70,13 @@ void	sigchild(void)
 void	child_signal(int wstatus)
 {
 	int		sig;
-	int		nl;
 
-	nl = 0;
 	if (WIFSIGNALED(wstatus))
 	{
 		sig = WTERMSIG(wstatus);
 		if (sig == SIGINT)
-			nl = 1;
+			write(STDERR_FILENO, "\n", 1);
 		else if (sig == SIGQUIT)
-		{
-			write(STDERR_FILENO, "Quit", 4);
-			nl = 1;
-		}
+			write(STDERR_FILENO, "Quit\n", 5);
 	}
-	if (nl)
-		write(STDERR_FILENO, "\n", 1);
 }
