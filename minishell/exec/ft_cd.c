@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:51:23 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/04 09:42:16 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/04 09:53:03 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,29 +67,25 @@ void	ft_cd(t_env *env, char *path, int *wstatus)
 
 	current = find_pwd(env->envp);
 	old_dir = find_oldpwd(env->envp);
+	*wstatus = 1;
 	if (!old_dir)
-		*wstatus = 1;
-	if (ft_strlen(path) == 1 && path[0] == '-' && old_dir)
-	{
+		return ;
+	else if (ft_strlen(path) == 1 && path[0] == '-' && chdir(old_dir) != -1)
 		printf("%s\n", old_dir);
-		if (chdir(old_dir) == -1)
-		{
-			file_not_found(old_dir);
-			*wstatus = 1;
-		}
+	else if (ft_strlen(path) == 1 && path[0] == '-' && chdir(old_dir) == -1)
+	{
+		file_not_found(old_dir);
+		return ;
 	}
 	else if (chdir(path) == -1 && ft_strlen(path) != 1 && path[0] != '-')
 	{
 		file_not_found(path);
-		*wstatus = 1;
 		return ;
 	}
-	if (*wstatus == 0)
-	{
-		update_oldpwd(env, current);
-		if (getcwd(current2, sizeof(current2)))
-			update_pwd(env, current2);
-	}
+	*wstatus = 0;
+	update_oldpwd(env, current);
+	if (getcwd(current2, sizeof(current2)))
+		update_pwd(env, current2);
 }
 
 void	ft_cd_home(t_env *env, int *wstatus)
