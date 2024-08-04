@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:05:32 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/03 16:43:43 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/04 10:19:18 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,7 @@ char	*find_path(char **envp)
 	if (*envp)
 		return (*envp + 5);
 	else
-	{
-		ft_error(7);
 		return (NULL);
-	}
 }
 
 char	*get_cmd(char **paths, char *cmd)
@@ -56,7 +53,10 @@ char	*find_the_command(char **envp, t_node_e *exec)
 	i = 0;
 	paths = find_path(envp);
 	if (!paths)
-		ft_error(7);
+	{
+		file_not_found(exec->command);
+		return (NULL);
+	}
 	cmd_paths = ft_split(paths, ':');
 	command = get_cmd(cmd_paths, exec->command);
 	while (cmd_paths[i])
@@ -77,7 +77,10 @@ void	ft_execute(t_node_e *exec, t_node_d *root, t_sh sh)
 
 	i = 0;
 	param_count = 0;
-	command = find_the_command(sh.env->envp, exec);
+	if (access(exec->command, X_OK) == 0)
+		command = exec->command;
+	else
+		command = find_the_command(sh.env->envp, exec);
 	if (command)
 	{
 		while (exec->params && exec->params[param_count] != NULL)
