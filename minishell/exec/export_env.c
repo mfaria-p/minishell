@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 00:09:12 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/04 00:31:58 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/08/04 09:30:16 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ static void	set_env_noindex(char ***envp, char *var_value, t_setenv *setenv)
 		free(setenv->key);
 	else
 	{
-		strncpy(setenv->new_val, var_value, setenv->plus - setenv->key);
+		ft_strncpy(setenv->new_val, var_value, setenv->plus - setenv->key);
 		(setenv->new_val)[setenv->plus - setenv->key] = '=';
-		strcpy(setenv->new_val + (setenv->plus - setenv->key) + 1, setenv->equal + 1);
+		ft_strlcpy(setenv->new_val + (setenv->plus - setenv->key) + 1, setenv->equal + 1, -1);
 		if (resize_and_add(envp, setenv->new_val) == NULL)
 		{
 			free(setenv->key);
