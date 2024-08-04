@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:51:23 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/04 01:26:29 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/08/04 01:45:30 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,17 @@ char	*create_env_var(const char *var, const char *value)
 	size_t	value_len;
 
 	var_len = ft_strlen(var);
-	value_len = ft_strlen(value);
+	if (value)
+		value_len = ft_strlen(value);
+	else
+		value_len = 0;
 	env_var = malloc(var_len + value_len + 2);
 	if (!env_var)
 		return (NULL);
 	ft_strlcpy(env_var, var, -1);
 	ft_strlcat(env_var, "=", -1);
-	ft_strlcat(env_var, value, -1);
+	if (value)
+		ft_strlcat(env_var, value, -1);
 	return (env_var);
 }
 
@@ -82,7 +86,8 @@ void	ft_cd(t_env *env, char *path, int *wstatus)
 	if (*wstatus == 0)
 	{
 		update_oldpwd(env, current);
-		if (current == find_pwd(env->envp))
+		current = find_pwd(env->envp);
+		if (current)
 			update_pwd(env, current);
 	}
 }
