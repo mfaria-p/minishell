@@ -52,9 +52,9 @@ static void	set_env_noindex(char ***envp, char *var_value, t_setenv *setenv)
 		free(setenv->key);
 	else
 	{
-		strncpy(setenv->new_val, var_value, setenv->plus - setenv->key);
+		ft_strncpy(setenv->new_val, var_value, setenv->plus - setenv->key);
 		(setenv->new_val)[setenv->plus - setenv->key] = '=';
-		strcpy(setenv->new_val + (setenv->plus - setenv->key) + 1, setenv->equal + 1);
+		ft_strlcpy(setenv->new_val + (setenv->plus - setenv->key) + 1, setenv->equal + 1, -1);
 		if (resize_and_add(envp, setenv->new_val) == NULL)
 		{
 			free(setenv->key);
