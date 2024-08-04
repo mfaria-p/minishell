@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:51:23 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/04 01:45:30 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/08/04 08:21:07 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	ft_cd(t_env *env, char *path, int *wstatus)
 {
 	char	*current;
 	char	*old_dir;
+	char	current2[200];
 
 	current = find_pwd(env->envp);
 	old_dir = find_oldpwd(env->envp);
@@ -86,9 +87,8 @@ void	ft_cd(t_env *env, char *path, int *wstatus)
 	if (*wstatus == 0)
 	{
 		update_oldpwd(env, current);
-		current = find_pwd(env->envp);
-		if (current)
-			update_pwd(env, current);
+		if (getcwd(current2, sizeof(current2)))
+			update_pwd(env, current2);
 	}
 }
 
