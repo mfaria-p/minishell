@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 00:03:01 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/04 09:30:34 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/08/04 09:42:30 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	ft_pwd(char **envp)
 {
-	char *pwd;
+	char	*pwd;
+
 	pwd = find_pwd(envp);
 	if (pwd)
 		printf("%s\n", pwd);
