@@ -1,13 +1,4 @@
-Ctrl-C on minishell on minishell
-
-redirect to null arg - ACHO Q TA
-
-export +=
-
 signals inside heredoc
 
-changing $HOME doesn't update HOME for cd - ACHO Q TA
-
-$PWD n aparece o que aparece no bash
-
-running ./a.out leaks - ACHO Q TA
+cd doesnt work
+changing $HOME doesn't update HOME for cd
