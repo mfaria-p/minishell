@@ -44,6 +44,10 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re build
+vgdb:
+	valgrind --suppressions=parser/ignore_readline --leak-check=full --show-leak-kinds=all --track-fds=yes -q --vgdb-error=0 ./$(NAME)
 
-#valgrind --suppressions=parser/ignore_readline --leak-check=full --show-leak-kinds=all --track-fds=yes ./a.out
+valgrind:
+	valgrind --suppressions=parser/ignore_readline --leak-check=full --show-leak-kinds=all --track-fds=yes ./minishell
+
+.PHONY: all clean fclean re build vgdb valgrind
