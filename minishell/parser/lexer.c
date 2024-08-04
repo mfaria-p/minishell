@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 14:46:47 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/06/30 13:39:30 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:39:06 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,102 +19,54 @@ char	*next_token(char *str)
 		str = until_charset(str, "|<>$\"'", 1, 0);
 		if (*str == '\'')
 		{
-			str++;
-			str = until_charset(str, "'", 0, 0);
-			str++;
+			str = until_charset(++str, "'", 0, 0);
+			if (*str)
+				str++;
 		}
 		else if (*str == '"')
 		{
-			str++;
-			str = until_charset(str, "\"", 0, 0);
-			str++;
+			str = until_charset(++str, "\"", 0, 0);
+			if (*str)
+				str++;
 		}
 		else if (*str == '$')
 		{
-			str++;
-			if (*str != '?')
-				str = until_charset(str, "=<>|", 1, 1);
+			if (*++str != '?')
+				str = until_charset(str, "<>|", 1, 1);
 			else
-				str += 2;
+				str++;
 		}
 		else
 			return (str);
 	}
 }
 
-t_token	lex(char *str)
+static t_token	lex_init(t_lex lex)
+{
+	*lex.cpos = *lex.str;
+	return ((t_token){});
+}
+
+t_token	lex(char *str, int *wstatus)
 {
 	static char	*cpos;
-	static int	state;	
+	static int	status;	
 	char		*end;
 	char		*content;
 
+	if (wstatus)
+		status = *wstatus;
 	if (str)
-	{
-		cpos = str;
-		return ((t_token){});
-	}
+		return (lex_init((t_lex){&str, &cpos, &status, &end, &content}));
 	cpos = skip_space(cpos);
 	if (*cpos == '\n' || *cpos == '\0')
-		return ((t_token){EOL, NULL});
+		return ((t_token){EOL, NULL, '\0'});
 	end = next_token(cpos);
 	if (end != cpos)
-	{
-		content = ft_strndup(cpos, end - cpos + 1);
-		content = expand(content);
-		cpos = end;
-		return ((t_token){E_cmd, content});
-	}
-	if (*cpos == '<')
-	{
-		cpos++;
-		if (*cpos == '<')
-		{
-			cpos++;
-			cpos = skip_space(cpos);
-			end = until_charset(cpos, "<>|", 1, 0);
-			content = ft_strndup(cpos, end - cpos + 1);
-			content = expand(content);
-			cpos = end;
-			return ((t_token){R_heredoc, content});
-		}
-		else
-		{
-			cpos = skip_space(cpos);
-			end = until_charset(cpos, "<>|", 1, 0);
-			content = ft_strndup(cpos, end - cpos + 1);
-			content = expand(content);
-			cpos = end;
-			return ((t_token){R_input, content});
-		}
-	}
-	if (*cpos == '>')
-	{
-		cpos++;
-		if (*cpos == '>')
-		{
-			cpos++;
-			cpos = skip_space(cpos);
-			end = until_charset(cpos, "<>|", 1, 0);
-			content = ft_strndup(cpos, end - cpos + 1);
-			content = expand(content);
-			cpos = end;
-			return ((t_token){R_app, content});
-		}
-		else
-		{
-			cpos = skip_space(cpos);
-			end = until_charset(cpos, "<>|", 1, 0);
-			content = ft_strndup(cpos, end - cpos + 1);
-			content = expand(content);
-			cpos = end;
-			return ((t_token){R_out, content});
-		}
-	}
+		return (lex_cmd((t_lex){&str, &cpos, &status, &end, &content}));
+	if (*cpos == '<' || *cpos == '>')
+		return (lex_redir((t_lex){&str, &cpos, &status, &end, &content}));
 	if (*cpos == '|')
-	{
-		cpos++;
-		return ((t_token){P, NULL});
-	}
-	return ((t_token){EOL, NULL});
+		return (lex_pipe((t_lex){&str, &cpos, &status, &end, &content}));
+	return ((t_token){EOL, NULL, '\0'});
 }

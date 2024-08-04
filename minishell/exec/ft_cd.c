@@ -6,22 +6,11 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:51:23 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/18 19:53:44 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/08/04 08:21:07 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
-
-char	*find_var2(char *name)
-{
-	if (getenv(name))
-		return (getenv(name));
-	else
-	{
-		error_envp(name);
-		return (NULL);
-	}
-}
 
 char	*create_env_var(const char *var, const char *value)
 {
@@ -29,14 +18,18 @@ char	*create_env_var(const char *var, const char *value)
 	size_t	var_len;
 	size_t	value_len;
 
-	var_len = strlen(var);
-	value_len = strlen(value);
+	var_len = ft_strlen(var);
+	if (value)
+		value_len = ft_strlen(value);
+	else
+		value_len = 0;
 	env_var = malloc(var_len + value_len + 2);
 	if (!env_var)
 		return (NULL);
-	strcpy(env_var, var);
-	strcat(env_var, "=");
-	strcat(env_var, value);
+	ft_strlcpy(env_var, var, -1);
+	ft_strlcat(env_var, "=", -1);
+	if (value)
+		ft_strlcat(env_var, value, -1);
 	return (env_var);
 }
 
@@ -53,45 +46,73 @@ char	*find_oldpwd(char **envp)
 	}
 }
 
-void	ft_cd(t_env *env, char *path)
+char	*find_home(char **envp)
 {
-	char	current[200];
-	char	*old_dir;
-
-	getcwd(current, sizeof(current));
-	old_dir = find_oldpwd(env->envp);
-	if (ft_strlen(path) == 1 && path[0] == '-')
+	while (*envp && ft_strncmp("HOME=", *envp, 5) != 0)
+		envp++;
+	if (*envp)
+		return (*envp + 5);
+	else
 	{
-		printf("%s\n", old_dir);
-		if (chdir(old_dir) == -1)
-			file_not_found(old_dir);
+		err_cd();
+		return (NULL);
 	}
-	else if (chdir(path) == -1)
-	{
-		file_not_found(path);
-		return ;
-	}
-	update_oldpwd(env, current);
-	if (getcwd(current, sizeof(current)))
-		update_pwd(env, current);
 }
 
-void	ft_cd_home(t_env *env)
+void	ft_cd(t_env *env, char *path, int *wstatus)
+{
+	char	*current;
+	char	*old_dir;
+	char	current2[200];
+
+	current = find_pwd(env->envp);
+	old_dir = find_oldpwd(env->envp);
+	if (!old_dir)
+		*wstatus = 1;
+	if (ft_strlen(path) == 1 && path[0] == '-' && old_dir)
+	{
+		printf("%s\n", old_dir);
+		/* if (chdir(old_dir) == -1)
+		{
+			file_not_found(old_dir);
+			*wstatus = 1;
+		} */
+	}
+	else if (chdir(path) == -1 && ft_strlen(path) != 1 && path[0] != '-')
+	{
+		file_not_found(path);
+		*wstatus = 1;
+		return ;
+	}
+	if (*wstatus == 0)
+	{
+		update_oldpwd(env, current);
+		if (getcwd(current2, sizeof(current2)))
+			update_pwd(env, current2);
+	}
+}
+
+void	ft_cd_home(t_env *env, int *wstatus)
 {
 	char	*home;
 	char	*oldpwd_var;
 	char	*home_var;
-	char	current[200];
+	char	*current;
 
-	getcwd(current, sizeof(current));
-	home = find_var2("HOME");
-	chdir(home);
-	oldpwd_var = create_env_var("OLDPWD", current);
-	home_var = create_env_var("PWD", home);
-	set_env_with_equal(&env->envp, oldpwd_var);
-	set_env_with_equal(&env->export, oldpwd_var);
-	free(oldpwd_var);
-	set_env_with_equal(&env->envp, home_var);
-	set_env_with_equal(&env->export, home_var);
-	free(home_var);
+	current = find_pwd(env->envp);
+	home = find_home(env->envp);
+	if (home)
+	{
+		chdir(home);
+		oldpwd_var = create_env_var("OLDPWD", current);
+		home_var = create_env_var("PWD", home);
+		set_env_with_equal(&env->envp, oldpwd_var);
+		set_env_with_equal(&env->export, oldpwd_var);
+		free(oldpwd_var);
+		set_env_with_equal(&env->envp, home_var);
+		set_env_with_equal(&env->export, home_var);
+		free(home_var);
+	}
+	if (!home)
+		*wstatus = 1;	
 }

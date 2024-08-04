@@ -6,122 +6,89 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 21:53:16 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/07/16 18:36:45 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/03 17:10:24 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-t_node_default	*parse(void)
+t_node_d	*parse(int *wstatus)
 {
-	t_node_default	*root;
+	t_node_d	*root;
 
 	root = NULL;
 	parse_p(&root);
+	*wstatus = check_tree(root);
+	if (*wstatus)
+	{
+		destroy_tree(root);
+		root = NULL;
+	}
 	return (root);
 }
 
-void	parse_p(t_node_default **root)
+void	parse_p(t_node_d **root)
 {
-	static t_node_pipe	*tail;
-	t_node_pipe			*new_node;
-	t_node_default		*branch;
-	t_token				token;
+	static t_node_p	*tail;
+	t_pipe			pipe;
 
-	branch = NULL;
-	token = parse_e(&branch, root);
-	if (token.code & 1 << 6)
+	pipe.branch = NULL;
+	pipe.token = parse_e(&pipe.branch, root);
+	if (pipe.token.code & 1 << 6)
 	{
-		new_node = ft_calloc(1, sizeof(t_node_pipe));
-		new_node->node_type = token.code;
-		new_node->left_node = (t_node_default *)branch;
+		pipe.new_node = ft_calloc(1, sizeof(t_node_p));
+		pipe.new_node->type = pipe.token.code;
+		pipe.new_node->lnode = (t_node_d *)pipe.branch;
 		if (tail)
-			tail->right_node = (t_node_default *)new_node;
-		tail = new_node;
-		if (*root == NULL || !((*root)->node_type & 1 << 6))
-			*root = (t_node_default *)new_node;
+			tail->rnode = (t_node_d *)pipe.new_node;
+		tail = pipe.new_node;
+		if (*root == NULL || !((*root)->type & 1 << 6))
+			*root = (t_node_d *)pipe.new_node;
 		parse_p(root);
 	}
-	else if (tail && token.code == EOL)
-		tail->right_node = (t_node_default *)branch;
+	else if (tail && pipe.token.code == EOL)
+		tail->rnode = (t_node_d *)pipe.branch;
+	else if (pipe.token.code == ERR)
+	{
+		destroy_tree(*root);
+		*root = NULL;
+	}
+	tail = NULL;
 }
 
-t_token	parse_e(t_node_default **branch, t_node_default **root)
+t_token	parse_e(t_node_d **branch, t_node_d **root)
 {
-	static t_node_execution	*exec;
-	char					**new_params;
-	t_token					token;
-	int						i;
+	static t_node_e	*exec;
+	char			**new_params;
+	t_token			token;
 
 	token = parse_r(branch, root, exec);
 	while (token.code & 1 << 4)
 	{
 		if (exec == NULL)
-		{
-			exec = ft_calloc(1, sizeof(t_node_execution));
-			exec->node_type = token.code; // WILL ALWAYS BE E_CMD AND NEVER E_BUILDIN
-			exec->n_params = 0;
-			exec->command = token.content;
-			if (*branch == NULL)
-				*branch = (t_node_default *)exec;
-		}
+			parse_cmd(&exec, &token, branch);
 		else
-		{
-			new_params = ft_calloc(exec->n_params + 2, sizeof(char *));
-			exec->n_params++;
-			i = 0;
-			while (exec->params && exec->params[i])
-			{
-				new_params[i] = exec->params[i];
-				i++;
-			}
-			new_params[i++] = token.content;
-			new_params[i] = NULL;
-			if (exec->params)
-				free(exec->params);
-			exec->params = new_params;
-		}
+			parse_param(&exec, &new_params, &token);
 		if (*root == NULL)
-			*root = (t_node_default *)exec;
+			*root = (t_node_d *)exec;
 		token = parse_r(branch, root, exec);
 	}
 	exec = NULL;
 	return (token);
 }
 
-t_token	parse_r(t_node_default **branch, t_node_default **root, t_node_execution *node_exec)
+t_token	parse_r(t_node_d **branch, t_node_d **root, t_node_e *node_exec)
 {
-	static t_node_redirect	*tail;
-	t_node_redirect			*new_node;
-	t_token					token;
-	const char				*temp_file_name = "/tmp/heredoc_tmp";
+	static t_node_r	*tail;
+	t_node_r		*new_node;
+	t_token			token;
 
-	token = lex(NULL);
+	token = lex(NULL, NULL);
 	while (token.code & 1 << 5)
 	{
-		if (token.code == R_heredoc)
-			create_heredoc(token.content, temp_file_name);
-		new_node = ft_calloc(1, sizeof(t_node_redirect));
-		new_node->node_type = token.code;
-		new_node->filename = token.content;
-		new_node->delimeter = token.content;
-		if (*branch == NULL || (*branch)->node_type & 1 << 4)
-		{
-			*branch = (t_node_default *)new_node;
-			tail = NULL;
-		}
-		if (*root == NULL || (*root)->node_type & 1 << 4)
-			*root = (t_node_default *)new_node;
-		if (tail)
-		{
-			new_node->next = tail->next;
-			tail->next = (t_node_default *)new_node;
-			tail = new_node;
-		}
-		else
-			tail = new_node;
-		tail->next = (t_node_default *)node_exec;
-		token = lex(NULL);
+		parse_r_loop((t_redir){&tail, &new_node, &token, branch, root});
+		tail->next = (t_node_d *)node_exec;
+		token = lex(NULL, NULL);
 	}
 	return (token);
 }

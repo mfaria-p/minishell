@@ -1,6 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/03 12:43:04 by ecorona-          #+#    #+#             */
+/*   Updated: 2024/08/03 18:55:00 by ecorona-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "libft.h"
 /* ************************************************************************** */
 // MISSING FUNCTIONS
 // rl_clear_history
@@ -114,42 +127,45 @@
 // ioctl
 /* ************************************************************************** */
 
+extern int	g_sig;
+
 typedef struct s_token
 {
-	int				code;
-	char			*content;
-}					t_token;
+	int		code;
+	char	*content;
+	char	unexpected;
+}	t_token;
 
-typedef struct s_node_default
+typedef struct s_node_d
 {
-	int				node_type;
-}					t_node_default;
+	int	type;
+}	t_node_d;
 
-typedef struct s_node_pipe
+typedef struct s_node_p
 {
-	int				node_type;
-	t_node_default	*left_node;
-	t_node_default	*right_node;
-}					t_node_pipe;
+	int			type;
+	t_node_d	*lnode;
+	t_node_d	*rnode;
+}	t_node_p;
 
-typedef struct s_node_redirect
+typedef struct s_node_r
 {
-	int				node_type;
-	char			*filename;
-	char			*delimeter;
-	t_node_default	*next;
-}					t_node_redirect;
+	int			type;
+	char		*filename;
+	char		*delimeter;
+	t_node_d	*next;
+}	t_node_r;
 
-typedef struct s_node_execution
+typedef struct s_node_e
 {
-	int				node_type;
-	char			*command;
-	int				n_params;
-	char			**params;
-}					t_node_execution;
+	int		type;
+	char	*command;
+	int		n_params;
+	char	**params;
+}	t_node_e;
 
 // Node types
-enum				e_nodetype
+enum	e_nodetype
 {
 	E_cmd = 1 << 4,
 	R_out = 1 << 5,
@@ -167,24 +183,48 @@ typedef struct s_env
 
 typedef struct s_fds
 {
-	int in;
-	int out;
+	int	in;
+	int	out;
 }	t_fds;
 
-t_node_default	*execution(struct s_node_default *node, t_env *env, pid_t pid, t_fds *fd);
-int				create_heredoc(const char *delimiter, const char *file_name);
-char			*ft_strdup(const char *s);
-size_t	ft_strlen(const char *s);
+typedef struct s_shell
+{
+	t_env	*env;
+	pid_t	pid;
+	t_fds	*fd;
+	int		*stat;
+}	t_sh;
 
-t_token			lex(char *str);
-t_node_default	*parse(void);
-void			destroy_tree(t_node_default *node);
-int				siginit(void);
-void			process_sig(void);
+t_node_d	*execution(t_node_d *node, t_sh sh);
+int			create_heredoc(const char *delimiter, const char *file_name);
+char		*ft_strdup(const char *s);
+size_t		ft_strlen(const char *s);
 
-t_env	init_env(char ***export, char ***envp2, char **envp);
-void			free_env_export(t_env *env);
-//t_env	init_env_envp(char ***envp2, char **envp);
-void			main_loop(t_env *env);
+/* ************************************************************************** */
+// lexer + parser
+int			ft_isspace(int c);
+t_token		lex(char *str, int *wstatus);
+t_node_d	*parse(int *wstatus);
+void		destroy_tree(t_node_d *node);
+
+/* ************************************************************************** */
+// signal.c
+int			siginit(void);
+void		sigignore(void);
+void		sigchild(void);
+void		child_signal(int wstatus);
+
+/* ************************************************************************** */
+// env.c
+int			find_var(char **envp, const char *var);
+char		*ft_strndup(const char *s, size_t n);
+t_env		init_env(char ***export, char ***envp2, char **envp);
+void		free_env_export(t_env *env);
+char		*ft_getenv(t_env *env, char *str, size_t n);
+
+/* ************************************************************************** */
+// fd.c
+void		fd_init(t_fds *fd);
+void		fd_close(t_fds *fd);
 
 #endif

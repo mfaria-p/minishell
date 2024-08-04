@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:13:55 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/18 19:12:38 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:42:28 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ char	**allocate_env_array(char **envp)
 void	ft_unset(char **args, t_env *env)
 {
 	int	i;
-	int	j;
 
 	i = 0;
 	if (!args || !*args)

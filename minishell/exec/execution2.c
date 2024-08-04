@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:05:32 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/07/19 16:37:08 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:43:43 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ char	*get_cmd(char **paths, char *cmd)
 	char	*tmp;
 	char	*command;
 
-	if (access(cmd, 0) == 0)
+	if (access(cmd, X_OK) == 0)
 		return (cmd);
 	while (*paths)
 	{
 		tmp = ft_strjoin(*paths, "/");
 		command = ft_strjoin(tmp, cmd);
 		free(tmp);
-		if (access(command, 0) == 0)
+		if (access(command, X_OK) == 0)
 			return (command);
 		free(command);
 		paths++;
@@ -46,7 +46,7 @@ char	*get_cmd(char **paths, char *cmd)
 	return (NULL);
 }
 
-char	*find_the_command(char **envp, struct s_node_execution *exec)
+char	*find_the_command(char **envp, t_node_e *exec)
 {
 	char	*paths;
 	char	**cmd_paths;
@@ -68,33 +68,32 @@ char	*find_the_command(char **envp, struct s_node_execution *exec)
 	return (command);
 }
 
-void	ft_execute(struct s_node_execution *exec, char **envp)
+void	ft_execute(t_node_e *exec, t_node_d *root, t_sh sh)
 {
 	char	*command;
 	int		param_count;
 	char	**argv;
 	int		i;
-	pid_t	pid;
 
 	i = 0;
 	param_count = 0;
-	command = find_the_command(envp, exec);
+	command = find_the_command(sh.env->envp, exec);
 	if (command)
 	{
 		while (exec->params && exec->params[param_count] != NULL)
 			param_count++;
 		argv = (char **)malloc((param_count + 2) * sizeof(char *));
-		argv[0] = command;
+		argv[0] = ft_strdup(command);
 		while (i < param_count)
 		{
-			argv[i + 1] = exec->params[i];
+			argv[i + 1] = ft_strdup(exec->params[i]);
 			i++;
 		}
 		argv[param_count + 1] = NULL;
-		execve(command, argv, envp);
-		free(command);
-		free(argv);
+		destroy_tree(root);
+		execve(argv[0], argv, sh.env->envp);
 	}
+	*sh.stat = 127;
 }
 
 int	file_exist(const char *filename)

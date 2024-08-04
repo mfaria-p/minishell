@@ -6,33 +6,41 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 19:57:26 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/07/18 14:51:16 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/08/04 08:25:22 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <readline/readline.h>
-#include <unistd.h>
+#include "libft.h"
+#include <signal.h>
 
-static void	sighandler(int sig);
-extern int	g_sig;
+static void	sighandler(int sig, siginfo_t *info, void *ucontext)
+{
+	(void)info;
+	(void)ucontext;
+	if (sig == SIGINT)
+	{
+		g_sig = sig;
+		rl_replace_line("", 1);
+		write(STDOUT_FILENO, "\n", 1);
+		rl_on_new_line();
+		rl_redisplay();
+	}
+}
 
 int	siginit(void)
 {
-	sigset_t			sa_mask;
-	struct sigaction	sa;
+	struct sigaction	act_int;
+	struct sigaction	act_quit;
 
-	if (sigemptyset(&sa_mask) < 0 || sigaddset(&sa_mask, SIGINT) < 0 \
-		|| sigaddset(&sa_mask, SIGQUIT) < 0 || sigaddset(&sa_mask, SIGUSR1) < 0)
-	{
-		printf("SIGSET INIT FAILED!\n");
-		return (0);
-	}
-	sa.sa_mask = sa_mask;
-	sa.sa_handler = sighandler;
-	sa.sa_flags = 0;
-	if (sigaction(SIGINT, &sa, NULL) < 0 || sigaction(SIGQUIT, &sa, NULL) < 0 \
-		|| sigaction(SIGUSR1, &sa, NULL) < 0)
+	g_sig = 0;
+	ft_memset(&act_int, 0, sizeof(struct sigaction));
+	ft_memset(&act_quit, 0, sizeof(struct sigaction));
+	act_int.sa_sigaction = sighandler;
+	act_int.sa_flags |= SA_SIGINFO;
+	act_quit.sa_handler = SIG_IGN;
+	if (sigaction(SIGINT, &act_int, NULL) < 0 || \
+		sigaction(SIGQUIT, &act_quit, NULL) < 0)
 	{
 		printf("SIGACTION FAILED!\n");
 		return (0);
@@ -40,17 +48,35 @@ int	siginit(void)
 	return (0);
 }
 
-void	sighandler(int sig)
+void	sigignore(void)
 {
-	static char	c;
-	static int	i;
+	struct sigaction	act;
 
-	g_sig = sig;
-	if (sig == SIGINT)
+	ft_memset(&act, 0, sizeof(struct sigaction));
+	act.sa_handler = SIG_IGN;
+	sigaction(SIGINT, &act, NULL);
+}
+
+void	sigchild(void)
+{
+	struct sigaction	act;
+
+	ft_memset(&act, 0, sizeof(struct sigaction));
+	act.sa_handler = SIG_DFL;
+	sigaction(SIGQUIT, &act, NULL);
+	sigaction(SIGINT, &act, NULL);
+}
+
+void	child_signal(int wstatus)
+{
+	int		sig;
+
+	if (WIFSIGNALED(wstatus))
 	{
-		rl_replace_line("", 1);
-		write(STDOUT_FILENO, "\n", 1);
-		rl_on_new_line();
-		rl_redisplay();
+		sig = WTERMSIG(wstatus);
+		if (sig == SIGINT)
+			write(STDERR_FILENO, "\n", 1);
+		else if (sig == SIGQUIT)
+			write(STDERR_FILENO, "Quit\n", 5);
 	}
 }
