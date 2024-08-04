@@ -2,3 +2,5 @@ signals inside heredoc
 
 cd doesnt work
 changing $HOME doesn't update HOME for cd
+
+check if exec uses libft functions
