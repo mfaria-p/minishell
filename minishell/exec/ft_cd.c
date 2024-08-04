@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:51:23 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/04 08:21:07 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/08/04 09:03:36 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,11 @@ void	ft_cd(t_env *env, char *path, int *wstatus)
 	if (ft_strlen(path) == 1 && path[0] == '-' && old_dir)
 	{
 		printf("%s\n", old_dir);
-		/* if (chdir(old_dir) == -1)
+		if (chdir(old_dir) == -1)
 		{
 			file_not_found(old_dir);
 			*wstatus = 1;
-		} */
+		}
 	}
 	else if (chdir(path) == -1 && ft_strlen(path) != 1 && path[0] != '-')
 	{
