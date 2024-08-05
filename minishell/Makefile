@@ -20,6 +20,7 @@ SRCS_EXEC =		ft_exit.c				\
 				ft_cd.c					\
 				ft_cd2.c 				\
 				ft_unset.c				\
+				export_env_util.c		\
 				export_env.c 			\
 				export_env2.c			\
 				error_handling.c		\

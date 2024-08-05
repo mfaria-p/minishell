@@ -6,7 +6,7 @@
 /*   By: mfaria-p <mfaria-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:05:32 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/05 09:19:16 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/05 10:13:25 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,7 @@ void	ft_execute(t_node_e *exec, t_node_d *root, t_sh sh)
 
 	i = 0;
 	param_count = 0;
-	if (access(exec->command, X_OK) == 0)
-		command = exec->command;
-	else
-		command = find_the_command(sh.env->envp, exec);
+	command = check_command(exec, sh);
 	if (command && is_regular_file(command))
 	{
 		while (exec->params && exec->params[param_count] != NULL)
