@@ -6,7 +6,7 @@
 /*   By: mfaria-p <mfaria-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:05:32 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/05 08:43:03 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/08/05 09:12:30 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	ft_execute(t_node_e *exec, t_node_d *root, t_sh sh)
 		command = exec->command;
 	else
 		command = find_the_command(sh.env->envp, exec);
-	if (command)
+	if (command && is_regular_file(command))
 	{
 		while (exec->params && exec->params[param_count] != NULL)
 			param_count++;
@@ -96,10 +96,17 @@ void	ft_execute(t_node_e *exec, t_node_d *root, t_sh sh)
 		destroy_tree(root);
 		execve(argv[0], argv, sh.env->envp);
 	}
-	*sh.stat = 127;
+	err_msg(command, "couldn't execute\n", sh.stat);
 }
 
 int	file_exist(const char *filename)
 {
 	return (access(filename, F_OK) != -1);
+}
+
+int is_regular_file(const char *path)
+{
+    struct stat path_stat;
+    stat(path, &path_stat);
+    return S_ISREG(path_stat.st_mode);
 }

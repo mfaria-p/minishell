@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mfaria-p <mfaria-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/04 09:41:45 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/05 09:12:45 by mfaria-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int			file_exist(const char *filename);
 // Simple commands executing functions
 void		exec_exec(t_node_e *exec, t_node_d *root, t_fds *fd, t_sh sh);
 char		*find_path(char **envp);
+int			is_regular_file(const char *path);
 char		*get_cmd(char **paths, char *cmd);
 char		*find_the_command(char **envp, t_node_e *exec);
 void		ft_execute(t_node_e *exec, t_node_d *root, t_sh sh);
@@ -124,5 +125,6 @@ void		error_identifier(char *var, char *value);
 void		error_identifier_plus(char *var, char *value);
 int			error_envp(char *str);
 int			err_cd(void);
+int			err_msg(char *loc, char *msg, int *status);
 
 #endif
