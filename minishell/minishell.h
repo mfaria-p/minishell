@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 12:43:04 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/05 10:06:31 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/05 11:02:35 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,10 +189,11 @@ typedef struct s_fds
 
 typedef struct s_shell
 {
-	t_env	*env;
-	pid_t	pid;
-	t_fds	*fd;
-	int		*stat;
+	t_node_d	*root;
+	t_env		*env;
+	pid_t		pid;
+	t_fds		*fd;
+	int			*stat;
 }	t_sh;
 
 t_node_d	*execution(t_node_d *node, t_sh sh);

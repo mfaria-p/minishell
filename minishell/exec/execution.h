@@ -6,7 +6,7 @@
 /*   By: mfaria-p <mfaria-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/05 10:20:06 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/05 11:05:32 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_export_context
 // EXECUTION
 
 t_node_d	*execution(t_node_d *node, t_sh sh);
+void		end_exec(t_fds *fd, t_node_d *root);
 
 // pipe executing functions
 void		exec_pipe(t_node_p *pip, t_sh sh);

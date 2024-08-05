@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/05 10:06:54 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/05 11:05:49 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ t_node_d	*execution(t_node_d *node, t_sh sh)
 
 	if (!root)
 		root = node;
+	sh.root = root;
 	if (!fd)
 		fd = sh.fd;
 	if (node)
@@ -114,10 +115,7 @@ t_node_d	*execution(t_node_d *node, t_sh sh)
 			exec_pipe((t_node_p *)node, sh);
 	}
 	if (!sh.pid)
-	{
-		fd_close(fd);
-		destroy_tree(root);
-	}
+		end_exec(fd, root);
 	root = NULL;
 	fd = NULL;
 	return (node);

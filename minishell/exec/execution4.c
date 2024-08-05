@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 00:23:04 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/05 10:13:23 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/05 11:05:17 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	exec_pipe(t_node_p *pip, t_sh sh)
 	waitpid(pid[1], sh.stat, 0);
 	child_signal(*sh.stat);
 	*sh.stat = WEXITSTATUS(*sh.stat);
-	if (sh.pid)
+	if (!sh.pid)
 		sigchild();
 }
 
@@ -49,4 +49,12 @@ char	*check_command(t_node_e *exec, t_sh sh)
 	else
 		command = find_the_command(sh.env->envp, exec);
 	return (command);
+}
+
+void	end_exec(t_fds *fd, t_node_d *root)
+{
+	if (fd)
+		fd_close(fd);
+	if (root)
+		destroy_tree(root);
 }
