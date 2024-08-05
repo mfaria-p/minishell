@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 00:09:12 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/04 10:31:57 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/08/05 10:20:19 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	set_env_index(char ***envp, t_setenv *setenv)
 {
 	if (setenv->equal)
 	{
-		setenv->new_val = malloc(strlen((*envp)[setenv->idx]) + ft_strlen(setenv->plus + 2) + 1);
+		setenv->new_val = env_alloc(envp, setenv, 1);
 		if (setenv->new_val == NULL)
 			free(setenv->key);
 		else
@@ -28,7 +28,7 @@ static void	set_env_index(char ***envp, t_setenv *setenv)
 		}
 		return ;
 	}
-	setenv->new_val = malloc(ft_strlen((*envp)[setenv->idx]) + ft_strlen(setenv->plus + 2) + 2);
+	setenv->new_val = env_alloc(envp, setenv, 2);
 	if (setenv->new_val == NULL)
 		free(setenv->key);
 	else

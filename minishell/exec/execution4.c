@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 00:23:04 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/05 10:08:52 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/05 10:13:23 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,15 @@ int	is_regular_file(const char *path)
 
 	stat(path, &path_stat);
 	return (S_ISREG(path_stat.st_mode));
+}
+
+char	*check_command(t_node_e *exec, t_sh sh)
+{
+	char	*command;
+
+	if (access(exec->command, X_OK) == 0)
+		command = exec->command;
+	else
+		command = find_the_command(sh.env->envp, exec);
+	return (command);
 }

@@ -6,7 +6,7 @@
 /*   By: mfaria-p <mfaria-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:39:26 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/05 09:12:45 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/08/05 10:20:06 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ char		*find_path(char **envp);
 int			is_regular_file(const char *path);
 char		*get_cmd(char **paths, char *cmd);
 char		*find_the_command(char **envp, t_node_e *exec);
+char		*check_command(t_node_e *exec, t_sh sh);
 void		ft_execute(t_node_e *exec, t_node_d *root, t_sh sh);
 
 // utils
@@ -100,6 +101,7 @@ char		**resize_and_add(char ***envp, char *new_var);
 void		set_env_with_equal(char ***envp, char *var_value);
 void		set_env_without_equal(char ***envp, char *var);
 void		set_env_with_equal_plus(char ***envp, char *var_value);
+void		*env_alloc(char ***envp, t_setenv *setenv, int p);
 int			valid_id(char *var, char *value);
 int			valid_id_plus(char *var, char *value);
 int			find_var(char **envp, const char *var);
