@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/04 01:15:36 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/08/05 09:23:25 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	exec_red(t_node_r *red, t_sh sh)
 		exec_heredoc(red, sh);
 	else
 		exec_not_heredoc(red, O_RDONLY, STDIN_FILENO, sh);
-	if (red->next && (*(red->filename)) && red->filename != NULL && !*sh.stat)
+	if (red->next && red->filename != NULL && (*(red->filename)) && !*sh.stat)
 		execution((t_node_d *)red->next, sh);
 }
 
