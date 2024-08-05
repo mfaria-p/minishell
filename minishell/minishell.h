@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 12:43:04 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/05 09:50:05 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/05 10:06:31 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,7 +211,7 @@ void		destroy_tree(t_node_d *node);
 /* ************************************************************************** */
 // signal.c
 int			siginit(void);
-void		sigignore(void);
+void		ft_sigignore(void);
 void		sigchild(void);
 void		child_signal(int wstatus);
 

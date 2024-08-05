@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 19:57:26 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/04 08:25:22 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/05 10:06:48 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,14 @@ int	siginit(void)
 	return (0);
 }
 
-void	sigignore(void)
+void	ft_sigignore(void)
 {
 	struct sigaction	act;
 
 	ft_memset(&act, 0, sizeof(struct sigaction));
 	act.sa_handler = SIG_IGN;
 	sigaction(SIGINT, &act, NULL);
+	sigaction(SIGQUIT, &act, NULL);
 }
 
 void	sigchild(void)
