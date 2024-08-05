@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 16:59:14 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/03 18:53:29 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/05 09:54:39 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,10 @@ char	*ft_getenv(t_env *env, char *str, size_t n)
 	envvar_name = ft_strndup(str, n);
 	index = find_var(env2->envp, envvar_name);
 	if (index < 0)
+	{
+		free(envvar_name);
 		return (NULL);
+	}
 	value = ft_strchr((env2->envp)[index], '=');
 	free(envvar_name);
 	return (value + 1);

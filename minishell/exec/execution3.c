@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:09:16 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/04 00:20:46 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/08/05 09:50:53 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	create_heredoc(const char *delimiter, const char *file_name)
 	line = readline(HEREDOC_MSG);
 	while (line && ft_strncmp(delimiter, line, ft_strlen(delimiter)) != 0)
 	{
+		line = expand(line, 0);
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 		free(line);
