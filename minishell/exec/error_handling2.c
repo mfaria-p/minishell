@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 19:15:48 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/04 00:19:05 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/08/05 09:19:09 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,15 @@ void	ft_free(char **envp)
 int	err_cd(void)
 {
 	ft_putstr_fd("minishell: cd: HOME not set \n", STDERR_FILENO);
+	return (EXIT_FAILURE);
+}
+
+int	err_msg(char *loc, char *msg, int *status)
+{
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(loc, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	ft_putstr_fd(msg, STDERR_FILENO);
+	*status = EXIT_FAILURE;
 	return (EXIT_FAILURE);
 }

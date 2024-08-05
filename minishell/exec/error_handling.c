@@ -6,7 +6,7 @@
 /*   By: mfaria-p <mfaria-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 23:47:45 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/05 09:11:40 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/08/05 09:19:11 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,15 +74,5 @@ int	error_envp(char *str)
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(str, STDERR_FILENO);
 	ft_putstr_fd("not found in environment variables.\n", STDERR_FILENO);
-	return (EXIT_FAILURE);
-}
-
-int	err_msg(char *loc, char *msg, int *status)
-{
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd(loc, STDERR_FILENO);
-	ft_putstr_fd(": ", STDERR_FILENO);
-	ft_putstr_fd(msg, STDERR_FILENO);
-	*status = EXIT_FAILURE;
 	return (EXIT_FAILURE);
 }
