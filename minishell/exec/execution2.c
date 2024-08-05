@@ -6,7 +6,7 @@
 /*   By: mfaria-p <mfaria-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:05:32 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/05 09:12:30 by mfaria-p         ###   ########.fr       */
+/*   Updated: 2024/08/05 09:19:16 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,4 @@ void	ft_execute(t_node_e *exec, t_node_d *root, t_sh sh)
 int	file_exist(const char *filename)
 {
 	return (access(filename, F_OK) != -1);
-}
-
-int is_regular_file(const char *path)
-{
-    struct stat path_stat;
-    stat(path, &path_stat);
-    return S_ISREG(path_stat.st_mode);
 }
