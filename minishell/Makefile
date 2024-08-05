@@ -44,7 +44,7 @@ SRCS = minishell.c							\
 
 OBJS = $(SRCS:.c=.o)
 
-CC = cc -Wall -Werror -Wextra
+CC = cc -Wall -Wextra -Werror
 
 # CFLAGS = -Wall -Wextra -Werror -I. #-lreadline
 CFLAGS = -I. -g #-fsanitize=address -static-libasan
