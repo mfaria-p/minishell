@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:09:16 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/05 09:50:53 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/05 10:06:59 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,6 @@ pid_t	have_child(t_node_p *pip, int rw, int pipefd[2], t_sh sh)
 		rl_clear_history();
 		exit(*sh.stat);
 	}
-	sigignore();
+	ft_sigignore();
 	return (pid);
 }

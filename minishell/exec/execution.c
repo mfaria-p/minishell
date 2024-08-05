@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 12:38:37 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/05 09:23:25 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/05 10:06:54 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	exec_exec(t_node_e *exec, t_node_d *root, t_fds *fd, t_sh sh)
 		pid = fork();
 		if (pid == 0)
 			exec_exec_child(exec, root, fd, sh);
-		sigignore();
+		ft_sigignore();
 		waitpid(pid, sh.stat, 0);
 		child_signal(*sh.stat);
 		*sh.stat = WEXITSTATUS(*sh.stat);

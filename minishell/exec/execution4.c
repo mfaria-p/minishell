@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 00:23:04 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/05 09:18:52 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/05 10:08:52 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ void	exec_pipe(t_node_p *pip, t_sh sh)
 	waitpid(pid[1], sh.stat, 0);
 	child_signal(*sh.stat);
 	*sh.stat = WEXITSTATUS(*sh.stat);
+	if (sh.pid)
+		sigchild();
 }
 
 int	is_regular_file(const char *path)
