@@ -6,7 +6,7 @@
 /*   By: mfaria-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:14:24 by mfaria-p          #+#    #+#             */
-/*   Updated: 2024/08/03 18:47:55 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/05 11:02:25 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	main_loop(t_env *env)
 		if (strlen(line) > 0)
 		{
 			add_history(line);
-			run_command(line, (t_sh){env, 1, &fd, &stat});
+			run_command(line, (t_sh){NULL, env, 1, &fd, &stat});
 			if (ft_isexit(line))
 				break ;
 		}

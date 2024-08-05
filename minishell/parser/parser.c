@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 21:53:16 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/08/05 09:45:07 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/08/05 11:35:19 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ t_token	parse_r(t_node_d **branch, t_node_d **root, t_node_e *node_exec)
 	}
 	if (token.code == EOL)
 	{
-		if (tail)
+		if (tail && !tail->next)
 			tail->next = (t_node_d *)node_exec;
 		tail = NULL;
 	}
