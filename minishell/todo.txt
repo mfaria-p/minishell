@@ -1,3 +1,0 @@
-Ctrl-C on minishell on minishell
-
-running ./a.out leaks - ACHO Q TA
