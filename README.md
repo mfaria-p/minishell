@@ -11,8 +11,8 @@ readline: libreadline-dev
 - [x] Display a **prompt** when waiting for a new command :eggplant:
 - [x] Have a working history
 - [x] Search and launch the right executable (based on the PATH variable or using a relative or an absolute path)
-- [ ] Avoid using more than one global variable to indicate a received signal
-- [ ] Not interpret unclosed quotes or special characters which are not required by the subject
+- [x] Avoid using more than one global variable to indicate a received signal
+- [x] Not interpret unclosed quotes or special characters which are not required by the subject
 - [x] Handle `'` which should prevent the shell from interpreting the meta-characters in the quoted sequence
 - [x] Hande `"` which should prevent the shell from interpreting the meta-characters in the quoted sequence except for $
 - [x] Implement redirections:
@@ -22,16 +22,16 @@ readline: libreadline-dev
     - `>>` should redirect output in append mode
 - [x] Implement pipes `|`
 - [x] Handle environment variables (`$` followed by a sequence of characters)
-- [ ] Handle `$?`
-- [ ] Handle `C-c`, `C-d`, `C-\`
+- [x] Handle `$?`
+- [x] Handle `C-c`, `C-d`, `C-\`
     - `C-c` displays a new prompt on a new line
     - `C-d` exits the shell
     - `C-\` does nothing
 - [x] Implement `echo` with option -n
-- [ ] Implement `cd` with only a relative or absolute path
+- [x] Implement `cd` with only a relative or absolute path
 - [x] Implement `pwd` with no options
-- [ ] Implement `export` with no options
-- [ ] Implement `unset` with no options
+- [x] Implement `export` with no options
+- [x] Implement `unset` with no options
 - [x] Implement `env` with no options or arguments
 - [x] Implement `exit` with no options
-- [ ] Memory leak free
+- [x] Memory leak free
