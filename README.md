@@ -116,7 +116,7 @@ To install and run **Minishell**, follow these steps:
 
 1. **Clone the repository:**
    ```sh
-   git clone https://github.com/yourusername/minishell.git
+   git clone
    ```
 
 2. **Navigate to the project directory:**
