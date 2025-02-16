@@ -17,7 +17,7 @@ Minishell is a simple shell implementation that mimics the behavior of the GNU B
 
 - [Features](#features)
 - [Built-in Commands](#built-in-commands)
-- [Redirections](#🔄-redirections)
+- [Redirections](#redirections)
 - [Pipes](#pipes)
 - [Signal Handling](#signal-handling)
 - [Environment Variables](#environment-variables)
