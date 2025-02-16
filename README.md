@@ -1,14 +1,6 @@
 # Minishell
 ### Our own little Bash
 
-⠀ ⠀⠀ ⠀⠀              🤠<br/>
-　　　💯💯💯<br/>
-　　💯 　💯　💯<br/>
-　👇🏽　  💯💯　👇🏽<br/>
-　　　💯　  💯<br/>
-　　　💯　　💯<br/>
-　　　👢　　👢 <br/>
-
 Minishell is a simple shell implementation that mimics the behavior of the GNU Bash shell. It supports built-in commands, redirections, pipes, signal handling, and an interactive command-line interface.
 
 ---
@@ -152,3 +144,13 @@ readline: libreadline-dev
 
 - [Mariana Pereira](https://github.com/mfaria-p)
 - [Eduardo Corona](https://github.com/Corona040)
+
+Enjoy your experience with our Minishell!
+
+⠀ ⠀⠀ ⠀⠀              🤠<br/>
+　　　💯💯💯<br/>
+　　💯 　💯　💯<br/>
+　👇🏽　  💯💯　👇🏽<br/>
+　　　💯　  💯<br/>
+　　　💯　　💯<br/>
+　　　👢　　👢 <br/>
