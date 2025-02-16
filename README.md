@@ -145,7 +145,7 @@ readline: libreadline-dev
 - [Mariana Pereira](https://github.com/mfaria-p)
 - [Eduardo Corona](https://github.com/Corona040)
 
-Enjoy your experience with our Minishell!
+Enjoy your experience with our Minishell! 🚀🎉
 
 ⠀ ⠀⠀ ⠀⠀              🤠<br/>
 　　　💯💯💯<br/>
