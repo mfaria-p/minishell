@@ -124,7 +124,7 @@ To install and run **Minishell**, follow these steps:
 
 1. **Clone the repository:**
    ```sh
-   git clone
+   git clone https://github.com/mfaria-p/minishell.git
    ```
 
 2. **Navigate to the project directory:**
