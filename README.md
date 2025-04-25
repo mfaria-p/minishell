@@ -150,11 +150,3 @@ readline: libreadline-dev
 - [Eduardo Corona](https://github.com/Corona040)
 
 Enjoy your experience with our Minishell! 🚀🎉
-
-⠀ ⠀⠀ ⠀⠀              🤠<br/>
-　　　💯💯💯<br/>
-　　💯 　💯　💯<br/>
-　👇🏽　  💯💯　👇🏽<br/>
-　　　💯　  💯<br/>
-　　　💯　　💯<br/>
-　　　👢　　👢 <br/>
