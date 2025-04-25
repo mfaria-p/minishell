@@ -3,6 +3,10 @@
 
 Minishell is a simple shell implementation that mimics the behavior of the GNU Bash shell. It supports built-in commands, redirections, pipes, signal handling, and an interactive command-line interface.
 
+<p align="center">
+  <img src="./print_screen_terminal.gif" alt="Print_screen"/>
+</p>
+
 ---
 
 ## 📖 Table of Contents
